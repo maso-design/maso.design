@@ -15,7 +15,7 @@
     html, body {
       height: 100%;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-color: #ffffff; /* pure white background */
+      background-color: #ffffff;
       overflow-x: hidden;
     }
 
@@ -30,7 +30,7 @@
 
     .logo {
       font-size: 3.8rem;
-      font-weight: 600; /* classic feel */
+      font-weight: 600;
       letter-spacing: 1px;
       color: #111;
     }
@@ -38,7 +38,7 @@
     /* Contact line */
     .contact {
       position: absolute;
-      bottom: 4%; /* slightly above bottom edge */
+      bottom: 4%;
       left: 10%;
       font-size: 0.9rem;
       font-weight: 300;
@@ -47,48 +47,22 @@
       z-index: 2;
     }
 
-    /* Hamburger button */
-    .hamburger {
+    /* Menu word */
+    .menu {
       position: fixed;
       top: 3%;
       right: 3%;
-      width: 30px;
-      height: 2px;
-      background-color: #111;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: #111;
       cursor: pointer;
-      transition: all 0.3s ease;
       z-index: 3;
+      transition: color 0.2s ease;
     }
 
-    .hamburger::before,
-    .hamburger::after {
-      content: '';
-      position: absolute;
-      width: 30px;
-      height: 2px;
-      background-color: #111;
-      transition: all 0.3s ease;
-    }
-
-    .hamburger::before {
-      transform: translateY(-10px);
-    }
-
-    .hamburger::after {
-      transform: translateY(10px);
-    }
-
-    /* Hamburger active state (X) */
-    .hamburger.active {
-      background-color: transparent;
-    }
-
-    .hamburger.active::before {
-      transform: rotate(45deg);
-    }
-
-    .hamburger.active::after {
-      transform: rotate(-45deg);
+    .menu:hover {
+      color: #555;
     }
 
     /* Side menu */
@@ -137,12 +111,8 @@
         width: 200px;
         padding: 50px 15px;
       }
-      .hamburger {
-        width: 25px;
-      }
-      .hamburger::before,
-      .hamburger::after {
-        width: 25px;
+      .menu {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -157,8 +127,8 @@
   <!-- Contact line -->
   <div class="contact">info@maso.design | www.maso-design.com</div>
 
-  <!-- Hamburger button -->
-  <div class="hamburger" id="hamburger"></div>
+  <!-- Menu word -->
+  <div class="menu" id="menu">Menu</div>
 
   <!-- Side menu -->
   <div class="side-menu" id="sideMenu">
@@ -167,11 +137,10 @@
   </div>
 
   <script>
-    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
     const sideMenu = document.getElementById('sideMenu');
 
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
+    menu.addEventListener('click', () => {
       sideMenu.classList.toggle('open');
     });
   </script>
