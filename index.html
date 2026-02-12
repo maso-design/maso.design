@@ -5,54 +5,81 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASO</title>
 <style>
-/* Reset */
-* {margin:0; padding:0; box-sizing:border-box;}
-body { font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; background:#fff; color:#111; display:flex; min-height:100vh; }
-
-/* Left vertical rail */
-.nav-rail {
-  width:160px; padding:5% 2%; display:flex; flex-direction:column; gap:20px; position:fixed; height:100vh;
+body {
+  margin:0;
+  font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background:#fff;
+  color:#111;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
-.nav-rail .logo { font-size:2rem; font-weight:600; margin-bottom:40px; }
-.nav-rail a { font-size:0.9rem; font-weight:300; letter-spacing:1px; color:#111; text-decoration:none; transition:color 0.2s ease; }
-.nav-rail a:hover { color:#555; }
-.nav-rail a.active { font-weight:600; }
 
-/* Main content */
-.main-content { margin-left:160px; padding:5% 10%; flex:1; }
+.center-container {
+  display:flex;
+  align-items:center;
+  gap:40px;
+}
 
-/* Section headings & text */
-section h2 { font-size:2rem; margin-bottom:1rem; font-weight:600; }
-section p { line-height:1.6; font-weight:300; margin-bottom:1rem; }
+.logo {
+  font-size:3rem;
+  font-weight:600;
+  white-space:nowrap;
+}
 
-/* Fade-in animation */
-.fade-in { opacity:0; transform: translateY(20px); animation: fadeInUp 0.8s ease forwards; animation-delay:0.2s; }
-@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
+.vline {
+  width:2px;
+  background:#111;
+  height:200px; /* adjust length to fit links */
+}
 
-/* Responsive */
+.page-links {
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+  font-weight:300;
+  font-size:1.1rem;
+}
+
+.page-links a {
+  text-decoration:none;
+  color:#111;
+  transition:color 0.2s;
+}
+
+.page-links a:hover {
+  color:#555;
+}
+
+.fade-in { 
+  opacity:0; 
+  transform: translateY(20px); 
+  animation: fadeInUp 0.8s ease forwards; 
+  animation-delay:0.2s; 
+}
+
+@keyframes fadeInUp {
+  to { opacity:1; transform:translateY(0); }
+}
+
 @media(max-width:768px){
-  .nav-rail{width:120px; padding:5% 1%; gap:15px;}
-  .nav-rail .logo{font-size:1.6rem; margin-bottom:30px;}
-  .nav-rail a{font-size:0.8rem;}
-  .main-content{margin-left:120px; padding:5% 5%;}
-  section h2{font-size:1.6rem;}
+  .center-container { flex-direction:column; align-items:center; gap:30px; }
+  .vline { height:150px; }
+  .logo { font-size:2.2rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="nav-rail">
+<div class="center-container fade-in">
   <div class="logo">MASO</div>
-  <a href="work.html">The Work</a>
-  <a href="author.html">The Author</a>
-  <a href="contact.html">Contact</a>
-</div>
-
-<div class="main-content">
-  <section class="fade-in">
-    <h2>Welcome</h2>
-    <p>MASO is a brand exploring the intersection of sound, architecture, and visual expression. The focus here is to present the brand cleanly and minimally, with a clear path to explore our work and learn about the author.</p>
-  </section>
+  <div class="vline"></div>
+  <div class="page-links">
+    <a href="work.html">The Work</a>
+    <a href="author.html">The Author</a>
+    <a href="contact.html">Contact</a>
+  </div>
 </div>
 
 </body>
