@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MASO</title>
   <style>
-    /* Reset and basic styling */
+    /* Reset */
     * {
       margin: 0;
       padding: 0;
@@ -13,45 +13,17 @@
     }
 
     html {
-      scroll-behavior: smooth; /* smooth scrolling */
+      scroll-behavior: smooth;
     }
 
     body {
-      height: 100%;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background-color: #ffffff;
+      color: #111;
       overflow-x: hidden;
     }
 
-    /* Logo */
-    .logo-container {
-      position: absolute;
-      top: 55%; /* lower half */
-      left: 10%;
-      z-index: 2;
-      transform: translateY(-50%);
-    }
-
-    .logo {
-      font-size: 3.8rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      color: #111;
-    }
-
-    /* Contact line */
-    .contact {
-      position: absolute;
-      bottom: 4%;
-      left: 10%;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: #111;
-      letter-spacing: 0.5px;
-      z-index: 2;
-    }
-
-    /* Top-right navigation links */
+    /* Top-right nav links */
     .nav-links {
       position: fixed;
       top: 3%;
@@ -75,13 +47,28 @@
       color: #555;
     }
 
-    /* Content sections */
+    /* Hero / Landing */
+    #landing {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* pushes logo down */
+      padding: 0 10%;
+      position: relative;
+    }
+
+    .logo {
+      font-size: 3.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* Sections */
     section {
       min-height: 100vh;
-      padding: 15% 10%; /* give breathing room for top links */
-      font-weight: 300;
-      color: #111;
+      padding: 10% 10%;
       line-height: 1.6;
+      font-weight: 300;
     }
 
     section h2 {
@@ -94,9 +81,6 @@
     @media (max-width: 768px) {
       .logo {
         font-size: 3rem;
-      }
-      .contact {
-        font-size: 0.8rem;
       }
       .nav-links {
         font-size: 0.8rem;
@@ -113,31 +97,35 @@
 </head>
 <body>
 
-  <!-- Logo -->
-  <div class="logo-container">
-    <div class="logo">MASO</div>
-  </div>
-
-  <!-- Contact info -->
-  <div class="contact">info@maso.design | www.maso-design.com</div>
-
   <!-- Top-right nav links -->
   <div class="nav-links">
     <a href="#the-work">The Work</a>
     <a href="#the-author">The Author</a>
+    <a href="#contact">Contact</a>
   </div>
 
-  <!-- Sections -->
+  <!-- Landing / Logo -->
+  <section id="landing">
+    <div class="logo">MASO</div>
+  </section>
+
+  <!-- The Work section -->
   <section id="the-work">
     <h2>The Work</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui et eros dapibus ultricies. Curabitur vehicula, libero a facilisis tincidunt, sapien nulla consequat ex, vel porttitor erat justo vel sapien. Fusce ac ligula eget metus gravida tincidunt.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui et eros dapibus ultricies. Curabitur vehicula, libero a facilisis tincidunt, sapien nulla consequat ex, vel porttitor erat justo vel sapien.</p>
     <p>Praesent nec mi non dolor cursus aliquet. Integer non risus id metus tempus imperdiet. Sed sit amet mauris sit amet tortor bibendum lacinia. Nulla facilisi.</p>
   </section>
 
+  <!-- The Author section -->
   <section id="the-author">
     <h2>The Author</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget ligula eget neque porttitor malesuada. Maecenas id urna eu nulla consectetur venenatis. Aliquam erat volutpat.</p>
-    <p>Fusce sed libero ut purus laoreet dignissim. Curabitur nec ante a leo convallis fermentum. Sed in urna ac dolor malesuada efficitur. Donec euismod justo nec eros finibus, sed hendrerit justo sollicitudin.</p>
+    <p>Guy Traviss is a designer and creative thinker who explores the intersection of sound, architecture, and visual expression. With a background spanning product design, industrial aesthetics, and experiential installations, Guy seeks to create work that is both timeless and evocative. His projects often explore subtle materiality, careful spatial relationships, and the emotional resonance of everyday environments, with an emphasis on craft, clarity, and enduring quality.</p>
+  </section>
+
+  <!-- Contact section -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>info@maso.design | www.maso-design.com</p>
   </section>
 
 </body>
