@@ -1,132 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MASO</title>
-  <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MASO</title>
+<style>
+/* Reset */
+* {margin:0; padding:0; box-sizing:border-box;}
+body { font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; background:#fff; color:#111; display:flex; min-height:100vh; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+/* Left vertical rail */
+.nav-rail {
+  width:160px; padding:5% 2%; display:flex; flex-direction:column; gap:20px; position:fixed; height:100vh;
+}
+.nav-rail .logo { font-size:2rem; font-weight:600; margin-bottom:40px; }
+.nav-rail a { font-size:0.9rem; font-weight:300; letter-spacing:1px; color:#111; text-decoration:none; transition:color 0.2s ease; }
+.nav-rail a:hover { color:#555; }
+.nav-rail a.active { font-weight:600; }
 
-    body {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background-color: #ffffff;
-      color: #111;
-      overflow-x: hidden;
-    }
+/* Main content */
+.main-content { margin-left:160px; padding:5% 10%; flex:1; }
 
-    /* Top-right nav links */
-    .nav-links {
-      position: fixed;
-      top: 3%;
-      right: 3%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-size: 0.9rem;
-      font-weight: 300;
-      letter-spacing: 1px;
-      z-index: 3;
-    }
+/* Section headings & text */
+section h2 { font-size:2rem; margin-bottom:1rem; font-weight:600; }
+section p { line-height:1.6; font-weight:300; margin-bottom:1rem; }
 
-    .nav-links a {
-      text-decoration: none;
-      color: #111;
-      transition: color 0.2s ease;
-    }
+/* Fade-in animation */
+.fade-in { opacity:0; transform: translateY(20px); animation: fadeInUp 0.8s ease forwards; animation-delay:0.2s; }
+@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
 
-    .nav-links a:hover {
-      color: #555;
-    }
-
-    /* Hero / Landing */
-    #landing {
-      min-height: 80vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end; /* pushes logo down */
-      padding: 0 10%;
-      position: relative;
-    }
-
-    .logo {
-      font-size: 3.8rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-
-    /* Sections */
-    section {
-      min-height: 100vh;
-      padding: 10% 10%;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    section h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      .logo {
-        font-size: 3rem;
-      }
-      .nav-links {
-        font-size: 0.8rem;
-        gap: 8px;
-      }
-      section {
-        padding: 20% 10%;
-      }
-      section h2 {
-        font-size: 1.6rem;
-      }
-    }
-  </style>
+/* Responsive */
+@media(max-width:768px){
+  .nav-rail{width:120px; padding:5% 1%; gap:15px;}
+  .nav-rail .logo{font-size:1.6rem; margin-bottom:30px;}
+  .nav-rail a{font-size:0.8rem;}
+  .main-content{margin-left:120px; padding:5% 5%;}
+  section h2{font-size:1.6rem;}
+}
+</style>
 </head>
 <body>
 
-  <!-- Top-right nav links -->
-  <div class="nav-links">
-    <a href="#the-work">The Work</a>
-    <a href="#the-author">The Author</a>
-    <a href="#contact">Contact</a>
-  </div>
+<div class="nav-rail">
+  <div class="logo">MASO</div>
+  <a href="work.html">The Work</a>
+  <a href="author.html">The Author</a>
+  <a href="contact.html">Contact</a>
+</div>
 
-  <!-- Landing / Logo -->
-  <section id="landing">
-    <div class="logo">MASO</div>
+<div class="main-content">
+  <section class="fade-in">
+    <h2>Welcome</h2>
+    <p>MASO is a brand exploring the intersection of sound, architecture, and visual expression. The focus here is to present the brand cleanly and minimally, with a clear path to explore our work and learn about the author.</p>
   </section>
-
-  <!-- The Work section -->
-  <section id="the-work">
-    <h2>The Work</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui et eros dapibus ultricies. Curabitur vehicula, libero a facilisis tincidunt, sapien nulla consequat ex, vel porttitor erat justo vel sapien.</p>
-    <p>Praesent nec mi non dolor cursus aliquet. Integer non risus id metus tempus imperdiet. Sed sit amet mauris sit amet tortor bibendum lacinia. Nulla facilisi.</p>
-  </section>
-
-  <!-- The Author section -->
-  <section id="the-author">
-    <h2>The Author</h2>
-    <p>Guy Traviss is a designer and creative thinker who explores the intersection of sound, architecture, and visual expression. With a background spanning product design, industrial aesthetics, and experiential installations, Guy seeks to create work that is both timeless and evocative. His projects often explore subtle materiality, careful spatial relationships, and the emotional resonance of everyday environments, with an emphasis on craft, clarity, and enduring quality.</p>
-  </section>
-
-  <!-- Contact section -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>info@maso.design | www.maso-design.com</p>
-  </section>
+</div>
 
 </body>
 </html>
