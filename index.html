@@ -16,35 +16,113 @@
       height: 100%;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background-color: #ffffff; /* pure white background */
-      position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
-    /* Container for logo */
+    /* Logo */
     .logo-container {
       position: absolute;
-      top: 30%; /* adjust vertical position as desired */
-      left: 10%; /* off-center left */
+      top: 55%; /* lower half */
+      left: 10%;
       z-index: 2;
+      transform: translateY(-50%);
     }
 
     .logo {
-      font-size: 3.8rem; /* slightly smaller for classic feel */
-      font-weight: 600; /* less heavy, more enduring */
-      color: #111; /* dark text */
-      letter-spacing: 1px; /* reduced from before */
+      font-size: 3.8rem;
+      font-weight: 600; /* classic feel */
+      letter-spacing: 1px;
+      color: #111;
     }
 
-    /* Contact text at bottom-left */
+    /* Contact line */
     .contact {
       position: absolute;
-      bottom: 4%; /* slightly higher for breathing space */
-      left: 10%; /* align with logo left margin */
+      bottom: 4%; /* slightly above bottom edge */
+      left: 10%;
       font-size: 0.9rem;
       font-weight: 300;
       color: #111;
-      z-index: 2;
       letter-spacing: 0.5px;
+      z-index: 2;
+    }
+
+    /* Hamburger button */
+    .hamburger {
+      position: fixed;
+      top: 3%;
+      right: 3%;
+      width: 30px;
+      height: 2px;
+      background-color: #111;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 3;
+    }
+
+    .hamburger::before,
+    .hamburger::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 2px;
+      background-color: #111;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger::before {
+      transform: translateY(-10px);
+    }
+
+    .hamburger::after {
+      transform: translateY(10px);
+    }
+
+    /* Hamburger active state (X) */
+    .hamburger.active {
+      background-color: transparent;
+    }
+
+    .hamburger.active::before {
+      transform: rotate(45deg);
+    }
+
+    .hamburger.active::after {
+      transform: rotate(-45deg);
+    }
+
+    /* Side menu */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background-color: #fdfdfd;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+      padding: 60px 20px;
+      transition: right 0.3s ease;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .side-menu.open {
+      right: 0;
+    }
+
+    .side-menu a {
+      text-decoration: none;
+      color: #111;
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: 0.5px;
+      transition: color 0.2s ease;
+    }
+
+    .side-menu a:hover {
+      color: #555;
     }
 
     /* Responsive adjustments */
@@ -55,17 +133,48 @@
       .contact {
         font-size: 0.8rem;
       }
+      .side-menu {
+        width: 200px;
+        padding: 50px 15px;
+      }
+      .hamburger {
+        width: 25px;
+      }
+      .hamburger::before,
+      .hamburger::after {
+        width: 25px;
+      }
     }
-
   </style>
 </head>
 <body>
+
+  <!-- Logo -->
   <div class="logo-container">
     <div class="logo">MASO</div>
   </div>
 
-  <div class="contact">
-    info@maso.design
+  <!-- Contact line -->
+  <div class="contact">info@maso.design | www.maso-design.com</div>
+
+  <!-- Hamburger button -->
+  <div class="hamburger" id="hamburger"></div>
+
+  <!-- Side menu -->
+  <div class="side-menu" id="sideMenu">
+    <a href="#">About MASO</a>
+    <a href="#">About the Author</a>
   </div>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const sideMenu = document.getElementById('sideMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      sideMenu.classList.toggle('open');
+    });
+  </script>
+
 </body>
 </html>
