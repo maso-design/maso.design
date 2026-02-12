@@ -12,7 +12,11 @@
       box-sizing: border-box;
     }
 
-    html, body {
+    html {
+      scroll-behavior: smooth; /* smooth scrolling */
+    }
+
+    body {
       height: 100%;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background-color: #ffffff;
@@ -47,56 +51,43 @@
       z-index: 2;
     }
 
-    /* Menu word */
-    .menu {
+    /* Top-right navigation links */
+    .nav-links {
       position: fixed;
       top: 3%;
       right: 3%;
-      font-size: 1rem;
-      font-weight: 400;
-      letter-spacing: 1px;
-      color: #111;
-      cursor: pointer;
-      z-index: 3;
-      transition: color 0.2s ease;
-    }
-
-    .menu:hover {
-      color: #555;
-    }
-
-    /* Side menu */
-    .side-menu {
-      position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
-      height: 100%;
-      background-color: #fdfdfd;
-      box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-      padding: 60px 20px;
-      transition: right 0.3s ease;
-      z-index: 2;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 300;
+      letter-spacing: 1px;
+      z-index: 3;
     }
 
-    .side-menu.open {
-      right: 0;
-    }
-
-    .side-menu a {
+    .nav-links a {
       text-decoration: none;
       color: #111;
-      font-weight: 400;
-      font-size: 1rem;
-      letter-spacing: 0.5px;
       transition: color 0.2s ease;
     }
 
-    .side-menu a:hover {
+    .nav-links a:hover {
       color: #555;
+    }
+
+    /* Content sections */
+    section {
+      min-height: 100vh;
+      padding: 15% 10%; /* give breathing room for top links */
+      font-weight: 300;
+      color: #111;
+      line-height: 1.6;
+    }
+
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
     }
 
     /* Responsive adjustments */
@@ -107,12 +98,15 @@
       .contact {
         font-size: 0.8rem;
       }
-      .side-menu {
-        width: 200px;
-        padding: 50px 15px;
+      .nav-links {
+        font-size: 0.8rem;
+        gap: 8px;
       }
-      .menu {
-        font-size: 0.9rem;
+      section {
+        padding: 20% 10%;
+      }
+      section h2 {
+        font-size: 1.6rem;
       }
     }
   </style>
@@ -124,26 +118,27 @@
     <div class="logo">MASO</div>
   </div>
 
-  <!-- Contact line -->
+  <!-- Contact info -->
   <div class="contact">info@maso.design | www.maso-design.com</div>
 
-  <!-- Menu word -->
-  <div class="menu" id="menu">Menu</div>
-
-  <!-- Side menu -->
-  <div class="side-menu" id="sideMenu">
-    <a href="#">About MASO</a>
-    <a href="#">About the Author</a>
+  <!-- Top-right nav links -->
+  <div class="nav-links">
+    <a href="#the-work">The Work</a>
+    <a href="#the-author">The Author</a>
   </div>
 
-  <script>
-    const menu = document.getElementById('menu');
-    const sideMenu = document.getElementById('sideMenu');
+  <!-- Sections -->
+  <section id="the-work">
+    <h2>The Work</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae dui et eros dapibus ultricies. Curabitur vehicula, libero a facilisis tincidunt, sapien nulla consequat ex, vel porttitor erat justo vel sapien. Fusce ac ligula eget metus gravida tincidunt.</p>
+    <p>Praesent nec mi non dolor cursus aliquet. Integer non risus id metus tempus imperdiet. Sed sit amet mauris sit amet tortor bibendum lacinia. Nulla facilisi.</p>
+  </section>
 
-    menu.addEventListener('click', () => {
-      sideMenu.classList.toggle('open');
-    });
-  </script>
+  <section id="the-author">
+    <h2>The Author</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget ligula eget neque porttitor malesuada. Maecenas id urna eu nulla consectetur venenatis. Aliquam erat volutpat.</p>
+    <p>Fusce sed libero ut purus laoreet dignissim. Curabitur nec ante a leo convallis fermentum. Sed in urna ac dolor malesuada efficitur. Donec euismod justo nec eros finibus, sed hendrerit justo sollicitudin.</p>
+  </section>
 
 </body>
 </html>
