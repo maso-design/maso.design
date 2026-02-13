@@ -30,17 +30,16 @@ body {
   z-index: 0;
 }
 
-/* ---------- LEFT FIELD LOGO ---------- */
+/* ---------- LEFT FIELD IDENTITY STACK ---------- */
 
 .logo-fixed {
   position: fixed;
-  left: 6%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: clamp(2.2rem, 5vw, 5.2rem);
+  left: 40px;          /* aligned with menu */
+  bottom: 140px;       /* sits above menu */
+  font-size: clamp(2.2rem, 5vw, 5rem);
   font-weight: 600;
   letter-spacing: 0.12em;
-  z-index: 5;
+  z-index: 10;
 }
 
 /* ---------- HERO SPACER ---------- */
@@ -105,7 +104,7 @@ p {
 .floor-menu a:hover { opacity: 1; }
 .floor-menu a.active { opacity: 1; }
 
-/* ---------- CONTACT (PLAQUE) ---------- */
+/* ---------- CONTACT PLAQUE ---------- */
 
 .contact-fixed {
   position: fixed;
@@ -125,13 +124,16 @@ p {
 
 <div class="datum"></div>
 
-<!-- LEFT FIELD IDENTITY -->
+<!-- LEFT IDENTITY STACK -->
+
 <div class="logo-fixed">MASO</div>
 
 <!-- HERO SPACER -->
+
 <div id="home" class="hero"></div>
 
 <!-- WORK -->
+
 <section id="work">
   <h1>The Work</h1>
 
@@ -153,6 +155,7 @@ p {
 </section>
 
 <!-- AUTHOR -->
+
 <section id="author">
   <h1>The Author</h1>
 
@@ -170,6 +173,7 @@ p {
 </section>
 
 <!-- CONTACT -->
+
 <section id="contact">
   <h1>Contact</h1>
 
