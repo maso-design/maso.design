@@ -20,7 +20,6 @@ body {
 }
 
 /* ---------- SECTIONS ---------- */
-
 section {
   min-height: 100vh;
   display: flex;
@@ -28,10 +27,18 @@ section {
   justify-content: center;
   padding: 8vh 10vw;
   position: relative;
+  opacity: 0;            /* fade-in initial */
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Active fade-in class */
+section.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ---------- VERTICAL DATUM LINE ---------- */
-
 section::before {
   content: "";
   position: absolute;
@@ -45,14 +52,12 @@ section::before {
 }
 
 /* ---------- HERO / TITLE WALL ---------- */
-
 .hero {
   flex-direction: column;
   text-align: center;
 }
 
 /* MASO logo */
-
 .logo {
   font-size: clamp(4rem, 10vw, 11rem);
   font-weight: 600;
@@ -61,7 +66,6 @@ section::before {
 }
 
 /* Tagline */
-
 .tagline {
   font-size: 1.1rem;
   font-weight: 300;
@@ -71,7 +75,6 @@ section::before {
 }
 
 /* ---------- BOTTOM-LEFT ENUMERATED MENU ---------- */
-
 .floor-menu {
   position: fixed;
   bottom: 40px;
@@ -100,8 +103,13 @@ section::before {
   font-weight: 600;
 }
 
-/* ---------- CONTENT SECTIONS ---------- */
+/* Highlight active section */
+.floor-menu a.active {
+  opacity: 1;
+  color: #555;
+}
 
+/* ---------- CONTENT SECTIONS ---------- */
 .content {
   max-width: 720px;
   font-size: 1.1rem;
@@ -115,21 +123,18 @@ h1 {
   margin-bottom: 28px;
   letter-spacing: 0.04em;
 }
-
 </style>
 </head>
 
 <body>
 
 <!-- HERO / TITLE WALL -->
-
 <section class="hero" id="home">
   <div class="logo">MASO</div>
   <div class="tagline">Sound given permanence</div>
 </section>
 
 <!-- Bottom-left enumerated menu -->
-
 <nav class="floor-menu">
   <a href="#work"><span class="num">01</span> The Work</a>
   <a href="#author"><span class="num">02</span> The Author</a>
@@ -137,7 +142,6 @@ h1 {
 </nav>
 
 <!-- WORK -->
-
 <section id="work">
   <div class="content">
     <h1>The Work</h1>
@@ -155,7 +159,6 @@ h1 {
 </section>
 
 <!-- AUTHOR -->
-
 <section id="author">
   <div class="content">
     <h1>The Author</h1>
@@ -172,7 +175,6 @@ h1 {
 </section>
 
 <!-- CONTACT -->
-
 <section id="contact">
   <div class="content">
     <h1>Contact</h1>
@@ -180,6 +182,31 @@ h1 {
     <p>info@maso.design</p>
   </div>
 </section>
+
+<script>
+// ---------- FADE-IN ON SCROLL ----------
+const sections = document.querySelectorAll("section");
+const menuLinks = document.querySelectorAll(".floor-menu a");
+
+function handleScroll() {
+  const scrollPos = window.scrollY + window.innerHeight/2;
+
+  sections.forEach((section, index) => {
+    if (scrollPos >= section.offsetTop) {
+      section.classList.add("active");
+
+      // Highlight menu
+      menuLinks.forEach(link => link.classList.remove("active"));
+      if(index > 0) {
+        menuLinks[index-1].classList.add("active");
+      }
+    }
+  });
+}
+
+window.addEventListener("scroll", handleScroll);
+window.addEventListener("load", handleScroll);
+</script>
 
 </body>
 </html>
