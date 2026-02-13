@@ -3,216 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MASO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Inter', sans-serif;
-  background: #f5f5f5;
+  font-family: "Inter", sans-serif;
+  background: #ffffff;
   color: #111;
-  overflow-x: hidden;
 }
 
-/* ===== LEFT GALLERY MENU ===== */
+/* ---------- SECTIONS ---------- */
 
-.nav {
-  position: fixed;
-  left: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  z-index: 100;
-}
-
-.nav a {
-  text-decoration: none;
-  color: #777;
-  font-size: 14px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-}
-
-.nav a:hover,
-.nav a.active {
-  color: #111;
-  transform: translateX(6px);
-}
-
-/* ===== MASO LOGO ===== */
-
-.logo {
-  position: fixed;
-  left: 180px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: clamp(64px, 10vw, 120px);
-  font-weight: 300;
-  letter-spacing: 0.18em;
-  pointer-events: none;
-}
-
-/* ===== SECTIONS ===== */
-
-.section {
+section {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-left: 38vw;
-  padding-right: 8vw;
+  padding: 8vh 8vw;
 }
 
-/* ===== GALLERY CARD STYLE ===== */
+/* ---------- LANDING COMPOSITION ---------- */
 
-.card {
-  background: white;
-  padding: 56px;
-  max-width: 700px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+.hero {
+  justify-content: center;
 }
 
-.card h2 {
-  font-size: 28px;
-  font-weight: 400;
-  margin-bottom: 24px;
+.composition {
+  display: flex;
+  align-items: center;
+  gap: 3vw;
+}
+
+/* MASO wordmark */
+
+.logo {
+  font-size: clamp(3rem, 8vw, 9rem);
+  font-weight: 600;
   letter-spacing: 0.08em;
 }
 
-.card p {
-  line-height: 1.7;
-  color: #444;
-  margin-bottom: 16px;
+/* Vertical architectural line */
+
+.divider {
+  width: 1px;
+  height: 55vh;
+  background: #111;
 }
 
-/* ===== MOBILE ===== */
+/* Menu column */
 
-@media (max-width: 900px) {
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+}
 
-  .nav {
-    left: 20px;
-  }
+.menu a {
+  text-decoration: none;
+  color: #111;
+  transition: opacity 0.25s ease;
+}
 
-  .logo {
-    position: static;
-    transform: none;
-    margin: 40px 0 20px 20px;
-    font-size: 48px;
-  }
+.menu a:hover {
+  opacity: 0.4;
+}
 
-  .section {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
+/* ---------- CONTENT SECTIONS ---------- */
 
+.content {
+  max-width: 720px;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 0.04em;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LEFT MENU -->
-<nav class="nav">
-  <a href="#home" class="active">Home</a>
-  <a href="#work">The Work</a>
-  <a href="#author">The Author</a>
-  <a href="#contact">Contact</a>
-</nav>
+<!-- LANDING -->
 
-<!-- MASO LOGO -->
-<div class="logo">MASO</div>
+<section class="hero" id="home">
 
-<!-- HOME -->
-<section id="home" class="section">
-  <div class="card">
-    <h2>MASO</h2>
-    <p>
-      Architectural audio objects designed as permanent spatial works rather than consumer products.
-    </p>
-    <p>
-      MASO explores the intersection of sound, material, and architecture — where loudspeakers become part of the built environment.
-    </p>
+  <div class="composition">
+
+    <div class="logo">MASO</div>
+
+    <div class="divider"></div>
+
+    <nav class="menu">
+      <a href="#home">Maso</a>
+      <a href="#work">The Work</a>
+      <a href="#author">The Author</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
   </div>
+
 </section>
 
 <!-- WORK -->
-<section id="work" class="section">
-  <div class="card">
-    <h2>The Work</h2>
+
+<section id="work">
+  <div class="content">
+    <h1>The Work</h1>
+
     <p>
-      MASO develops sculptural audio systems that exist between fine art and architecture.
-      Each piece is conceived as a long-term spatial intervention rather than a replaceable device.
+      MASO is an exploration of sound as a permanent architectural presence.
+      Rather than conventional loudspeakers, each work functions as a spatial object —
+      an artefact designed to exist within the language of architecture, not consumer electronics.
     </p>
+
     <p>
-      Materials, proportions, and acoustic behaviour are considered together as a single design problem.
+      Materials, proportions and structural expression are treated as carefully as acoustic
+      performance, allowing the work to operate simultaneously as sound system and art object.
     </p>
   </div>
 </section>
 
 <!-- AUTHOR -->
-<section id="author" class="section">
-  <div class="card">
-    <h2>The Author</h2>
+
+<section id="author">
+  <div class="content">
+    <h1>The Author</h1>
+
     <p>
-      MASO is created by Guy Traviss, whose work explores sound reproduction as an architectural medium.
+      Guy Traviss is a designer working at the intersection of architecture,
+      sound and material culture. His work explores how technology can be
+      integrated into living environments without visual intrusion.
     </p>
+
     <p>
-      His background spans audio engineering, design strategy, and spatial thinking, with a focus on objects intended to endure physically and culturally.
+      MASO represents a shift from products to artefacts — objects intended
+      to endure both physically and culturally.
     </p>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="section">
-  <div class="card">
-    <h2>Contact</h2>
-    <p>info@maso.design</p>
-    <p>www.maso-design.com</p>
+
+<section id="contact">
+  <div class="content">
+    <h1>Contact</h1>
+
+    <p>
+      For enquiries or further information regarding MASO:
+    </p>
+
+    <p>
+      info@maso.design
+    </p>
   </div>
 </section>
-
-<script>
-
-/* ===== SMOOTH AUTO-SCROLL ===== */
-
-document.querySelectorAll('.nav a').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    document.querySelector(link.getAttribute('href'))
-      .scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-/* ===== ACTIVE MENU HIGHLIGHT ===== */
-
-const sections = document.querySelectorAll('.section');
-const navLinks = document.querySelectorAll('.nav a');
-
-window.addEventListener('scroll', () => {
-  let current = "";
-
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop;
-    if (scrollY >= sectionTop - window.innerHeight / 2) {
-      current = section.getAttribute('id');
-    }
-  });
-
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === "#" + current) {
-      link.classList.add('active');
-    }
-  });
-});
-
-</script>
 
 </body>
 </html>
