@@ -6,139 +6,204 @@
 <title>MASO</title>
 
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
+* { margin:0; padding:0; box-sizing:border-box; }
+
 body {
-  font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background:#fff;
   color:#111;
   scroll-behavior:smooth;
 }
 
-/* Navigation */
+/* =========================
+   Architectural Vertical Rail
+   ========================= */
+
 nav {
-  position:fixed;
-  top:3%;
-  right:3%;
-  display:flex;
-  gap:20px;
-  font-weight:300;
-  font-size:0.9rem;
-  letter-spacing:1px;
-  z-index:10;
+  position: fixed;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  font-weight: 400;
+  z-index: 10;
 }
+
 nav a {
-  text-decoration:none;
-  color:#111;
-  transition:opacity 0.3s ease;
+  text-decoration: none;
+  color: #111;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
 }
-nav a:hover { opacity:0.5; }
 
-/* Sections */
+nav a:hover {
+  opacity: 1;
+}
+
+/* Vertical datum line */
+nav::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: -40px;
+  bottom: -40px;
+  width: 1px;
+  background: #111;
+  opacity: 0.3;
+}
+
+/* =========================
+   Sections
+   ========================= */
+
 section {
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:5%;
-  text-align:center;
-  flex-direction:column;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8% 12%;
+  flex-direction: column;
+  text-align: left;
 }
 
-/* Landing */
+/* =========================
+   Landing
+   ========================= */
+
 #landing {
-  justify-content:center;
-  align-items:flex-start;
-  padding-left:15%;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 14%;
 }
 
 .logo {
-  font-size:3rem;
-  font-weight:600;
-  animation:fadeIn 1.2s ease forwards;
-  opacity:0;
+  font-size: clamp(3rem, 9vw, 10rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  opacity: 0;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+/* Subtle vertical extension below logo */
+.logo::after {
+  content:"";
+  display:block;
+  width:1px;
+  height:120px;
+  background:#111;
+  margin-top:40px;
+  opacity:0.3;
 }
 
 @keyframes fadeIn {
   to { opacity:1; }
 }
 
-/* Scroll indicator */
-.scroll-indicator {
-  position:absolute;
-  bottom:40px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:0.8rem;
-  letter-spacing:2px;
-  opacity:0.5;
-  animation:bounce 2s infinite;
+/* =========================
+   Content Sections
+   ========================= */
+
+.content {
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s ease forwards;
+  animation-delay: 0.2s;
 }
 
-@keyframes bounce {
-  0%,100% { transform:translate(-50%, 0); }
-  50% { transform:translate(-50%, 8px); }
+@keyframes fadeUp {
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-/* Content styling */
-section h2 {
-  font-size:2rem;
-  margin-bottom:1rem;
-  font-weight:600;
-}
-section p {
-  max-width:800px;
-  line-height:1.6;
-  font-weight:300;
-  margin-bottom:1rem;
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.04em;
 }
 
-/* Responsive */
-@media(max-width:768px){
-  #landing { padding-left:10%; }
-  .logo { font-size:2.2rem; }
-  nav { font-size:0.8rem; gap:15px; }
-  section h2 { font-size:1.6rem; }
+p {
+  font-weight: 300;
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+}
+
+/* =========================
+   Responsive
+   ========================= */
+
+@media(max-width: 768px){
+
+  nav {
+    right: 6%;
+    font-size: 0.7rem;
+  }
+
+  section {
+    padding: 15% 10%;
+  }
+
+  #landing {
+    padding-left: 10%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
 }
 </style>
 </head>
+
 <body>
 
+<!-- Architectural Vertical Navigation -->
 <nav>
   <a href="#landing">MASO</a>
-  <a href="#work">The Work</a>
-  <a href="#author">The Author</a>
-  <a href="#contact">Contact</a>
+  <a href="#work">WORK</a>
+  <a href="#author">AUTHOR</a>
+  <a href="#contact">CONTACT</a>
 </nav>
 
+<!-- Landing -->
 <section id="landing">
   <div class="logo">MASO</div>
-  <div class="scroll-indicator">SCROLL ↓</div>
 </section>
 
+<!-- Work -->
 <section id="work">
-  <h2>The Work</h2>
-  <p>MASO’s work is focused on creating experiences where sound is given permanence. Projects explore subtle materiality, spatial relationships, and the emotional resonance of environments. Each design emphasizes clarity, craftsmanship, and enduring quality.</p>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vehicula, sapien nulla consequat, libero facilisis tincidunt.</p>
+  <div class="content">
+    <h2>The Work</h2>
+    <p>MASO’s work is focused on creating experiences where sound is given permanence. Projects explore subtle materiality, spatial relationships, and the emotional resonance of environments. Each design emphasizes clarity, craftsmanship, and enduring quality.</p>
+    <p>Through careful material study and spatial sensitivity, MASO seeks to embed sound into architectural contexts as a lasting presence rather than a temporary addition.</p>
+  </div>
 </section>
 
+<!-- Author -->
 <section id="author">
-  <h2>The Author</h2>
-  <p>Guy Traviss is a designer and creative thinker who explores the intersection of sound, architecture, and visual expression. With a background spanning product design, industrial aesthetics, and experiential installations, Guy seeks to create work that is both timeless and evocative.</p>
-  <p>His projects often explore subtle materiality, careful spatial relationships, and the emotional resonance of everyday environments, with an emphasis on craft, clarity, and enduring quality.</p>
+  <div class="content">
+    <h2>The Author</h2>
+    <p>Guy Traviss is a designer and creative thinker exploring the intersection of sound, architecture, and visual expression. With a background spanning product design and experiential installations, his work pursues clarity, restraint, and enduring material presence.</p>
+    <p>His projects investigate how subtle spatial relationships and careful materiality can produce emotionally resonant environments.</p>
+  </div>
 </section>
 
+<!-- Contact -->
 <section id="contact">
-  <h2>Contact</h2>
-  <p>Email: info@maso.design</p>
-  <p>Website: www.maso-design.com</p>
+  <div class="content">
+    <h2>Contact</h2>
+    <p>Email: info@maso.design</p>
+    <p>Website: www.maso-design.com</p>
+  </div>
 </section>
-
-<script>
-// Optional gentle auto-scroll after 3 seconds
-setTimeout(() => {
-  document.querySelector('#work').scrollIntoView({behavior:'smooth'});
-}, 3000);
-</script>
 
 </body>
 </html>
