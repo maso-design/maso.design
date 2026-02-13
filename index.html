@@ -30,6 +30,19 @@ section {
   position: relative;
 }
 
+/* ---------- VERTICAL DATUM LINE ---------- */
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e6e6e6;
+  opacity: 0.2;
+}
+
 /* ---------- HERO / TITLE WALL ---------- */
 
 .hero {
@@ -53,19 +66,20 @@ section {
   font-weight: 300;
   letter-spacing: 0.12em;
   color: #333;
+  margin-bottom: 48px;
 }
 
-/* Bottom menu / floor signage */
+/* ---------- BOTTOM-LEFT ENUMERATED MENU ---------- */
 
 .floor-menu {
   position: fixed;
   bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 40px;
   display: flex;
-  gap: 48px;
+  flex-direction: column;
+  gap: 16px;
   font-size: 0.95rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -73,10 +87,15 @@ section {
   text-decoration: none;
   color: #111;
   transition: opacity 0.25s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.floor-menu a:hover {
-  opacity: 0.4;
+.floor-menu a:hover { opacity: 0.4; }
+
+.floor-menu .num {
+  font-weight: 600;
 }
 
 /* ---------- CONTENT SECTIONS ---------- */
@@ -85,6 +104,7 @@ section {
   max-width: 720px;
   font-size: 1.1rem;
   line-height: 1.7;
+  margin-left: 5vw;
 }
 
 h1 {
@@ -92,19 +112,6 @@ h1 {
   font-weight: 600;
   margin-bottom: 28px;
   letter-spacing: 0.04em;
-}
-
-/* Optional subtle datum line (aligns to center text) */
-
-section::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: #e6e6e6;
-  opacity: 0.2;
 }
 </style>
 </head>
@@ -118,12 +125,12 @@ section::before {
   <div class="tagline">Sound given permanence</div>
 </section>
 
-<!-- Bottom-aligned menu -->
+<!-- Bottom-left enumerated menu -->
 
 <nav class="floor-menu">
-  <a href="#work">The Work</a>
-  <a href="#author">The Author</a>
-  <a href="#contact">Contact</a>
+  <a href="#work"><span class="num">01</span> The Work</a>
+  <a href="#author"><span class="num">02</span> The Author</a>
+  <a href="#contact"><span class="num">03</span> Contact</a>
 </nav>
 
 <!-- WORK -->
