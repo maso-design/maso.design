@@ -9,9 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -51,9 +49,9 @@ body {
 
 section {
   min-height: 100vh;
-  padding: 160px 20% 120px 26%;
+  padding: 160px 16% 120px 26%;
   box-sizing: border-box;
-  max-width: 900px;
+  max-width: none;
 
   opacity: 0;
   transform: translateY(40px);
@@ -68,14 +66,14 @@ section.visible {
 h1 {
   font-size: 2.4rem;
   font-weight: 600;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   letter-spacing: 0.04em;
 }
 
 p {
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.8;
-  max-width: 560px;
+  max-width: 760px;   /* ← wider gallery measure */
 }
 
 /* ---------- FLOOR MENU ---------- */
@@ -100,23 +98,11 @@ p {
   transition: opacity 0.25s ease;
 }
 
-/* Hover behavior — subtle focus */
+.floor-menu:hover a { opacity: 0.25; }
+.floor-menu a:hover { opacity: 1; }
+.floor-menu a.active { opacity: 1; }
 
-.floor-menu:hover a {
-  opacity: 0.25;
-}
-
-.floor-menu a:hover {
-  opacity: 1;
-}
-
-/* Active section */
-
-.floor-menu a.active {
-  opacity: 1;
-}
-
-/* ---------- CONTACT (BOTTOM RIGHT) ---------- */
+/* ---------- CONTACT ---------- */
 
 .contact-fixed {
   position: fixed;
@@ -189,7 +175,7 @@ p {
   </p>
 </section>
 
-<!-- FLOOR MENU -->
+<!-- MENU -->
 
 <div class="floor-menu">
   <a href="#home" id="link-home">01 MASO</a>
@@ -198,7 +184,7 @@ p {
   <a href="#contact" id="link-contact">04 Contact</a>
 </div>
 
-<!-- BOTTOM RIGHT CONTACT -->
+<!-- CONTACT BLOCK -->
 
 <div class="contact-fixed">
   info@maso.design<br>
@@ -207,23 +193,21 @@ p {
 
 <script>
 
-/* ---------- SECTION FADE-IN ---------- */
+/* Fade-in */
 
 const sections = document.querySelectorAll("section");
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("visible");
-    }
+    if (entry.isIntersecting) entry.target.classList.add("visible");
   });
 }, { threshold: 0.2 });
 
 sections.forEach(section => observer.observe(section));
 
-/* ---------- ACTIVE MENU TRACKING ---------- */
+/* Active menu */
 
-const menuLinks = {
+const links = {
   home: document.getElementById("link-home"),
   work: document.getElementById("link-work"),
   author: document.getElementById("link-author"),
@@ -232,21 +216,21 @@ const menuLinks = {
 
 const allSections = document.querySelectorAll("section, .hero");
 
-const spyObserver = new IntersectionObserver(entries => {
+const spy = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
 
-      Object.values(menuLinks).forEach(link => link.classList.remove("active"));
+      Object.values(links).forEach(l => l.classList.remove("active"));
 
-      if (entry.target.id === "work") menuLinks.work.classList.add("active");
-      else if (entry.target.id === "author") menuLinks.author.classList.add("active");
-      else if (entry.target.id === "contact") menuLinks.contact.classList.add("active");
-      else menuLinks.home.classList.add("active");
+      if (entry.target.id === "work") links.work.classList.add("active");
+      else if (entry.target.id === "author") links.author.classList.add("active");
+      else if (entry.target.id === "contact") links.contact.classList.add("active");
+      else links.home.classList.add("active");
     }
   });
 }, { threshold: 0.6 });
 
-allSections.forEach(section => spyObserver.observe(section));
+allSections.forEach(s => spy.observe(s));
 
 </script>
 
