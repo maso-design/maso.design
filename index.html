@@ -3,207 +3,216 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MASO</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background:#fff;
-  color:#111;
-  scroll-behavior:smooth;
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  overflow-x: hidden;
 }
 
-/* =========================
-   Architectural Vertical Rail
-   ========================= */
+/* ===== LEFT GALLERY MENU ===== */
 
-nav {
+.nav {
   position: fixed;
-  right: 4%;
+  left: 40px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   gap: 22px;
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  font-weight: 400;
-  z-index: 10;
+  z-index: 100;
 }
 
-nav a {
+.nav a {
   text-decoration: none;
+  color: #777;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.nav a:hover,
+.nav a.active {
   color: #111;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  transform: translateX(6px);
 }
 
-nav a:hover {
-  opacity: 1;
-}
-
-/* Vertical datum line */
-nav::before {
-  content: "";
-  position: absolute;
-  left: -18px;
-  top: -40px;
-  bottom: -40px;
-  width: 1px;
-  background: #111;
-  opacity: 0.3;
-}
-
-/* =========================
-   Sections
-   ========================= */
-
-section {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8% 12%;
-  flex-direction: column;
-  text-align: left;
-}
-
-/* =========================
-   Landing
-   ========================= */
-
-#landing {
-  align-items: flex-start;
-  justify-content: center;
-  padding-left: 14%;
-}
+/* ===== MASO LOGO ===== */
 
 .logo {
-  font-size: clamp(3rem, 9vw, 10rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  opacity: 0;
-  animation: fadeIn 1.2s ease forwards;
-}
-
-/* Subtle vertical extension below logo */
-.logo::after {
-  content:"";
-  display:block;
-  width:1px;
-  height:120px;
-  background:#111;
-  margin-top:40px;
-  opacity:0.3;
-}
-
-@keyframes fadeIn {
-  to { opacity:1; }
-}
-
-/* =========================
-   Content Sections
-   ========================= */
-
-.content {
-  max-width: 800px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.9s ease forwards;
-  animation-delay: 0.2s;
-}
-
-@keyframes fadeUp {
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-  letter-spacing: 0.04em;
-}
-
-p {
+  position: fixed;
+  left: 180px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(64px, 10vw, 120px);
   font-weight: 300;
-  line-height: 1.7;
-  margin-bottom: 1.2rem;
-  font-size: 1rem;
+  letter-spacing: 0.18em;
+  pointer-events: none;
 }
 
-/* =========================
-   Responsive
-   ========================= */
+/* ===== SECTIONS ===== */
 
-@media(max-width: 768px){
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-left: 38vw;
+  padding-right: 8vw;
+}
 
-  nav {
-    right: 6%;
-    font-size: 0.7rem;
+/* ===== GALLERY CARD STYLE ===== */
+
+.card {
+  background: white;
+  padding: 56px;
+  max-width: 700px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 24px;
+  letter-spacing: 0.08em;
+}
+
+.card p {
+  line-height: 1.7;
+  color: #444;
+  margin-bottom: 16px;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 900px) {
+
+  .nav {
+    left: 20px;
   }
 
-  section {
-    padding: 15% 10%;
+  .logo {
+    position: static;
+    transform: none;
+    margin: 40px 0 20px 20px;
+    font-size: 48px;
   }
 
-  #landing {
-    padding-left: 10%;
+  .section {
+    padding-left: 20px;
+    padding-right: 20px;
   }
 
-  h2 {
-    font-size: 1.5rem;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Architectural Vertical Navigation -->
-<nav>
-  <a href="#landing">MASO</a>
-  <a href="#work">WORK</a>
-  <a href="#author">AUTHOR</a>
-  <a href="#contact">CONTACT</a>
+<!-- LEFT MENU -->
+<nav class="nav">
+  <a href="#home" class="active">Home</a>
+  <a href="#work">The Work</a>
+  <a href="#author">The Author</a>
+  <a href="#contact">Contact</a>
 </nav>
 
-<!-- Landing -->
-<section id="landing">
-  <div class="logo">MASO</div>
+<!-- MASO LOGO -->
+<div class="logo">MASO</div>
+
+<!-- HOME -->
+<section id="home" class="section">
+  <div class="card">
+    <h2>MASO</h2>
+    <p>
+      Architectural audio objects designed as permanent spatial works rather than consumer products.
+    </p>
+    <p>
+      MASO explores the intersection of sound, material, and architecture — where loudspeakers become part of the built environment.
+    </p>
+  </div>
 </section>
 
-<!-- Work -->
-<section id="work">
-  <div class="content">
+<!-- WORK -->
+<section id="work" class="section">
+  <div class="card">
     <h2>The Work</h2>
-    <p>MASO’s work is focused on creating experiences where sound is given permanence. Projects explore subtle materiality, spatial relationships, and the emotional resonance of environments. Each design emphasizes clarity, craftsmanship, and enduring quality.</p>
-    <p>Through careful material study and spatial sensitivity, MASO seeks to embed sound into architectural contexts as a lasting presence rather than a temporary addition.</p>
+    <p>
+      MASO develops sculptural audio systems that exist between fine art and architecture.
+      Each piece is conceived as a long-term spatial intervention rather than a replaceable device.
+    </p>
+    <p>
+      Materials, proportions, and acoustic behaviour are considered together as a single design problem.
+    </p>
   </div>
 </section>
 
-<!-- Author -->
-<section id="author">
-  <div class="content">
+<!-- AUTHOR -->
+<section id="author" class="section">
+  <div class="card">
     <h2>The Author</h2>
-    <p>Guy Traviss is a designer and creative thinker exploring the intersection of sound, architecture, and visual expression. With a background spanning product design and experiential installations, his work pursues clarity, restraint, and enduring material presence.</p>
-    <p>His projects investigate how subtle spatial relationships and careful materiality can produce emotionally resonant environments.</p>
+    <p>
+      MASO is created by Guy Traviss, whose work explores sound reproduction as an architectural medium.
+    </p>
+    <p>
+      His background spans audio engineering, design strategy, and spatial thinking, with a focus on objects intended to endure physically and culturally.
+    </p>
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact">
-  <div class="content">
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="card">
     <h2>Contact</h2>
-    <p>Email: info@maso.design</p>
-    <p>Website: www.maso-design.com</p>
+    <p>info@maso.design</p>
+    <p>www.maso-design.com</p>
   </div>
 </section>
+
+<script>
+
+/* ===== SMOOTH AUTO-SCROLL ===== */
+
+document.querySelectorAll('.nav a').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(link.getAttribute('href'))
+      .scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+/* ===== ACTIVE MENU HIGHLIGHT ===== */
+
+const sections = document.querySelectorAll('.section');
+const navLinks = document.querySelectorAll('.nav a');
+
+window.addEventListener('scroll', () => {
+  let current = "";
+
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (scrollY >= sectionTop - window.innerHeight / 2) {
+      current = section.getAttribute('id');
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === "#" + current) {
+      link.classList.add('active');
+    }
+  });
+});
+
+</script>
 
 </body>
 </html>
