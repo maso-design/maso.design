@@ -136,9 +136,10 @@ h1 {
 
 <!-- Bottom-left enumerated menu -->
 <nav class="floor-menu">
-  <a href="#work"><span class="num">01</span> The Work</a>
-  <a href="#author"><span class="num">02</span> The Author</a>
-  <a href="#contact"><span class="num">03</span> Contact</a>
+  <a href="#home"><span class="num">01</span> MASO / Home</a>
+  <a href="#work"><span class="num">02</span> The Work</a>
+  <a href="#author"><span class="num">03</span> The Author</a>
+  <a href="#contact"><span class="num">04</span> Contact</a>
 </nav>
 
 <!-- WORK -->
@@ -189,7 +190,7 @@ const sections = document.querySelectorAll("section");
 const menuLinks = document.querySelectorAll(".floor-menu a");
 
 function handleScroll() {
-  const scrollPos = window.scrollY + window.innerHeight/2;
+  const scrollPos = window.scrollY + window.innerHeight / 2;
 
   sections.forEach((section, index) => {
     if (scrollPos >= section.offsetTop) {
@@ -197,8 +198,8 @@ function handleScroll() {
 
       // Highlight menu
       menuLinks.forEach(link => link.classList.remove("active"));
-      if(index > 0) {
-        menuLinks[index-1].classList.add("active");
+      if(index >= 0 && index < menuLinks.length){
+        menuLinks[index].classList.add("active");
       }
     }
   });
