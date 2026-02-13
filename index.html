@@ -24,7 +24,7 @@ body {
 
 .datum {
   position: fixed;
-  left: 22%;
+  left: 24%;
   top: 0;
   bottom: 0;
   width: 1px;
@@ -38,22 +38,31 @@ body {
   height: 100vh;
   display: flex;
   align-items: center;
-  padding-left: 24%;
+  padding-left: 26%;
 }
 
 .logo {
   font-size: clamp(2.6rem, 6vw, 6.5rem);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
 }
 
 /* ---------- SECTIONS ---------- */
 
 section {
   min-height: 100vh;
-  padding: 160px 20% 120px 24%;
+  padding: 160px 20% 120px 26%;
   box-sizing: border-box;
   max-width: 900px;
+
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 h1 {
@@ -87,11 +96,23 @@ p {
 .floor-menu a {
   text-decoration: none;
   color: #111;
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
+  opacity: 0.4;
+  transition: opacity 0.25s ease;
+}
+
+/* Hover behavior — subtle focus */
+
+.floor-menu:hover a {
+  opacity: 0.25;
 }
 
 .floor-menu a:hover {
+  opacity: 1;
+}
+
+/* Active section */
+
+.floor-menu a.active {
   opacity: 1;
 }
 
@@ -103,7 +124,7 @@ p {
   right: 40px;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
-  opacity: 0.6;
+  opacity: 0.55;
   text-align: right;
   line-height: 1.6;
   z-index: 10;
@@ -171,10 +192,10 @@ p {
 <!-- FLOOR MENU -->
 
 <div class="floor-menu">
-  <a href="#home">01 MASO</a>
-  <a href="#work">02 Work</a>
-  <a href="#author">03 Author</a>
-  <a href="#contact">04 Contact</a>
+  <a href="#home" id="link-home">01 MASO</a>
+  <a href="#work" id="link-work">02 Work</a>
+  <a href="#author" id="link-author">03 Author</a>
+  <a href="#contact" id="link-contact">04 Contact</a>
 </div>
 
 <!-- BOTTOM RIGHT CONTACT -->
@@ -183,6 +204,51 @@ p {
   info@maso.design<br>
   www.maso.design
 </div>
+
+<script>
+
+/* ---------- SECTION FADE-IN ---------- */
+
+const sections = document.querySelectorAll("section");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, { threshold: 0.2 });
+
+sections.forEach(section => observer.observe(section));
+
+/* ---------- ACTIVE MENU TRACKING ---------- */
+
+const menuLinks = {
+  home: document.getElementById("link-home"),
+  work: document.getElementById("link-work"),
+  author: document.getElementById("link-author"),
+  contact: document.getElementById("link-contact")
+};
+
+const allSections = document.querySelectorAll("section, .hero");
+
+const spyObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+
+      Object.values(menuLinks).forEach(link => link.classList.remove("active"));
+
+      if (entry.target.id === "work") menuLinks.work.classList.add("active");
+      else if (entry.target.id === "author") menuLinks.author.classList.add("active");
+      else if (entry.target.id === "contact") menuLinks.contact.classList.add("active");
+      else menuLinks.home.classList.add("active");
+    }
+  });
+}, { threshold: 0.6 });
+
+allSections.forEach(section => spyObserver.observe(section));
+
+</script>
 
 </body>
 </html>
