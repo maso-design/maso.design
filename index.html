@@ -16,18 +16,33 @@ body {
   font-family: "Inter", sans-serif;
   background: #ffffff;
   color: #111;
+  position: relative;
 }
 
-/* ---------- SECTIONS ---------- */
+/* ---------- GLOBAL SECTIONS ---------- */
 
 section {
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding: 8vh 10vw;
+  position: relative;
 }
 
-/* ---------- HERO (TITLE WALL) ---------- */
+/* Continuous vertical datum line for all sections */
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 38vw; /* aligns with hero composition */
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e6e6e6;
+  opacity: 0.4;
+}
+
+/* ---------- HERO / TITLE WALL ---------- */
 
 .hero {
   justify-content: flex-start;
@@ -72,9 +87,7 @@ section {
   transition: opacity 0.25s ease;
 }
 
-.nav a:hover {
-  opacity: 0.4;
-}
+.nav a:hover { opacity: 0.4; }
 
 /* ---------- CONTENT SECTIONS ---------- */
 
@@ -82,6 +95,7 @@ section {
   max-width: 720px;
   font-size: 1.1rem;
   line-height: 1.7;
+  margin-left: calc(38vw + 40px); /* offset text from datum line */
 }
 
 h1 {
@@ -160,13 +174,9 @@ h1 {
   <div class="content">
     <h1>Contact</h1>
 
-    <p>
-      For enquiries or further information regarding MASO:
-    </p>
+    <p>For enquiries or further information regarding MASO:</p>
 
-    <p>
-      info@maso.design
-    </p>
+    <p>info@maso.design</p>
   </div>
 </section>
 
