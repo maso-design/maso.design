@@ -6,8 +6,8 @@
 
 <title>MASO</title>
 
-<!-- Google Fonts: Cormorant for headings/logo, Inter for body -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 html { scroll-behavior: smooth; }
@@ -20,7 +20,6 @@ body {
 }
 
 /* ---------- DATUM LINE ---------- */
-
 .datum {
   position: fixed;
   left: 24%;
@@ -32,31 +31,41 @@ body {
 }
 
 /* ---------- LEFT FIELD IDENTITY STACK ---------- */
-
 .logo-fixed {
   position: fixed;
-  left: 40px;            /* aligned with menu */
-  bottom: 175px;         /* raised for breathing room */
-  font-size: clamp(2rem, 4.5vw, 4.5rem);  /* slightly smaller than before */
+  left: 40px;
+  bottom: 175px;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
   font-weight: 700;
   font-family: 'Cormorant', serif;
   letter-spacing: 0.12em;
   z-index: 10;
 }
 
-/* ---------- HERO SPACER ---------- */
+/* ---------- TAGLINE FLOAT ---------- */
+.tagline {
+  position: fixed;
+  left: 28%; /* right of datum line */
+  top: 25%;
+  font-family: 'Cormorant', serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  color: #333;
+  opacity: 0.9;
+  transition: opacity 0.8s ease;
+  z-index: 5;
+}
 
+/* ---------- HERO SPACER ---------- */
 .hero {
   height: 100vh;
 }
 
 /* ---------- SECTIONS ---------- */
-
 section {
   min-height: 100vh;
   padding: 160px 16% 120px 28%;
   box-sizing: border-box;
-
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.9s ease, transform 0.9s ease;
@@ -83,7 +92,6 @@ p {
 }
 
 /* ---------- FLOOR MENU ---------- */
-
 .floor-menu {
   position: fixed;
   bottom: 70px;  /* lifted for breathing room */
@@ -109,10 +117,9 @@ p {
 .floor-menu a.active { opacity: 1; }
 
 /* ---------- CONTACT PLAQUE ---------- */
-
 .contact-fixed {
   position: fixed;
-  bottom: 70px;  /* slightly lifted for alignment with menu */
+  bottom: 70px;
   right: 40px;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -120,6 +127,16 @@ p {
   text-align: right;
   line-height: 1.6;
   z-index: 10;
+}
+
+.contact-fixed a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-fixed a:hover {
+  text-decoration: underline;
 }
 </style>
 </head>
@@ -129,29 +146,26 @@ p {
 <div class="datum"></div>
 
 <!-- LEFT IDENTITY STACK -->
-
 <div class="logo-fixed">MASO</div>
 
-<!-- HERO SPACER -->
+<!-- TAGLINE FLOAT -->
+<div class="tagline" id="tagline">Sound given permanence</div>
 
+<!-- HERO SPACER -->
 <div id="home" class="hero"></div>
 
 <!-- WORK -->
-
 <section id="work">
   <h1>The Work</h1>
-
   <p>
   MASO explores sound as material — not as background, but as structure.
   Each work seeks permanence through form, allowing sound to inhabit space
   with the same authority as architecture or sculpture.
   </p>
-
   <p>
   Rather than devices, the objects operate as presences: quiet, deliberate,
   and designed to endure beyond cycles of technology or fashion.
   </p>
-
   <p>
   The intention is not spectacle, but integration — sound embedded into
   lived environments with restraint and clarity.
@@ -159,16 +173,13 @@ p {
 </section>
 
 <!-- AUTHOR -->
-
 <section id="author">
   <h1>The Author</h1>
-
   <p>
   Guy Traviss is a designer working at the intersection of sound,
   architecture, and object design. His work focuses on permanence,
   reduction, and the cultural role of technology in domestic space.
   </p>
-
   <p>
   Drawing from architectural thinking as much as audio engineering,
   MASO represents an attempt to produce objects that remain relevant
@@ -177,10 +188,8 @@ p {
 </section>
 
 <!-- CONTACT -->
-
 <section id="contact">
   <h1>Contact</h1>
-
   <p>
   For enquiries, collaborations, or further information regarding MASO,
   please make contact via email.
@@ -188,7 +197,6 @@ p {
 </section>
 
 <!-- FLOOR MENU -->
-
 <div class="floor-menu">
   <a href="#home" id="link-home">01 MASO</a>
   <a href="#work" id="link-work">02 Work</a>
@@ -197,43 +205,33 @@ p {
 </div>
 
 <!-- CONTACT PLAQUE -->
-
 <div class="contact-fixed">
-  info@maso.design<br>
-  www.maso.design
+  <a href="mailto:info@maso.design">info@maso.design</a><br>
+  <a href="https://www.maso-design.com" target="_blank">www.maso-design.com</a>
 </div>
 
 <script>
-
 /* ---------- FADE-IN ---------- */
-
 const sections = document.querySelectorAll("section");
-
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add("visible");
   });
 }, { threshold: 0.2 });
-
 sections.forEach(section => observer.observe(section));
 
 /* ---------- ACTIVE MENU ---------- */
-
 const links = {
   home: document.getElementById("link-home"),
   work: document.getElementById("link-work"),
   author: document.getElementById("link-author"),
   contact: document.getElementById("link-contact")
 };
-
 const allSections = document.querySelectorAll("section, .hero");
-
 const spy = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-
       Object.values(links).forEach(l => l.classList.remove("active"));
-
       if (entry.target.id === "work") links.work.classList.add("active");
       else if (entry.target.id === "author") links.author.classList.add("active");
       else if (entry.target.id === "contact") links.contact.classList.add("active");
@@ -241,9 +239,17 @@ const spy = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.6 });
-
 allSections.forEach(s => spy.observe(s));
 
+/* ---------- TAGLINE FADE ON SCROLL ---------- */
+const tagline = document.getElementById('tagline');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {   // adjust threshold as needed
+    tagline.classList.add('hidden');
+  } else {
+    tagline.classList.remove('hidden');
+  }
+});
 </script>
 
 </body>
