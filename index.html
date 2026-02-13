@@ -10,9 +10,7 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: "Inter", sans-serif;
@@ -26,54 +24,55 @@ section {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 8vh 8vw;
+  padding: 8vh 10vw;
 }
 
-/* ---------- LANDING COMPOSITION ---------- */
+/* ---------- HERO (TITLE WALL) ---------- */
 
 .hero {
-  justify-content: center;
+  justify-content: flex-start;
 }
 
-.composition {
-  display: flex;
-  align-items: center;
-  gap: 3vw;
+.wall {
+  max-width: 700px;
 }
 
 /* MASO wordmark */
 
 .logo {
-  font-size: clamp(3rem, 8vw, 9rem);
+  font-size: clamp(4rem, 10vw, 11rem);
   font-weight: 600;
   letter-spacing: 0.08em;
+  margin-bottom: 18px;
 }
 
-/* Vertical architectural line */
+/* Tagline */
 
-.divider {
-  width: 1px;
-  height: 55vh;
-  background: #111;
+.tagline {
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  margin-bottom: 48px;
+  color: #333;
 }
 
-/* Menu column */
+/* Navigation as wall text */
 
-.menu {
+.nav {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  font-size: 0.95rem;
+  gap: 18px;
+  font-size: 1rem;
   letter-spacing: 0.12em;
 }
 
-.menu a {
+.nav a {
   text-decoration: none;
   color: #111;
   transition: opacity 0.25s ease;
 }
 
-.menu a:hover {
+.nav a:hover {
   opacity: 0.4;
 }
 
@@ -96,18 +95,17 @@ h1 {
 
 <body>
 
-<!-- LANDING -->
+<!-- HERO / TITLE WALL -->
 
 <section class="hero" id="home">
 
-  <div class="composition">
+  <div class="wall">
 
     <div class="logo">MASO</div>
 
-    <div class="divider"></div>
+    <div class="tagline">Sound given permanence</div>
 
-    <nav class="menu">
-      <a href="#home">Maso</a>
+    <nav class="nav">
       <a href="#work">The Work</a>
       <a href="#author">The Author</a>
       <a href="#contact">Contact</a>
@@ -125,13 +123,14 @@ h1 {
 
     <p>
       MASO is an exploration of sound as a permanent architectural presence.
-      Rather than conventional loudspeakers, each work functions as a spatial object —
-      an artefact designed to exist within the language of architecture, not consumer electronics.
+      Each work is conceived not as a conventional loudspeaker, but as an artefact
+      designed to exist within the language of architecture.
     </p>
 
     <p>
-      Materials, proportions and structural expression are treated as carefully as acoustic
-      performance, allowing the work to operate simultaneously as sound system and art object.
+      Materials, proportion and structural expression are treated as carefully as
+      acoustic performance, allowing the object to operate simultaneously as sound
+      system and spatial intervention.
     </p>
   </div>
 </section>
