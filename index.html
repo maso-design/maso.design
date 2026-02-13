@@ -19,46 +19,31 @@ body {
   position: relative;
 }
 
-/* ---------- GLOBAL SECTIONS ---------- */
+/* ---------- SECTIONS ---------- */
 
 section {
   min-height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 8vh 10vw;
   position: relative;
-}
-
-/* Continuous vertical datum line for all sections */
-
-section::before {
-  content: "";
-  position: absolute;
-  left: 38vw; /* aligns with hero composition */
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: #e6e6e6;
-  opacity: 0.4;
 }
 
 /* ---------- HERO / TITLE WALL ---------- */
 
 .hero {
-  justify-content: flex-start;
+  flex-direction: column;
+  text-align: center;
 }
 
-.wall {
-  max-width: 700px;
-}
-
-/* MASO wordmark */
+/* MASO logo */
 
 .logo {
   font-size: clamp(4rem, 10vw, 11rem);
   font-weight: 600;
   letter-spacing: 0.08em;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 /* Tagline */
@@ -67,27 +52,32 @@ section::before {
   font-size: 1.1rem;
   font-weight: 300;
   letter-spacing: 0.12em;
-  margin-bottom: 48px;
   color: #333;
 }
 
-/* Navigation as wall text */
+/* Bottom menu / floor signage */
 
-.nav {
+.floor-menu {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 18px;
-  font-size: 1rem;
-  letter-spacing: 0.12em;
+  gap: 48px;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.nav a {
+.floor-menu a {
   text-decoration: none;
   color: #111;
   transition: opacity 0.25s ease;
 }
 
-.nav a:hover { opacity: 0.4; }
+.floor-menu a:hover {
+  opacity: 0.4;
+}
 
 /* ---------- CONTENT SECTIONS ---------- */
 
@@ -95,7 +85,6 @@ section::before {
   max-width: 720px;
   font-size: 1.1rem;
   line-height: 1.7;
-  margin-left: calc(38vw + 40px); /* offset text from datum line */
 }
 
 h1 {
@@ -103,6 +92,19 @@ h1 {
   font-weight: 600;
   margin-bottom: 28px;
   letter-spacing: 0.04em;
+}
+
+/* Optional subtle datum line (aligns to center text) */
+
+section::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e6e6e6;
+  opacity: 0.2;
 }
 </style>
 </head>
@@ -112,35 +114,28 @@ h1 {
 <!-- HERO / TITLE WALL -->
 
 <section class="hero" id="home">
-
-  <div class="wall">
-
-    <div class="logo">MASO</div>
-
-    <div class="tagline">Sound given permanence</div>
-
-    <nav class="nav">
-      <a href="#work">The Work</a>
-      <a href="#author">The Author</a>
-      <a href="#contact">Contact</a>
-    </nav>
-
-  </div>
-
+  <div class="logo">MASO</div>
+  <div class="tagline">Sound given permanence</div>
 </section>
+
+<!-- Bottom-aligned menu -->
+
+<nav class="floor-menu">
+  <a href="#work">The Work</a>
+  <a href="#author">The Author</a>
+  <a href="#contact">Contact</a>
+</nav>
 
 <!-- WORK -->
 
 <section id="work">
   <div class="content">
     <h1>The Work</h1>
-
     <p>
       MASO is an exploration of sound as a permanent architectural presence.
       Each work is conceived not as a conventional loudspeaker, but as an artefact
       designed to exist within the language of architecture.
     </p>
-
     <p>
       Materials, proportion and structural expression are treated as carefully as
       acoustic performance, allowing the object to operate simultaneously as sound
@@ -154,13 +149,11 @@ h1 {
 <section id="author">
   <div class="content">
     <h1>The Author</h1>
-
     <p>
       Guy Traviss is a designer working at the intersection of architecture,
       sound and material culture. His work explores how technology can be
       integrated into living environments without visual intrusion.
     </p>
-
     <p>
       MASO represents a shift from products to artefacts — objects intended
       to endure both physically and culturally.
@@ -173,9 +166,7 @@ h1 {
 <section id="contact">
   <div class="content">
     <h1>Contact</h1>
-
     <p>For enquiries or further information regarding MASO:</p>
-
     <p>info@maso.design</p>
   </div>
 </section>
