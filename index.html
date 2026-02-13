@@ -2,78 +2,55 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+/* ---------- RESET ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: "Inter", sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   background: #ffffff;
   color: #111;
-  position: relative;
+  line-height: 1.6;
 }
 
-/* ---------- SECTIONS ---------- */
-section {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8vh 10vw;
-  position: relative;
-  opacity: 0;            
-  transform: translateY(30px) scale(0.98);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-section.active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* ---------- VERTICAL DATUM LINE ---------- */
-section::before {
-  content: "";
-  position: absolute;
-  left: 5vw;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: #e6e6e6;
-  opacity: 0.25;
-  z-index: 1;
-  pointer-events: none;
+/* ---------- CONTACT (TOP RIGHT) ---------- */
+.contact-fixed {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #777;
+  text-align: right;
+  z-index: 20;
 }
 
 /* ---------- HERO ---------- */
 .hero {
+  height: 100vh;
+  display: flex;
   flex-direction: column;
-  text-align: center;
+  justify-content: center;
+  padding-left: 18vw;
 }
+
 .logo {
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: clamp(2.8rem, 7vw, 7rem);
   font-weight: 600;
   letter-spacing: 0.08em;
-  margin-bottom: 12px;
 }
 
-/* ---------- TOP-RIGHT INFO ---------- */
-.info-line {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  font-size: 0.9rem;
-  font-weight: 300;
-  color: #555;
-  letter-spacing: 0.06em;
-  opacity: 0.6;
-  z-index: 10;
-}
-
-/* ---------- BOTTOM-LEFT MENU ---------- */
+/* ---------- FLOOR MENU (BOTTOM LEFT) ---------- */
 .floor-menu {
   position: fixed;
   bottom: 40px;
@@ -81,129 +58,175 @@ section::before {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   z-index: 10;
 }
+
 .floor-menu a {
   text-decoration: none;
   color: #111;
+  opacity: 0.65;
   transition: opacity 0.25s ease;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.floor-menu a:hover { opacity: 0.4; }
-.floor-menu .num {
-  font-weight: 700;
-  color: #888;
-}
-.floor-menu a.active {
-  opacity: 1;
-  color: #555;
 }
 
-/* ---------- CONTENT ---------- */
-.content {
-  max-width: 720px;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-left: 5vw;
-  position: relative;
-  z-index: 2;
+.floor-menu a:hover {
+  opacity: 1;
 }
+
+/* ---------- SECTIONS ---------- */
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-left: 18vw;
+  padding-right: 10vw;
+  position: relative;
+}
+
+/* Vertical datum line */
+.section::before {
+  content: "";
+  position: absolute;
+  left: 16vw;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e6e6e6;
+}
+
+/* ---------- TEXT ---------- */
+.content {
+  max-width: 520px;
+}
+
 h1 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 600;
   margin-bottom: 28px;
   letter-spacing: 0.04em;
+}
+
+p {
+  margin-bottom: 18px;
+  font-size: 0.98rem;
+  color: #333;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 800px) {
+
+  .hero,
+  .section {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  .section::before {
+    left: 24px;
+  }
+
+  .floor-menu {
+    left: 20px;
+    bottom: 20px;
+  }
+
+  .contact-fixed {
+    right: 20px;
+    top: 20px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Top-right info -->
-<div class="info-line">info@maso.design | www.maso.design</div>
+<!-- CONTACT -->
+<div class="contact-fixed">
+  info@maso.design<br>
+  www.maso.design
+</div>
 
 <!-- HERO -->
-<section class="hero" id="home">
+<section id="top" class="hero">
   <div class="logo">MASO</div>
 </section>
 
-<!-- Bottom-left menu -->
-<nav class="floor-menu">
-  <a href="#home"><span class="num">01</span> MASO / Home</a>
-  <a href="#work"><span class="num">02</span> The Work</a>
-  <a href="#author"><span class="num">03</span> The Author</a>
-  <a href="#contact"><span class="num">04</span> Contact</a>
-</nav>
-
 <!-- WORK -->
-<section id="work">
+<section id="work" class="section">
   <div class="content">
     <h1>The Work</h1>
+
     <p>
-      MASO is an exploration of sound as a permanent architectural presence.
-      Each work is conceived not as a conventional loudspeaker, but as an artefact
-      designed to exist within the language of architecture.
+      MASO creates architectural audio objects that exist between art,
+      furniture, and loudspeaker. Each piece is conceived as a permanent
+      element of a space rather than a removable device.
     </p>
+
     <p>
-      Materials, proportion and structural expression are treated as carefully as
-      acoustic performance, allowing the object to operate simultaneously as sound
-      system and spatial intervention.
+      Materials, proportion, and spatial presence are treated with the
+      same seriousness as acoustic performance. The result is sound that
+      is integrated, calm, and precise — never visually dominant, yet
+      deeply present.
+    </p>
+
+    <p>
+      Every work is developed as a limited piece, fabricated with
+      architectural processes and intended to age with the building it
+      inhabits.
     </p>
   </div>
 </section>
 
 <!-- AUTHOR -->
-<section id="author">
+<section id="author" class="section">
   <div class="content">
     <h1>The Author</h1>
+
     <p>
-      Guy Traviss is a designer working at the intersection of architecture,
-      sound and material culture. His work explores how technology can be
-      integrated into living environments without visual intrusion.
+      MASO was founded by designer Guy Traviss as an exploration of how
+      sound objects can operate within architectural space without
+      behaving like conventional consumer electronics.
     </p>
+
     <p>
-      MASO represents a shift from products to artefacts — objects intended
-      to endure both physically and culturally.
+      The practice draws from modernist architecture, gallery display
+      systems, and industrial material language to produce objects that
+      are both functional and spatially intentional.
+    </p>
+
+    <p>
+      The aim is not decoration, but integration — sound as part of the
+      built environment.
     </p>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
+<section id="contact" class="section">
   <div class="content">
     <h1>Contact</h1>
-    <p>For enquiries or further information regarding MASO:</p>
-    <p>info@maso.design</p>
+
+    <p>
+      For commissions, collaborations, or further information,
+      please make contact via email.
+    </p>
+
+    <p>
+      MASO works internationally with architects, galleries,
+      and private clients.
+    </p>
   </div>
 </section>
 
-<script>
-// ---------- FADE-IN ON SCROLL + ACTIVE MENU ----------
-const sections = document.querySelectorAll("section");
-const menuLinks = document.querySelectorAll(".floor-menu a");
-
-function handleScroll() {
-  const scrollPos = window.scrollY + window.innerHeight / 2;
-
-  sections.forEach((section, index) => {
-    if (scrollPos >= section.offsetTop) {
-      section.classList.add("active");
-      menuLinks.forEach(link => link.classList.remove("active"));
-      if(index >= 0 && index < menuLinks.length){
-        menuLinks[index].classList.add("active");
-      }
-    }
-  });
-}
-
-window.addEventListener("scroll", handleScroll);
-window.addEventListener("load", handleScroll);
-</script>
+<!-- FLOOR MENU -->
+<nav class="floor-menu">
+  <a href="#top">01 MASO</a>
+  <a href="#work">02 Work</a>
+  <a href="#author">03 Author</a>
+  <a href="#contact">04 Contact</a>
+</nav>
 
 </body>
 </html>
