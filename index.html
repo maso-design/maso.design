@@ -9,9 +9,7 @@
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: "Inter", sans-serif;
   background: #ffffff;
@@ -27,67 +25,79 @@ section {
   justify-content: center;
   padding: 8vh 10vw;
   position: relative;
-  opacity: 0;            /* fade-in initial */
-  transform: translateY(30px);
+  opacity: 0;            
+  transform: translateY(30px) scale(0.98);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
-/* Active fade-in class */
 section.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 /* ---------- VERTICAL DATUM LINE ---------- */
 section::before {
   content: "";
   position: absolute;
-  left: 5vw; /* aligns with content */
+  left: 5vw;
   top: 0;
   bottom: 0;
   width: 1px;
   background: #e6e6e6;
-  opacity: 0.2;
+  opacity: 0.25;
+  z-index: 1;
   pointer-events: none;
 }
 
-/* ---------- HERO / TITLE WALL ---------- */
+/* ---------- HERO ---------- */
 .hero {
   flex-direction: column;
   text-align: center;
 }
-
-/* MASO logo */
 .logo {
-  font-size: clamp(4rem, 10vw, 11rem);
+  font-size: clamp(3.5rem, 9vw, 9rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 12px;
 }
-
-/* Tagline */
 .tagline {
-  font-size: 1.1rem;
+  display: inline-block;
+  text-align: center;
   font-weight: 300;
+  opacity: 0.55;
+  font-size: clamp(1rem, 2.3vw, 1.1rem);
   letter-spacing: 0.12em;
-  color: #333;
-  margin-bottom: 48px;
+  margin-top: 6px;
+}
+.tagline span {
+  display: block; /* split into two lines */
 }
 
-/* ---------- BOTTOM-LEFT ENUMERATED MENU ---------- */
+/* ---------- TOP-RIGHT INFO ---------- */
+.info-line {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #555;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+/* ---------- BOTTOM-LEFT MENU ---------- */
 .floor-menu {
   position: fixed;
   bottom: 40px;
   left: 40px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  font-size: 0.95rem;
+  gap: 12px;
+  font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   z-index: 10;
 }
-
 .floor-menu a {
   text-decoration: none;
   color: #111;
@@ -96,27 +106,25 @@ section::before {
   align-items: flex-start;
   gap: 8px;
 }
-
 .floor-menu a:hover { opacity: 0.4; }
-
 .floor-menu .num {
-  font-weight: 600;
+  font-weight: 700;
+  color: #888;
 }
-
-/* Highlight active section */
 .floor-menu a.active {
   opacity: 1;
   color: #555;
 }
 
-/* ---------- CONTENT SECTIONS ---------- */
+/* ---------- CONTENT ---------- */
 .content {
   max-width: 720px;
   font-size: 1.1rem;
   line-height: 1.7;
-  margin-left: 5vw; /* aligns text with vertical datum */
+  margin-left: 5vw;
+  position: relative;
+  z-index: 2;
 }
-
 h1 {
   font-size: 2rem;
   font-weight: 600;
@@ -128,13 +136,19 @@ h1 {
 
 <body>
 
-<!-- HERO / TITLE WALL -->
+<!-- Top-right info -->
+<div class="info-line">info@maso.design | www.maso.design</div>
+
+<!-- HERO -->
 <section class="hero" id="home">
   <div class="logo">MASO</div>
-  <div class="tagline">Sound given permanence</div>
+  <div class="tagline">
+    <span>Sound</span>
+    <span>given permanence</span>
+  </div>
 </section>
 
-<!-- Bottom-left enumerated menu -->
+<!-- Bottom-left menu -->
 <nav class="floor-menu">
   <a href="#home"><span class="num">01</span> MASO / Home</a>
   <a href="#work"><span class="num">02</span> The Work</a>
@@ -185,7 +199,7 @@ h1 {
 </section>
 
 <script>
-// ---------- FADE-IN ON SCROLL ----------
+// ---------- FADE-IN ON SCROLL + ACTIVE MENU ----------
 const sections = document.querySelectorAll("section");
 const menuLinks = document.querySelectorAll(".floor-menu a");
 
@@ -195,8 +209,6 @@ function handleScroll() {
   sections.forEach((section, index) => {
     if (scrollPos >= section.offsetTop) {
       section.classList.add("active");
-
-      // Highlight menu
       menuLinks.forEach(link => link.classList.remove("active"));
       if(index >= 0 && index < menuLinks.length){
         menuLinks[index].classList.add("active");
