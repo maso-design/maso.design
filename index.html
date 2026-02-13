@@ -30,28 +30,31 @@ body {
   z-index: 0;
 }
 
-/* ---------- HERO ---------- */
+/* ---------- LEFT FIELD LOGO ---------- */
+
+.logo-fixed {
+  position: fixed;
+  left: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: clamp(2.2rem, 5vw, 5.2rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  z-index: 5;
+}
+
+/* ---------- HERO SPACER ---------- */
 
 .hero {
   height: 100vh;
-  display: flex;
-  align-items: center;
-  padding-left: 26%;
-}
-
-.logo {
-  font-size: clamp(2.6rem, 6vw, 6.5rem);
-  font-weight: 600;
-  letter-spacing: 0.10em;
 }
 
 /* ---------- SECTIONS ---------- */
 
 section {
   min-height: 100vh;
-  padding: 160px 16% 120px 26%;
+  padding: 160px 16% 120px 28%;
   box-sizing: border-box;
-  max-width: none;
 
   opacity: 0;
   transform: translateY(40px);
@@ -64,16 +67,16 @@ section.visible {
 }
 
 h1 {
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   font-weight: 600;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
   letter-spacing: 0.04em;
 }
 
 p {
   font-size: 1.05rem;
   line-height: 1.8;
-  max-width: 760px;   /* ← wider gallery measure */
+  max-width: 760px;
 }
 
 /* ---------- FLOOR MENU ---------- */
@@ -102,7 +105,7 @@ p {
 .floor-menu a:hover { opacity: 1; }
 .floor-menu a.active { opacity: 1; }
 
-/* ---------- CONTACT ---------- */
+/* ---------- CONTACT (PLAQUE) ---------- */
 
 .contact-fixed {
   position: fixed;
@@ -122,10 +125,11 @@ p {
 
 <div class="datum"></div>
 
-<!-- HERO -->
-<div id="home" class="hero">
-  <div class="logo">MASO</div>
-</div>
+<!-- LEFT FIELD IDENTITY -->
+<div class="logo-fixed">MASO</div>
+
+<!-- HERO SPACER -->
+<div id="home" class="hero"></div>
 
 <!-- WORK -->
 <section id="work">
@@ -175,7 +179,7 @@ p {
   </p>
 </section>
 
-<!-- MENU -->
+<!-- FLOOR MENU -->
 
 <div class="floor-menu">
   <a href="#home" id="link-home">01 MASO</a>
@@ -184,7 +188,7 @@ p {
   <a href="#contact" id="link-contact">04 Contact</a>
 </div>
 
-<!-- CONTACT BLOCK -->
+<!-- CONTACT PLAQUE -->
 
 <div class="contact-fixed">
   info@maso.design<br>
@@ -193,7 +197,7 @@ p {
 
 <script>
 
-/* Fade-in */
+/* ---------- FADE-IN ---------- */
 
 const sections = document.querySelectorAll("section");
 
@@ -205,7 +209,7 @@ const observer = new IntersectionObserver(entries => {
 
 sections.forEach(section => observer.observe(section));
 
-/* Active menu */
+/* ---------- ACTIVE MENU ---------- */
 
 const links = {
   home: document.getElementById("link-home"),
