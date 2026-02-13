@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASO</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,7 +54,7 @@ section::before {
   text-align: center;
 }
 .logo {
-  font-size: clamp(3.5rem, 9vw, 9rem);
+  font-size: clamp(3rem, 8vw, 8rem); /* slightly smaller */
   font-weight: 600;
   letter-spacing: 0.08em;
   margin-bottom: 12px;
@@ -62,20 +62,34 @@ section::before {
 .tagline {
   display: inline-block;
   text-align: center;
-  font-weight: 300;
-  opacity: 0.55;
-  font-size: clamp(1rem, 2.3vw, 1.1rem);
-  letter-spacing: 0.12em;
-  margin-top: 6px;
+  font-weight: 500;              
+  text-transform: uppercase;     
+  font-size: clamp(1.5rem, 3vw, 2rem);  
+  letter-spacing: 0.18em;        
+  opacity: 0.65;                 
+  margin-top: 8px;
 }
 .tagline span {
-  display: block; /* split into two lines */
+  display: block;                 
 }
 
 /* ---------- TOP-RIGHT INFO ---------- */
 .info-line {
   position: fixed;
   top: 20px;
+  right: 20px;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: #555;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  z-index: 10;
+}
+
+/* ---------- FIXED CONTACT BOTTOM-RIGHT ---------- */
+.contact-line {
+  position: fixed;
+  bottom: 20px;
   right: 20px;
   font-size: 0.9rem;
   font-weight: 300;
@@ -139,6 +153,9 @@ h1 {
 <!-- Top-right info -->
 <div class="info-line">info@maso.design | www.maso.design</div>
 
+<!-- Fixed contact line bottom-right -->
+<div class="contact-line">info@maso.design | www.maso.design</div>
+
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="logo">MASO</div>
@@ -189,7 +206,7 @@ h1 {
   </div>
 </section>
 
-<!-- CONTACT -->
+<!-- CONTACT SECTION -->
 <section id="contact">
   <div class="content">
     <h1>Contact</h1>
