@@ -35,12 +35,13 @@ section {
 section::before {
   content: "";
   position: absolute;
-  left: 50%;
+  left: 5vw; /* aligns with content */
   top: 0;
   bottom: 0;
   width: 1px;
   background: #e6e6e6;
   opacity: 0.2;
+  pointer-events: none;
 }
 
 /* ---------- HERO / TITLE WALL ---------- */
@@ -81,6 +82,7 @@ section::before {
   font-size: 0.95rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  z-index: 10;
 }
 
 .floor-menu a {
@@ -104,7 +106,7 @@ section::before {
   max-width: 720px;
   font-size: 1.1rem;
   line-height: 1.7;
-  margin-left: 5vw;
+  margin-left: 5vw; /* aligns text with vertical datum */
 }
 
 h1 {
@@ -113,6 +115,7 @@ h1 {
   margin-bottom: 28px;
   letter-spacing: 0.04em;
 }
+
 </style>
 </head>
 
