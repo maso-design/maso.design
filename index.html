@@ -16,24 +16,27 @@ body {
   font-family: 'Inter', sans-serif;
   background: #f7f6f2;
   color: #111;
+  overflow-x: hidden;
 }
 
 /* ---------- LAYOUT ---------- */
 .container {
   display: flex;
   flex-direction: row;
-  min-height: 100vh;
 }
 
 /* LEFT PANEL */
 .left-panel {
   width: 24%;
   min-height: 100vh;
-  position: relative;
+  position: fixed; /* fixed to viewport */
+  top: 0;
+  left: 0;
   padding: 32px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* pushes logo+menu toward bottom */
+  justify-content: flex-end;
+  z-index: 10;
 }
 
 /* LOGO + MENU BLOCK */
@@ -74,14 +77,15 @@ body {
 /* RIGHT PANEL */
 .right-panel {
   width: 76%;
+  margin-left: 24%; /* space for fixed left panel */
   position: relative;
 }
 
 /* HERO IMAGE */
 .hero {
   min-height: 100vh;
-  background-image: url("hero.jpg"); /* replace with your file */
-  background-size: contain;
+  background-image: url("hero.jpg"); /* replace with your image */
+  background-size: cover;
   background-position: center right;
   background-repeat: no-repeat;
   position: relative;
@@ -96,7 +100,7 @@ body {
   bottom: 0;
   width: 1px;
   background: #e3e3e1;
-  z-index: 1;
+  z-index: 5;
 }
 
 /* SECTIONS */
@@ -104,7 +108,7 @@ section {
   min-height: 100vh;
   padding: 80px 64px;
   box-sizing: border-box;
-  background: #f7f6f2;
+  background: rgba(247, 246, 242, 0.95); /* overlay to read over hero */
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.9s ease, transform 0.9s ease;
@@ -152,20 +156,25 @@ p {
   .container {
     flex-direction: column;
   }
-  .left-panel, .right-panel {
+  .left-panel {
+    position: relative;
     width: 100%;
-    padding: 32px;
+    padding: 16px;
+  }
+  .right-panel {
+    width: 100%;
+    margin-left: 0;
   }
   .datum {
     display: none;
   }
-  .hero {
-    min-height: 50vh;
-    background-position: center;
-  }
   .floor-menu {
     flex-direction: row;
     gap: 16px;
+  }
+  .hero {
+    min-height: 50vh;
+    background-position: center;
   }
 }
 </style>
