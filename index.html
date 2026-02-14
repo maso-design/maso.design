@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASO – Minimal Landing</title>
+<title>MASO – Text-First Architectural</title>
 
 <!-- GOOGLE FONTS -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ---------- GLOBAL ---------- */
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -133,6 +134,20 @@ p {
   max-width: 720px;
 }
 
+/* OPTIONAL GALLERY LINK */
+.gallery-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.gallery-link:hover {
+  opacity: 1;
+}
+
 /* CONTACT */
 .contact-section { margin-top: 28px; }
 .contact-section a { color: #111; text-decoration: none; }
@@ -156,7 +171,7 @@ p {
 
 <div class="container">
   <div class="left-panel">
-    <!-- could keep datum line or other elements here -->
+    <!-- Left panel can stay empty or hold visual guides later -->
   </div>
 
   <div class="right-panel">
@@ -203,7 +218,7 @@ p {
 </div>
 
 <script>
-/* Fade-in sections */
+/* ---------- FADE-IN SECTIONS ---------- */
 const sections = document.querySelectorAll("section:not(.landing)");
 const observer = new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
