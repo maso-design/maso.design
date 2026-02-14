@@ -3,16 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASO – Architectural Edition</title>
+<title>MASO – Text-First Layout</title>
 
 <!-- GOOGLE FONTS -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 /* ---------- GLOBAL ---------- */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -111,26 +109,6 @@ body {
   z-index: 5;
 }
 
-/* ---------- HERO ---------- */
-.hero {
-  min-height: 100vh;
-  background-image: url("hero.jpg");
-  background-size: cover;
-  background-position: center right;
-  position: relative;
-  overflow: hidden;
-  z-index: 0;
-  transform: scale(1);
-  transition: transform 0.9s ease;
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top:0; left:0; right:0; bottom:0;
-  background: rgba(247,246,242,0.05);
-  z-index: 1;
-}
-
 /* ---------- SECTIONS ---------- */
 section {
   min-height: 100vh;
@@ -161,6 +139,20 @@ p {
   max-width: 720px;
 }
 
+/* OPTIONAL GALLERY LINK */
+.gallery-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+.gallery-link:hover {
+  opacity: 1;
+}
+
 /* CONTACT */
 .contact-section {
   font-size: 16px;
@@ -182,10 +174,7 @@ p {
   .right-panel { width: 100%; margin-left: 0; }
   .datum, .floor-menu::after { display: none; }
   .floor-menu { flex-direction: row; gap:16px; }
-  .hero { min-height: 50vh; background-position: center; }
 }
-
-/* ---------- OPTIONAL HERO SCROLL EFFECT ---------- */
 </style>
 </head>
 
@@ -211,15 +200,19 @@ p {
   <div class="right-panel">
     <div class="datum"></div>
 
-    <!-- HERO IMAGE -->
-    <div class="hero" id="home"></div>
+    <!-- LANDING SECTION -->
+    <section id="home">
+      <p style="font-size:1.25rem; opacity:0.6;">Welcome to MASO — a space where sound meets architecture and design.</p>
+      <!-- Future gallery placeholder -->
+      <span class="gallery-link">[Open Image Gallery]</span>
+    </section>
 
     <!-- WORK SECTION -->
     <section id="work">
       <h1>The Work</h1>
       <p>MASO explores sound as material — not as background, but as structure. Each work seeks permanence through form, allowing sound to inhabit space with the same authority as architecture or sculpture.</p>
       <p>Rather than devices, the objects operate as presences: quiet, deliberate, and designed to endure beyond cycles of technology or fashion.</p>
-      <p>The intention is not spectacle, but integration — sound embedded into lived environments with restraint and clarity.</p>
+      <span class="gallery-link">[Open Work Gallery]</span>
     </section>
 
     <!-- AUTHOR SECTION -->
@@ -227,6 +220,7 @@ p {
       <h1>The Author</h1>
       <p>Guy Traviss is a designer working at the intersection of sound, architecture, and object design. His work focuses on permanence, reduction, and the cultural role of technology in domestic space.</p>
       <p>Drawing from architectural thinking as much as audio engineering, MASO represents an attempt to produce objects that remain relevant over decades rather than years.</p>
+      <span class="gallery-link">[Open Author Gallery]</span>
     </section>
 
     <!-- CONTACT SECTION -->
@@ -255,4 +249,23 @@ sections.forEach(section=>observer.observe(section));
 const links = {
   home: document.getElementById("link-home"),
   work: document.getElementById("link-work"),
-  author:
+  author: document.getElementById("link-author"),
+  contact: document.getElementById("link-contact")
+};
+const allSections = document.querySelectorAll("section");
+const spy = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      Object.values(links).forEach(l=>l.classList.remove("active"));
+      if(entry.target.id==="work") links.work.classList.add("active");
+      else if(entry.target.id==="author") links.author.classList.add("active");
+      else if(entry.target.id==="contact") links.contact.classList.add("active");
+      else links.home.classList.add("active");
+    }
+  });
+},{threshold:0.6});
+allSections.forEach(s=>spy.observe(s));
+</script>
+
+</body>
+</html>
