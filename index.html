@@ -31,17 +31,17 @@ body {
   min-height: 100vh;
   position: relative;
   padding: 32px;
-}
-
-/* LOGO + MENU BLOCK FIXED TO VIEWPORT */
-.logo-menu {
-  position: fixed;       /* sticks to viewport */
-  bottom: 70px;          /* distance from bottom of viewport */
-  left: 32px;            /* left panel padding */
   display: flex;
   flex-direction: column;
-  gap: 24px;             /* space between logo and menu */
-  z-index: 10;           /* stays above content */
+  justify-content: flex-end; /* pushes logo+menu toward bottom */
+}
+
+/* LOGO + MENU BLOCK */
+.logo-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
 }
 
 /* LOGO */
@@ -162,13 +162,6 @@ p {
   .hero {
     min-height: 50vh;
     background-position: center;
-  }
-  .logo-menu {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    flex-direction: column;
-    gap: 16px;
   }
   .floor-menu {
     flex-direction: row;
