@@ -33,15 +33,15 @@ body {
   padding: 32px;
 }
 
-/* LOGO + MENU BLOCK */
+/* LOGO + MENU BLOCK FIXED TO VIEWPORT */
 .logo-menu {
-  position: absolute;
-  bottom: 70px;
-  left: 32px;
+  position: fixed;       /* sticks to viewport */
+  bottom: 70px;          /* distance from bottom of viewport */
+  left: 32px;            /* left panel padding */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
+  gap: 24px;             /* space between logo and menu */
+  z-index: 10;           /* stays above content */
 }
 
 /* LOGO */
