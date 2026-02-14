@@ -15,8 +15,21 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
-  background: #ffffff;
+  background: #f8f8f7; /* warm off-white paper tone */
   color: #111;
+  position: relative;
+}
+
+/* ---------- PAPER GRAIN OVERLAY ---------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+  background-size: 3px 3px;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ---------- DATUM LINE ---------- */
@@ -26,11 +39,28 @@ body {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: #e6e6e6;
-  z-index: 0;
+  background: #e3e3e1;
+  z-index: 2;
 }
 
-/* ---------- LEFT FIELD IDENTITY STACK ---------- */
+/* ---------- HERO IMAGE FIELD ---------- */
+.hero-image {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 24%;
+  right: 0;
+
+  background-image: url("hero.jpg"); /* CHANGE if needed */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 1;
+  transition: opacity 0.8s ease;
+}
+
+/* ---------- LEFT IDENTITY STACK ---------- */
 .logo-fixed {
   position: fixed;
   left: 40px;
@@ -39,21 +69,7 @@ body {
   font-weight: 700;
   font-family: 'Cormorant', serif;
   letter-spacing: 0.12em;
-  z-index: 10;
-}
-
-/* ---------- TAGLINE FLOAT ---------- */
-.tagline {
-  position: fixed;
-  left: 28%; /* right of datum line */
-  top: 25%;
-  font-family: 'Cormorant', serif;
-  font-weight: 400;
-  font-size: clamp(1rem, 2.5vw, 1.6rem);
-  color: #333;
-  opacity: 0.9;
-  transition: opacity 0.8s ease;
-  z-index: 5;
+  z-index: 3;
 }
 
 /* ---------- HERO SPACER ---------- */
@@ -66,6 +82,10 @@ section {
   min-height: 100vh;
   padding: 160px 16% 120px 28%;
   box-sizing: border-box;
+  background: #f8f8f7;
+  position: relative;
+  z-index: 2;
+
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.9s ease, transform 0.9s ease;
@@ -76,7 +96,7 @@ section.visible {
   transform: translateY(0);
 }
 
-/* Section headings in Cormorant Bold */
+/* Headings */
 h1 {
   font-family: 'Cormorant', serif;
   font-size: 2.6rem;
@@ -94,7 +114,7 @@ p {
 /* ---------- FLOOR MENU ---------- */
 .floor-menu {
   position: fixed;
-  bottom: 70px;  /* lifted for breathing room */
+  bottom: 70px;
   left: 40px;
   display: flex;
   flex-direction: column;
@@ -102,7 +122,7 @@ p {
   font-size: 0.8rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  z-index: 10;
+  z-index: 3;
 }
 
 .floor-menu a {
@@ -126,7 +146,7 @@ p {
   opacity: 0.55;
   text-align: right;
   line-height: 1.6;
-  z-index: 10;
+  z-index: 3;
 }
 
 .contact-fixed a {
@@ -145,11 +165,11 @@ p {
 
 <div class="datum"></div>
 
-<!-- LEFT IDENTITY STACK -->
-<div class="logo-fixed">MASO</div>
+<!-- HERO IMAGE -->
+<div class="hero-image"></div>
 
-<!-- TAGLINE FLOAT -->
-<div class="tagline" id="tagline">Sound given permanence</div>
+<!-- LEFT IDENTITY -->
+<div class="logo-fixed">MASO</div>
 
 <!-- HERO SPACER -->
 <div id="home" class="hero"></div>
@@ -211,7 +231,7 @@ p {
 </div>
 
 <script>
-/* ---------- FADE-IN ---------- */
+/* ---------- FADE IN ---------- */
 const sections = document.querySelectorAll("section");
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
@@ -241,13 +261,14 @@ const spy = new IntersectionObserver(entries => {
 }, { threshold: 0.6 });
 allSections.forEach(s => spy.observe(s));
 
-/* ---------- TAGLINE FADE ON SCROLL ---------- */
-const tagline = document.getElementById('tagline');
+/* ---------- HERO IMAGE FADE AFTER LANDING ---------- */
+const heroImage = document.querySelector('.hero-image');
+
 window.addEventListener('scroll', () => {
-  if (window.scrollY > 50) {   // adjust threshold as needed
-    tagline.classList.add('hidden');
+  if (window.scrollY > window.innerHeight * 0.6) {
+    heroImage.style.opacity = 0;
   } else {
-    tagline.classList.remove('hidden');
+    heroImage.style.opacity = 1;
   }
 });
 </script>
