@@ -18,95 +18,43 @@ body {
   color: #111;
 }
 
-/* ---------- DATUM LINE ---------- */
-.datum {
-  position: fixed;
-  left: 24%;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: #e3e3e1;
-  z-index: 2;
+/* ---------- LAYOUT ---------- */
+.container {
+  display: flex;
+  flex-direction: row;
 }
 
-/* ---------- HERO IMAGE ---------- */
-.hero-image {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 24%;
-  right: 0;
-  background-image: url("hero.jpg"); /* change to your image file name */
-  background-size: contain; /* shows full image without cropping */
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
-  transition: opacity 0.8s ease;
-}
-
-/* ---------- LEFT IDENTITY ---------- */
-.logo-fixed {
-  position: fixed;
-  left: 40px;
-  bottom: 185px; /* nudged slightly higher than before */
-  font-size: clamp(2rem, 4.5vw, 4.5rem);
-  font-weight: 700;
-  font-family: 'Cormorant', serif;
-  letter-spacing: 0.12em;
-  z-index: 3;
-}
-
-/* ---------- HERO SPACER ---------- */
-.hero {
-  height: 100vh;
-}
-
-/* ---------- SECTIONS ---------- */
-section {
+/* LEFT PANEL */
+.left-panel {
+  width: 28%;
   min-height: 100vh;
-  padding: 160px 16% 120px 28%;
-  box-sizing: border-box;
-  background: #f7f6f2;
-  position: relative;
-  z-index: 2;
-
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
-}
-
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Headings */
-h1 {
-  font-family: 'Cormorant', serif;
-  font-size: 2.6rem;
-  font-weight: 700;
-  margin-bottom: 34px;
-  letter-spacing: 0.04em;
-}
-
-p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  max-width: 760px;
-}
-
-/* ---------- FLOOR MENU ---------- */
-.floor-menu {
-  position: fixed;
-  bottom: 70px;
-  left: 40px;
+  padding: 80px 32px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 0.8rem;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* LOGO */
+.logo {
+  font-family: 'Cormorant', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  letter-spacing: 0.12em;
+  margin-bottom: 48px; /* slightly higher above menu */
+  position: sticky;
+  top: 40px;
+}
+
+/* FLOOR MENU */
+.floor-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  z-index: 3;
+  position: sticky;
+  top: 160px;
 }
 
 .floor-menu a {
@@ -116,11 +64,74 @@ p {
   transition: opacity 0.25s ease;
 }
 
-.floor-menu:hover a { opacity: 0.25; }
-.floor-menu a:hover { opacity: 1; }
-.floor-menu a.active { opacity: 1; }
+.floor-menu a:hover {
+  opacity: 1;
+}
 
-/* ---------- CONTACT UNDER SECTION ---------- */
+.floor-menu a.active {
+  opacity: 1;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 72%;
+  position: relative;
+}
+
+/* HERO IMAGE */
+.hero {
+  min-height: 100vh;
+  background-image: url("hero.jpg"); /* replace with your file */
+  background-size: contain; /* zoomed out effect */
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* DATUM LINE */
+.datum {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e3e3e1;
+  z-index: 1;
+}
+
+/* SECTIONS */
+section {
+  min-height: 100vh;
+  padding: 80px 64px;
+  box-sizing: border-box;
+  background: #f7f6f2;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+  position: relative;
+  z-index: 2;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* HEADINGS */
+h1 {
+  font-family: 'Cormorant', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  max-width: 740px;
+}
+
+/* CONTACT BLOCK */
 .contact-section {
   font-size: 16px; /* slightly larger */
   line-height: 1.7;
@@ -136,17 +147,123 @@ p {
   text-decoration: underline;
 }
 
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+  .left-panel, .right-panel {
+    width: 100%;
+    padding: 32px;
+  }
+  .datum {
+    display: none;
+  }
+  .hero {
+    min-height: 50vh;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="datum"></div>
+<div class="container">
 
-<div class="hero-image"></div>
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="logo">MASO</div>
 
-<div class="logo-fixed">MASO</div>
+    <div class="floor-menu">
+      <a href="#home" id="link-home">01 MASO</a>
+      <a href="#work" id="link-work">02 Work</a>
+      <a href="#author" id="link-author">03 Author</a>
+      <a href="#contact" id="link-contact">04 Contact</a>
+    </div>
+  </div>
 
-<div class="hero" id="home"></div>
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="datum"></div>
 
-<!-- WORK
+    <!-- HERO IMAGE -->
+    <div class="hero" id="home"></div>
+
+    <!-- WORK SECTION -->
+    <section id="work">
+      <h1>The Work</h1>
+      <p>
+      MASO explores sound as material — not as background, but as structure.
+      Each work seeks permanence through form, allowing sound to inhabit space
+      with the same authority as architecture or sculpture.
+      </p>
+      <p>
+      Rather than devices, the objects operate as presences: quiet, deliberate,
+      and designed to endure beyond cycles of technology or fashion.
+      </p>
+      <p>
+      The intention is not spectacle, but integration — sound embedded into
+      lived environments with restraint and clarity.
+      </p>
+    </section>
+
+    <!-- AUTHOR SECTION -->
+    <section id="author">
+      <h1>The Author</h1>
+      <p>
+      Guy Traviss is a designer working at the intersection of sound,
+      architecture, and object design. His work focuses on permanence,
+      reduction, and the cultural role of technology in domestic space.
+      </p>
+      <p>
+      Drawing from architectural thinking as much as audio engineering,
+      MASO represents an attempt to produce objects that remain relevant
+      over decades rather than years.
+      </p>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+      <h1>Contact</h1>
+      <div class="contact-section">
+        <div><a href="mailto:info@maso.design">info@maso.design</a></div>
+        <div><a href="https://www.maso-design.com" target="_blank">www.maso-design.com</a></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+/* ---------- FADE-IN SECTIONS ---------- */
+const sections = document.querySelectorAll("section");
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add("visible");
+  });
+}, { threshold: 0.2 });
+sections.forEach(section => observer.observe(section));
+
+/* ---------- FLOOR MENU ACTIVE STATE ---------- */
+const links = {
+  home: document.getElementById("link-home"),
+  work: document.getElementById("link-work"),
+  author: document.getElementById("link-author"),
+  contact: document.getElementById("link-contact")
+};
+const allSections = document.querySelectorAll("section, .hero");
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      Object.values(links).forEach(l => l.classList.remove("active"));
+      if (entry.target.id === "work") links.work.classList.add("active");
+      else if (entry.target.id === "author") links.author.classList.add("active");
+      else if (entry.target.id === "contact") links.contact.classList.add("active");
+      else links.home.classList.add("active");
+    }
+  });
+}, { threshold: 0.6 });
+allSections.forEach(s => spy.observe(s));
+</script>
+
+</body>
+</html>
