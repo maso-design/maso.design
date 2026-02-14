@@ -3,14 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASO</title>
+<title>MASO – Architectural Edition</title>
+
+<!-- GOOGLE FONTS -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 /* ---------- GLOBAL ---------- */
 html {
   scroll-behavior: smooth;
 }
-
 body {
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -19,83 +21,89 @@ body {
   overflow-x: hidden;
 }
 
-/* ---------- LAYOUT ---------- */
+/* ---------- CONTAINER ---------- */
 .container {
   display: flex;
-  flex-direction: row;
 }
 
-/* LEFT PANEL */
+/* ---------- LEFT PANEL ---------- */
 .left-panel {
-  width: 24%;
+  width: 20%;
   min-height: 100vh;
-  position: fixed; /* fixed to viewport */
-  top: 0;
-  left: 0;
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  z-index: 10;
+  position: relative;
+  padding: 60px 32px;
+  box-sizing: border-box;
 }
 
-/* LOGO + MENU BLOCK */
+/* STICKY MENU */
 .logo-menu {
+  position: sticky;
+  top: 80px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 24px;
+  gap: 60px;
 }
 
 /* LOGO */
 .logo {
   font-family: 'Cormorant', serif;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  letter-spacing: 0.12em;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 0.15em;
+  line-height: 1;
 }
 
-/* FLOOR MENU */
+/* MENU NUMBERS */
 .floor-menu {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
+  gap: 36px;
+  font-size: 0.95rem;
   text-transform: uppercase;
+  letter-spacing: 0.15em;
+  position: relative;
 }
-
 .floor-menu a {
   text-decoration: none;
   color: #111;
-  opacity: 0.4;
-  transition: opacity 0.25s ease;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  position: relative;
+}
+.floor-menu a.active, .floor-menu a:hover {
+  opacity: 1;
+  transform: translateX(3px);
+}
+.floor-menu a::before {
+  content: attr(data-number);
+  margin-right: 12px;
+  font-weight: 600;
+  opacity: 0.3;
+  font-family: 'Inter', sans-serif;
 }
 
-.floor-menu a:hover { opacity: 1; }
-.floor-menu a.active { opacity: 1; }
+/* GUIDING LINE */
+.floor-menu::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e3e3e1;
+}
 
-/* RIGHT PANEL */
+/* ---------- RIGHT PANEL ---------- */
 .right-panel {
-  width: 76%;
-  margin-left: 24%; /* space for fixed left panel */
+  width: 80%;
+  margin-left: 20%;
   position: relative;
-}
-
-/* HERO IMAGE */
-.hero {
-  min-height: 100vh;
-  background-image: url("hero.jpg"); /* replace with your image */
-  background-size: cover;
-  background-position: center right;
-  background-repeat: no-repeat;
-  position: relative;
-  z-index: 0;
 }
 
 /* DATUM LINE */
 .datum {
   position: fixed;
-  left: 24%;
+  left: 20%;
   top: 0;
   bottom: 0;
   width: 1px;
@@ -103,80 +111,81 @@ body {
   z-index: 5;
 }
 
-/* SECTIONS */
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 100vh;
+  background-image: url("hero.jpg");
+  background-size: cover;
+  background-position: center right;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+  transform: scale(1);
+  transition: transform 0.9s ease;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(247,246,242,0.05);
+  z-index: 1;
+}
+
+/* ---------- SECTIONS ---------- */
 section {
   min-height: 100vh;
-  padding: 80px 64px;
+  padding: 100px 64px;
   box-sizing: border-box;
-  background: rgba(247, 246, 242, 0.95); /* overlay to read over hero */
+  background: rgba(247,246,242,0.95);
+  border-left: 2px solid #f7f6f2;
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
+  transform: translateX(-60px);
+  transition: opacity 1s ease, transform 1s ease;
   position: relative;
   z-index: 2;
 }
-
-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+section:nth-child(even) { transform: translateX(60px); }
 
 /* HEADINGS */
 h1 {
   font-family: 'Cormorant', serif;
-  font-size: 2.4rem;
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 700;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
+/* BODY TEXT */
 p {
   font-size: 1.05rem;
   line-height: 1.8;
-  max-width: 740px;
+  max-width: 720px;
 }
 
-/* CONTACT BLOCK */
+/* CONTACT */
 .contact-section {
   font-size: 16px;
   line-height: 1.7;
   margin-top: 28px;
 }
-
 .contact-section a {
   color: #111;
   text-decoration: none;
 }
-
 .contact-section a:hover {
   text-decoration: underline;
 }
 
 /* ---------- RESPONSIVE ---------- */
-@media (max-width: 900px) {
-  .container {
-    flex-direction: column;
-  }
-  .left-panel {
-    position: relative;
-    width: 100%;
-    padding: 16px;
-  }
-  .right-panel {
-    width: 100%;
-    margin-left: 0;
-  }
-  .datum {
-    display: none;
-  }
-  .floor-menu {
-    flex-direction: row;
-    gap: 16px;
-  }
-  .hero {
-    min-height: 50vh;
-    background-position: center;
-  }
+@media (max-width:900px){
+  .container { flex-direction: column; }
+  .left-panel { width: 100%; padding: 24px; }
+  .right-panel { width: 100%; margin-left: 0; }
+  .datum, .floor-menu::after { display: none; }
+  .floor-menu { flex-direction: row; gap:16px; }
+  .hero { min-height: 50vh; background-position: center; }
 }
+
+/* ---------- OPTIONAL HERO SCROLL EFFECT ---------- */
 </style>
 </head>
 
@@ -190,10 +199,10 @@ p {
       <div class="logo">MASO</div>
 
       <div class="floor-menu">
-        <a href="#home" id="link-home">01 MASO</a>
-        <a href="#work" id="link-work">02 Work</a>
-        <a href="#author" id="link-author">03 Author</a>
-        <a href="#contact" id="link-contact">04 Contact</a>
+        <a href="#home" data-number="01" id="link-home">MASO</a>
+        <a href="#work" data-number="02" id="link-work">Work</a>
+        <a href="#author" data-number="03" id="link-author">Author</a>
+        <a href="#contact" data-number="04" id="link-contact">Contact</a>
       </div>
     </div>
   </div>
@@ -208,34 +217,16 @@ p {
     <!-- WORK SECTION -->
     <section id="work">
       <h1>The Work</h1>
-      <p>
-      MASO explores sound as material — not as background, but as structure.
-      Each work seeks permanence through form, allowing sound to inhabit space
-      with the same authority as architecture or sculpture.
-      </p>
-      <p>
-      Rather than devices, the objects operate as presences: quiet, deliberate,
-      and designed to endure beyond cycles of technology or fashion.
-      </p>
-      <p>
-      The intention is not spectacle, but integration — sound embedded into
-      lived environments with restraint and clarity.
-      </p>
+      <p>MASO explores sound as material — not as background, but as structure. Each work seeks permanence through form, allowing sound to inhabit space with the same authority as architecture or sculpture.</p>
+      <p>Rather than devices, the objects operate as presences: quiet, deliberate, and designed to endure beyond cycles of technology or fashion.</p>
+      <p>The intention is not spectacle, but integration — sound embedded into lived environments with restraint and clarity.</p>
     </section>
 
     <!-- AUTHOR SECTION -->
     <section id="author">
       <h1>The Author</h1>
-      <p>
-      Guy Traviss is a designer working at the intersection of sound,
-      architecture, and object design. His work focuses on permanence,
-      reduction, and the cultural role of technology in domestic space.
-      </p>
-      <p>
-      Drawing from architectural thinking as much as audio engineering,
-      MASO represents an attempt to produce objects that remain relevant
-      over decades rather than years.
-      </p>
+      <p>Guy Traviss is a designer working at the intersection of sound, architecture, and object design. His work focuses on permanence, reduction, and the cultural role of technology in domestic space.</p>
+      <p>Drawing from architectural thinking as much as audio engineering, MASO represents an attempt to produce objects that remain relevant over decades rather than years.</p>
     </section>
 
     <!-- CONTACT SECTION -->
@@ -246,40 +237,22 @@ p {
         <div><a href="https://www.maso-design.com" target="_blank">www.maso-design.com</a></div>
       </div>
     </section>
+
   </div>
 </div>
 
 <script>
 /* ---------- FADE-IN SECTIONS ---------- */
 const sections = document.querySelectorAll("section");
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add("visible");
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add("visible");
   });
-}, { threshold: 0.2 });
-sections.forEach(section => observer.observe(section));
+},{threshold:0.2});
+sections.forEach(section=>observer.observe(section));
 
 /* ---------- FLOOR MENU ACTIVE STATE ---------- */
 const links = {
   home: document.getElementById("link-home"),
   work: document.getElementById("link-work"),
-  author: document.getElementById("link-author"),
-  contact: document.getElementById("link-contact")
-};
-const allSections = document.querySelectorAll("section, .hero");
-const spy = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      Object.values(links).forEach(l => l.classList.remove("active"));
-      if (entry.target.id === "work") links.work.classList.add("active");
-      else if (entry.target.id === "author") links.author.classList.add("active");
-      else if (entry.target.id === "contact") links.contact.classList.add("active");
-      else links.home.classList.add("active");
-    }
-  });
-}, { threshold: 0.6 });
-allSections.forEach(s => spy.observe(s));
-</script>
-
-</body>
-</html>
+  author:
