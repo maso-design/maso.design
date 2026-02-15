@@ -14,7 +14,6 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 
 body {
-  margin:0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background: var(--paper);
   color: var(--ink);
@@ -24,24 +23,25 @@ body {
   align-items: center;
 }
 
-/* ===== Hero Section ===== */
+/* ===== Hero & MASO ===== */
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   text-align: center;
+  min-height: 80vh;
   transition: all 0.8s ease;
 }
 
 .hero.shrink {
-  min-height: 40vh;
+  min-height: 20vh;
+  margin-top: 40px;
 }
 
-/* MASO Logo */
+/* MASO logo */
 #maso-logo {
-  font-size: clamp(50px, 12vw, 120px);
+  font-size: 48px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -58,8 +58,14 @@ body {
   font-weight: 300;
   letter-spacing: 0.25em;
   text-transform: uppercase;
+  transition: all 0.8s ease;
 }
 
+.buttons.move-below {
+  margin-top: 40px; /* moves below content */
+}
+
+/* Button underline hover */
 .button {
   cursor: pointer;
   position: relative;
@@ -78,13 +84,14 @@ body {
 
 .button:hover::after { width: 100%; }
 
-/* ===== Content Sections ===== */
+/* ===== Content ===== */
 .content-section {
   max-width: 800px;
   margin-top: 40px;
   opacity: 0;
   transition: opacity 0.8s ease;
   pointer-events: none;
+  text-align: center;
 }
 
 .content-section.active {
@@ -112,7 +119,7 @@ body {
   color: var(--muted);
 }
 
-/* ===== Contact Info ===== */
+/* ===== Contact ===== */
 .contact {
   position: fixed;
   bottom: 16px;
@@ -142,14 +149,16 @@ body {
 </head>
 <body>
 
+<!-- Hero -->
 <div class="hero" id="hero">
   <div id="maso-logo">MASO</div>
-  <div class="buttons">
+  <div class="buttons" id="buttons">
     <div class="button" onclick="showContent('works')">WORKS</div>
     <div class="button" onclick="showContent('author')">AUTHOR</div>
   </div>
 </div>
 
+<!-- CONTENT -->
 <section id="works" class="content-section">
   <div class="title">WORKS</div>
   <div class="statement">Sound given permanence</div>
@@ -169,6 +178,7 @@ body {
   </p>
 </section>
 
+<!-- Contact -->
 <div class="contact">
   <a href="mailto:contact@maso.design">contact@maso.design</a> &nbsp;|&nbsp;
   <a href="https://www.maso-design.com" target="_blank">www.maso-design.com</a>
@@ -176,12 +186,20 @@ body {
 
 <script>
 function showContent(id) {
-  // Shrink MASO hero for visual impact
-  document.getElementById('hero').classList.add('shrink');
+  // Shrink hero & MASO logo
+  const hero = document.getElementById('hero');
+  hero.classList.add('shrink');
 
   // Show the selected content
   document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+
+  // Move buttons below content
+  const buttons = document.getElementById('buttons');
+  buttons.classList.add('move-below');
+
+  // Optionally, scroll slightly to center content
+  document.getElementById(id).scrollIntoView({ behavior: "smooth", block: "start" });
 }
 </script>
 
