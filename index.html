@@ -131,14 +131,18 @@ body {
 
 /* ---------- SPLIT SCREEN ---------- */
 
+/* Left content */
 #content-left {
   position:fixed;
   top:160px;
   left:64px;
   width:50%;
+  max-height: calc(100vh - 160px - 36px); /* leave space for bottom */
   opacity:0;
   pointer-events:none;
   transition:opacity 0.7s ease;
+  overflow-y:auto;
+  padding-bottom:36px;
 }
 
 #content-left p {
@@ -149,13 +153,12 @@ body {
 }
 
 /* Right media panel */
-
 #content-right {
   position:fixed;
   top:160px;
   right:0;
   width:50%;
-  height:calc(100vh - 160px);
+  height: calc(100vh - 160px);
   background:#eee;
   display:flex;
   align-items:center;
@@ -163,6 +166,7 @@ body {
   opacity:0;
   pointer-events:none;
   transition:opacity 0.7s ease;
+  overflow:hidden;
 }
 
 #content-right img, #content-right video {
@@ -172,7 +176,6 @@ body {
 }
 
 /* Navigation below left text */
-
 #content-nav {
   margin-top:42px;
   font-size:18px;
@@ -236,7 +239,6 @@ body {
 
 <!-- RIGHT MEDIA PANEL -->
 <div id="content-right">
-  <!-- placeholder image/video -->
   <img id="media" src="https://via.placeholder.com/400x400.png?text=Media+Placeholder" alt="Media">
 </div>
 
