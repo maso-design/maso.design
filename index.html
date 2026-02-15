@@ -36,6 +36,8 @@ body {
   letter-spacing:0.18em;
 }
 
+/* ---------- CONTACT / IMPRINT ---------- */
+
 #imprint {
   position:fixed;
   bottom:36px;
@@ -44,6 +46,13 @@ body {
   text-align:center;
   font-size:12px;
   color:#444;
+  transition:all 0.7s ease;
+}
+
+.reading #imprint {
+  left:64px;
+  transform:none;
+  text-align:left;
 }
 
 /* ---------- CHOICE ---------- */
@@ -101,7 +110,7 @@ body {
 
 .reading #section-title {
   left:64px;
-  transform:none; /* only X moves */
+  transform:none; /* horizontal only */
   opacity:1;
 }
 
@@ -120,26 +129,49 @@ body {
   opacity:1;
 }
 
-/* ---------- CONTENT ---------- */
+/* ---------- SPLIT SCREEN ---------- */
 
-#content {
+#content-left {
   position:fixed;
-  top:180px;
+  top:160px;
   left:64px;
-  width:min(680px, calc(100vw - 128px));
+  width:50%;
   opacity:0;
   pointer-events:none;
   transition:opacity 0.7s ease;
 }
 
-#content p {
+#content-left p {
   font-size:18px;
   line-height:1.75;
   font-weight:300;
   margin-top:24px;
 }
 
-/* Navigation below */
+/* Right media panel */
+
+#content-right {
+  position:fixed;
+  top:160px;
+  right:0;
+  width:50%;
+  height:calc(100vh - 160px);
+  background:#eee;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.7s ease;
+}
+
+#content-right img, #content-right video {
+  max-width:90%;
+  max-height:90%;
+  object-fit:contain;
+}
+
+/* Navigation below left text */
 
 #content-nav {
   margin-top:42px;
@@ -162,7 +194,8 @@ body {
 
 .show-content #stage2 { opacity:0; pointer-events:none; }
 .show-content #logo-small { opacity:1; }
-.show-content #content { opacity:1; pointer-events:auto; }
+.show-content #content-left { opacity:1; pointer-events:auto; }
+.show-content #content-right { opacity:1; pointer-events:auto; }
 
 </style>
 </head>
@@ -173,6 +206,7 @@ body {
   <div id="logo-main">MASO</div>
 </div>
 
+<!-- CONTACT INFO -->
 <div id="imprint">
   contact@maso.design<br>
   www.maso-design.com
@@ -191,20 +225,26 @@ body {
 <div id="section-title"></div>
 <div id="line"></div>
 
-<!-- CONTENT -->
-<div id="content">
+<!-- LEFT CONTENT -->
+<div id="content-left">
   <p id="text"></p>
-
   <div id="content-nav">
     <span onclick="selectSection('WORKS')">WORKS</span>
     <span onclick="selectSection('AUTHOR')">AUTHOR</span>
   </div>
 </div>
 
+<!-- RIGHT MEDIA PANEL -->
+<div id="content-right">
+  <!-- placeholder image/video -->
+  <img id="media" src="https://via.placeholder.com/400x400.png?text=Media+Placeholder" alt="Media">
+</div>
+
 <script>
 const stage1 = document.getElementById("stage1");
 const title = document.getElementById("section-title");
 const text = document.getElementById("text");
+const media = document.getElementById("media");
 
 stage1.onclick = () => {
   document.body.classList.add("show-stage2");
@@ -218,8 +258,10 @@ function selectSection(section) {
 
   if(section === "WORKS") {
     text.textContent = "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
+    media.src = "https://via.placeholder.com/400x400.png?text=WORKS";
   } else {
     text.textContent = "Guy Traviss is a classical guitarist, designer, and researcher whose work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
+    media.src = "https://via.placeholder.com/400x400.png?text=AUTHOR";
   }
 }
 </script>
