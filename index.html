@@ -11,8 +11,8 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background:#ffffff;
+  font-family:'Inter', sans-serif;
+  background:#fff;
   color:#111;
   height:100vh;
   overflow:hidden;
@@ -26,8 +26,8 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:opacity 0.8s ease;
   cursor:pointer;
+  transition:opacity 0.8s ease;
 }
 
 #logo-main {
@@ -43,12 +43,10 @@ body {
   transform:translateX(-50%);
   text-align:center;
   font-size:12px;
-  font-weight:300;
   color:#444;
-  line-height:1.6;
 }
 
-/* ---------- STAGE 2 ---------- */
+/* ---------- CHOICE ---------- */
 
 #stage2 {
   position:fixed;
@@ -60,20 +58,8 @@ body {
   gap:32px;
   opacity:0;
   pointer-events:none;
-  transition:opacity 0.8s ease;
+  transition:opacity 0.6s ease;
 }
-
-/* Anchor logo */
-
-#logo-small {
-  position:fixed;
-  top:40px;
-  font-size:20px;
-  font-weight:600;
-  letter-spacing:0.18em;
-}
-
-/* Choice buttons */
 
 .choice {
   font-size: clamp(20px,3vw,28px);
@@ -84,17 +70,37 @@ body {
 
 .choice:hover { opacity:0.45; }
 
-/* ---------- CONTENT AREA ---------- */
+/* ---------- ANCHOR LOGO ---------- */
+
+#logo-small {
+  position:fixed;
+  top:48px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:0.18em;
+  opacity:0;
+  transition:all 0.7s ease;
+}
+
+/* Move logo to left in reading mode */
+
+.reading #logo-small {
+  left:64px;
+  transform:none;
+}
+
+/* ---------- CONTENT ---------- */
 
 #content {
   position:fixed;
-  top:140px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(720px, 85vw);
+  top:120px;
+  left:64px;
+  width:min(680px, calc(100vw - 128px));
   opacity:0;
   pointer-events:none;
-  transition:opacity 0.6s ease;
+  transition:opacity 0.7s ease;
 }
 
 #content h1 {
@@ -109,17 +115,16 @@ body {
   font-weight:300;
 }
 
-/* Buttons below content */
+/* Navigation below */
 
 #content-nav {
-  margin-top:40px;
-  text-align:center;
+  margin-top:42px;
   font-size:18px;
   letter-spacing:0.12em;
 }
 
 #content-nav span {
-  margin:0 18px;
+  margin-right:28px;
   cursor:pointer;
   transition:opacity 0.3s;
 }
@@ -131,17 +136,15 @@ body {
 .show-stage2 #stage1 { opacity:0; pointer-events:none; }
 .show-stage2 #stage2 { opacity:1; pointer-events:auto; }
 
-.show-content #content {
-  opacity:1;
-  pointer-events:auto;
-}
+.show-content #stage2 { opacity:0; pointer-events:none; }
+.show-content #logo-small { opacity:1; }
+.show-content #content { opacity:1; pointer-events:auto; }
 
 </style>
 </head>
 <body>
 
-<!-- ===== STAGE 1 ===== -->
-
+<!-- STAGE 1 -->
 <div id="stage1">
   <div id="logo-main">MASO</div>
 </div>
@@ -151,17 +154,16 @@ body {
   www.maso-design.com
 </div>
 
-<!-- ===== STAGE 2 ===== -->
-
+<!-- CHOICE -->
 <div id="stage2">
-  <div id="logo-small">MASO</div>
-
   <div class="choice" onclick="showWorks()">WORKS</div>
   <div class="choice" onclick="showAuthor()">AUTHOR</div>
 </div>
 
-<!-- ===== CONTENT ===== -->
+<!-- ANCHOR LOGO -->
+<div id="logo-small">MASO</div>
 
+<!-- CONTENT -->
 <div id="content">
   <h1 id="title"></h1>
   <p id="text"></p>
@@ -173,32 +175,29 @@ body {
 </div>
 
 <script>
-/* Enter from threshold */
-
-document.getElementById("stage1").onclick = () => {
+stage1.onclick = () => {
   document.body.classList.add("show-stage2");
 };
 
-/* Content data */
-
 function showWorks() {
-  document.body.classList.add("show-content");
+  enterReading();
 
-  document.getElementById("title").textContent =
-    "Sound Given Permanence";
-
-  document.getElementById("text").textContent =
+  title.textContent = "Sound Given Permanence";
+  text.textContent =
     "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
 }
 
 function showAuthor() {
+  enterReading();
+
+  title.textContent = "Guy Traviss";
+  text.textContent =
+    "Guy Traviss is a classical guitarist, designer, and researcher whose work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
+}
+
+function enterReading() {
   document.body.classList.add("show-content");
-
-  document.getElementById("title").textContent =
-    "Guy Traviss";
-
-  document.getElementById("text").textContent =
-    "Guy Traviss is a classical guitarist, designer, and researcher. His work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
+  document.body.classList.add("reading");
 }
 </script>
 
