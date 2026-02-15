@@ -5,111 +5,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASO</title>
 
-<!-- Elegant modern font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: 'Inter', sans-serif;
-  background: #ffffff;
-  color: #111;
-  height: 100vh;
-  overflow: hidden;
-  cursor: pointer;
+  background:#ffffff;
+  color:#111;
+  height:100vh;
+  overflow:hidden;
 }
 
-/* ---------- STAGE 1: THRESHOLD ---------- */
+/* ---------- STAGE 1 ---------- */
 
 #stage1 {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.8s ease;
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.8s ease;
+  cursor:pointer;
 }
 
 #logo-main {
-  font-size: clamp(32px, 5vw, 56px);
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  font-size: clamp(32px,5vw,56px);
+  font-weight:600;
+  letter-spacing:0.18em;
 }
-
-/* Bottom imprint */
 
 #imprint {
-  position: fixed;
-  bottom: 36px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.6;
-  color: #444;
+  position:fixed;
+  bottom:36px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  font-size:12px;
+  font-weight:300;
+  color:#444;
+  line-height:1.6;
 }
 
-/* ---------- STAGE 2: CHOICE ---------- */
+/* ---------- STAGE 2 ---------- */
 
 #stage2 {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.8s ease;
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:32px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.8s ease;
 }
 
-/* Small anchor logo */
+/* Anchor logo */
 
 #logo-small {
-  position: fixed;
-  top: 40px;
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
+  position:fixed;
+  top:40px;
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:0.18em;
 }
 
 /* Choice buttons */
 
 .choice {
-  font-size: clamp(20px, 3vw, 28px);
-  letter-spacing: 0.12em;
-  font-weight: 400;
-  transition: opacity 0.3s ease;
+  font-size: clamp(20px,3vw,28px);
+  letter-spacing:0.12em;
+  cursor:pointer;
+  transition:opacity 0.3s;
 }
 
-.choice:hover {
-  opacity: 0.45;
+.choice:hover { opacity:0.45; }
+
+/* ---------- CONTENT AREA ---------- */
+
+#content {
+  position:fixed;
+  top:140px;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(720px, 85vw);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.6s ease;
 }
 
-/* ---------- ACTIVE STATE ---------- */
-
-.show-stage2 #stage1 {
-  opacity: 0;
-  pointer-events: none;
+#content h1 {
+  font-size:28px;
+  font-weight:500;
+  margin-bottom:18px;
 }
 
-.show-stage2 #stage2 {
-  opacity: 1;
-  pointer-events: auto;
+#content p {
+  font-size:16px;
+  line-height:1.65;
+  font-weight:300;
+}
+
+/* Buttons below content */
+
+#content-nav {
+  margin-top:40px;
+  text-align:center;
+  font-size:18px;
+  letter-spacing:0.12em;
+}
+
+#content-nav span {
+  margin:0 18px;
+  cursor:pointer;
+  transition:opacity 0.3s;
+}
+
+#content-nav span:hover { opacity:0.45; }
+
+/* ---------- STATES ---------- */
+
+.show-stage2 #stage1 { opacity:0; pointer-events:none; }
+.show-stage2 #stage2 { opacity:1; pointer-events:auto; }
+
+.show-content #content {
+  opacity:1;
+  pointer-events:auto;
 }
 
 </style>
 </head>
 <body>
 
-<!-- ===== Stage 1 ===== -->
+<!-- ===== STAGE 1 ===== -->
 
 <div id="stage1">
   <div id="logo-main">MASO</div>
@@ -120,19 +151,55 @@ body {
   www.maso-design.com
 </div>
 
-<!-- ===== Stage 2 ===== -->
+<!-- ===== STAGE 2 ===== -->
 
 <div id="stage2">
   <div id="logo-small">MASO</div>
 
-  <div class="choice">WORKS</div>
-  <div class="choice">AUTHOR</div>
+  <div class="choice" onclick="showWorks()">WORKS</div>
+  <div class="choice" onclick="showAuthor()">AUTHOR</div>
+</div>
+
+<!-- ===== CONTENT ===== -->
+
+<div id="content">
+  <h1 id="title"></h1>
+  <p id="text"></p>
+
+  <div id="content-nav">
+    <span onclick="showWorks()">WORKS</span>
+    <span onclick="showAuthor()">AUTHOR</span>
+  </div>
 </div>
 
 <script>
-document.body.addEventListener("click", () => {
+/* Enter from threshold */
+
+document.getElementById("stage1").onclick = () => {
   document.body.classList.add("show-stage2");
-}, { once: true });
+};
+
+/* Content data */
+
+function showWorks() {
+  document.body.classList.add("show-content");
+
+  document.getElementById("title").textContent =
+    "Sound Given Permanence";
+
+  document.getElementById("text").textContent =
+    "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
+}
+
+function showAuthor() {
+  document.body.classList.add("show-content");
+
+  document.getElementById("title").textContent =
+    "Guy Traviss";
+
+  document.getElementById("text").textContent =
+    "Guy Traviss is a classical guitarist, designer, and researcher. His work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
+}
 </script>
 
 </body>
