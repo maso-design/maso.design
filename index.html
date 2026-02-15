@@ -14,34 +14,41 @@
 * { box-sizing: border-box; margin:0; padding:0; }
 
 body {
-  background: var(--paper);
+  margin:0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ===== Header (MASO + buttons) ===== */
-header {
-  display: grid;
-  place-items: center;
+/* ===== Hero Section ===== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   text-align: center;
-  padding: 60px 20px 20px 20px;
-  transition: opacity 0.8s ease;
+  transition: all 0.8s ease;
 }
 
-header.hidden {
-  opacity: 0;
-  pointer-events: none;
+.hero.shrink {
+  min-height: 40vh;
 }
 
-header h1 {
+/* MASO Logo */
+#maso-logo {
   font-size: clamp(50px, 12vw, 120px);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  cursor: default;
+  transition: all 0.8s ease;
 }
 
+/* Buttons */
 .buttons {
   display: flex;
   gap: 80px;
@@ -74,7 +81,7 @@ header h1 {
 /* ===== Content Sections ===== */
 .content-section {
   max-width: 800px;
-  margin: 60px auto;
+  margin-top: 40px;
   opacity: 0;
   transition: opacity 0.8s ease;
   pointer-events: none;
@@ -135,13 +142,13 @@ header h1 {
 </head>
 <body>
 
-<header id="header">
-  <h1>MASO</h1>
+<div class="hero" id="hero">
+  <div id="maso-logo">MASO</div>
   <div class="buttons">
     <div class="button" onclick="showContent('works')">WORKS</div>
     <div class="button" onclick="showContent('author')">AUTHOR</div>
   </div>
-</header>
+</div>
 
 <section id="works" class="content-section">
   <div class="title">WORKS</div>
@@ -169,10 +176,10 @@ header h1 {
 
 <script>
 function showContent(id) {
-  // Fade out header (MASO + buttons)
-  document.getElementById('header').classList.add('hidden');
+  // Shrink MASO hero for visual impact
+  document.getElementById('hero').classList.add('shrink');
 
-  // Show the chosen content
+  // Show the selected content
   document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
