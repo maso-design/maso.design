@@ -62,15 +62,15 @@ body {
 }
 
 .choice {
-  font-size: clamp(20px,3vw,28px);
+  font-size: clamp(22px,3vw,30px);
   letter-spacing:0.12em;
   cursor:pointer;
-  transition:opacity 0.3s;
+  transition:opacity 0.3s, transform 0.7s ease;
 }
 
 .choice:hover { opacity:0.45; }
 
-/* ---------- ANCHOR LOGO ---------- */
+/* ---------- MASO ANCHOR ---------- */
 
 #logo-small {
   position:fixed;
@@ -81,21 +81,50 @@ body {
   font-weight:600;
   letter-spacing:0.18em;
   opacity:0;
+  transition:opacity 0.6s ease;
+}
+
+/* ---------- SELECTED WORD ---------- */
+
+#section-title {
+  position:fixed;
+  top:40%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:28px;
+  font-weight:500;
+  letter-spacing:0.08em;
+  opacity:0;
   transition:all 0.7s ease;
 }
 
-/* Move logo to left in reading mode */
-
-.reading #logo-small {
+.reading #section-title {
   left:64px;
+  top:120px;
   transform:none;
+  opacity:1;
+}
+
+/* Horizontal line under heading */
+
+#line {
+  width:60px;
+  height:1px;
+  background:#111;
+  margin-top:12px;
+  opacity:0;
+  transition:opacity 0.5s ease;
+}
+
+.reading #line {
+  opacity:1;
 }
 
 /* ---------- CONTENT ---------- */
 
 #content {
   position:fixed;
-  top:120px;
+  top:160px;
   left:64px;
   width:min(680px, calc(100vw - 128px));
   opacity:0;
@@ -103,16 +132,11 @@ body {
   transition:opacity 0.7s ease;
 }
 
-#content h1 {
-  font-size:28px;
-  font-weight:500;
-  margin-bottom:18px;
-}
-
 #content p {
   font-size:16px;
   line-height:1.65;
   font-weight:300;
+  margin-top:24px;
 }
 
 /* Navigation below */
@@ -156,48 +180,48 @@ body {
 
 <!-- CHOICE -->
 <div id="stage2">
-  <div class="choice" onclick="showWorks()">WORKS</div>
-  <div class="choice" onclick="showAuthor()">AUTHOR</div>
+  <div class="choice" onclick="selectSection('WORKS')">WORKS</div>
+  <div class="choice" onclick="selectSection('AUTHOR')">AUTHOR</div>
 </div>
 
-<!-- ANCHOR LOGO -->
+<!-- MASO -->
 <div id="logo-small">MASO</div>
+
+<!-- SELECTED WORD -->
+<div id="section-title"></div>
+<div id="line"></div>
 
 <!-- CONTENT -->
 <div id="content">
-  <h1 id="title"></h1>
   <p id="text"></p>
 
   <div id="content-nav">
-    <span onclick="showWorks()">WORKS</span>
-    <span onclick="showAuthor()">AUTHOR</span>
+    <span onclick="selectSection('WORKS')">WORKS</span>
+    <span onclick="selectSection('AUTHOR')">AUTHOR</span>
   </div>
 </div>
 
 <script>
+const stage1 = document.getElementById("stage1");
+const title = document.getElementById("section-title");
+const text = document.getElementById("text");
+const line = document.getElementById("line");
+
 stage1.onclick = () => {
   document.body.classList.add("show-stage2");
 };
 
-function showWorks() {
-  enterReading();
-
-  title.textContent = "Sound Given Permanence";
-  text.textContent =
-    "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
-}
-
-function showAuthor() {
-  enterReading();
-
-  title.textContent = "Guy Traviss";
-  text.textContent =
-    "Guy Traviss is a classical guitarist, designer, and researcher whose work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
-}
-
-function enterReading() {
+function selectSection(section) {
   document.body.classList.add("show-content");
   document.body.classList.add("reading");
+
+  title.textContent = section;
+
+  if(section === "WORKS") {
+    text.textContent = "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
+  } else {
+    text.textContent = "Guy Traviss is a classical guitarist, designer, and researcher whose work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
+  }
 }
 </script>
 
