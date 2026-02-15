@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MASO</title>
-
 <style>
 :root {
   --paper: #f6f5f2;
@@ -12,49 +11,42 @@
   --muted: #777;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin:0; padding:0; }
 
-html, body {
-  height: 100%;
+body {
   background: var(--paper);
-  color: var(--ink);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
+  color: var(--ink);
+  min-height: 100vh;
 }
 
-/* ===== Chambers ===== */
-.chamber {
-  position: absolute;
-  inset: 0;
+/* ===== Header (MASO + buttons) ===== */
+header {
   display: grid;
   place-items: center;
   text-align: center;
-  padding: 40px;
+  padding: 60px 20px 20px 20px;
+  transition: opacity 0.8s ease;
+}
+
+header.hidden {
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.9s ease;
 }
 
-.chamber.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ===== MASO Logo ===== */
-#maso h1 {
+header h1 {
   font-size: clamp(50px, 12vw, 120px);
   font-weight: 700;
   letter-spacing: 0.18em;
-  margin-bottom: 24px;
   text-transform: uppercase;
   cursor: default;
 }
 
-/* ===== Choice Buttons ===== */
 .buttons {
   display: flex;
   gap: 80px;
   justify-content: center;
+  margin-top: 20px;
   font-size: clamp(16px, 2vw, 22px);
   font-weight: 300;
   letter-spacing: 0.25em;
@@ -79,27 +71,38 @@ html, body {
 
 .button:hover::after { width: 100%; }
 
-/* ===== Content Areas ===== */
-.content {
+/* ===== Content Sections ===== */
+.content-section {
   max-width: 800px;
-  margin-top: 60px;
-  line-height: 1.7;
-  font-weight: 300;
-  font-size: 18px;
-  color: var(--muted);
+  margin: 60px auto;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
 }
 
-.content .title {
+.content-section.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.content-section .title {
   font-size: 28px;
   letter-spacing: 0.2em;
-  margin-bottom: 20px;
   font-weight: 500;
+  margin-bottom: 20px;
 }
 
-.content .statement {
+.content-section .statement {
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 24px;
+  color: var(--ink);
+}
+
+.content-section p {
+  line-height: 1.7;
+  font-weight: 300;
+  color: var(--muted);
 }
 
 /* ===== Contact Info ===== */
@@ -130,46 +133,35 @@ html, body {
 }
 </style>
 </head>
-
 <body>
 
-<!-- MASO + Choice Buttons -->
-<section id="maso" class="chamber active">
-  <div>
-    <h1>MASO</h1>
-    <div class="buttons">
-      <div class="button" onclick="showContent('works')">WORKS</div>
-      <div class="button" onclick="showContent('author')">AUTHOR</div>
-    </div>
+<header id="header">
+  <h1>MASO</h1>
+  <div class="buttons">
+    <div class="button" onclick="showContent('works')">WORKS</div>
+    <div class="button" onclick="showContent('author')">AUTHOR</div>
   </div>
+</header>
+
+<section id="works" class="content-section">
+  <div class="title">WORKS</div>
+  <div class="statement">Sound given permanence</div>
+  <p>
+    Each piece is conceived as an architectural sound object.<br><br>
+    Built individually and integrated into space.<br><br>
+    Not products — works intended to endure and exist as permanent architectural sound forms.
+  </p>
 </section>
 
-<!-- WORKS Content -->
-<section id="works" class="chamber">
-  <div class="content">
-    <div class="title">WORKS</div>
-    <div class="statement">Sound given permanence</div>
-    <p>
-      Each piece is conceived as an architectural sound object.<br><br>
-      Built individually and integrated into space.<br><br>
-      Not products — works intended to endure and to exist as permanent architectural sound forms.
-    </p>
-  </div>
+<section id="author" class="content-section">
+  <div class="title">AUTHOR</div>
+  <p>
+    Guy Traviss is the maker behind MASO.<br><br>
+    A practice situated between music, research, and the construction of objects.<br><br>
+    Each work emerges from the same authorship, reflecting a singular vision and presence.
+  </p>
 </section>
 
-<!-- AUTHOR Content -->
-<section id="author" class="chamber">
-  <div class="content">
-    <div class="title">AUTHOR</div>
-    <p>
-      Guy Traviss is the maker behind MASO.<br><br>
-      A practice situated between music, research, and the construction of objects.<br><br>
-      Each work emerges from the same authorship, reflecting a singular vision and presence.
-    </p>
-  </div>
-</section>
-
-<!-- Contact Info -->
 <div class="contact">
   <a href="mailto:contact@maso.design">contact@maso.design</a> &nbsp;|&nbsp;
   <a href="https://www.maso-design.com" target="_blank">www.maso-design.com</a>
@@ -177,8 +169,11 @@ html, body {
 
 <script>
 function showContent(id) {
-  document.querySelectorAll('.chamber').forEach(c => c.classList.remove('active'));
-  document.getElementById('maso').classList.add('active'); // MASO stays visible
+  // Fade out header (MASO + buttons)
+  document.getElementById('header').classList.add('hidden');
+
+  // Show the chosen content
+  document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 </script>
