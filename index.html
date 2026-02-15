@@ -18,11 +18,10 @@
     height: 100%;
     background: var(--paper);
     color: var(--ink);
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow: hidden;
   }
 
-  /* ===== Chambers ===== */
   .chamber {
     position: absolute;
     inset: 0;
@@ -42,52 +41,30 @@
 
   /* ===== MASO Screen ===== */
   #maso h1 {
-    font-size: clamp(48px, 10vw, 120px);
-    font-weight: normal;
-    letter-spacing: 0.18em;
-    margin-bottom: 40px;
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    margin-bottom: 20px;
     cursor: pointer;
+    text-transform: uppercase;
   }
 
-  /* Subtle arrow cue */
   .enter-mark {
-    width: 120px;
-    height: 24px;
-    margin: 0 auto;
-    position: relative;
-    opacity: 0.55;
+    font-size: 18px;
+    letter-spacing: 0.25em;
+    font-weight: 400;
     cursor: pointer;
+    opacity: 0.6;
     transition: opacity 0.3s ease;
+    text-transform: uppercase;
   }
 
-  .enter-mark:hover { opacity: 0.9; }
+  .enter-mark:hover { opacity: 1; }
 
-  .enter-mark::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: var(--ink);
-  }
-
-  .enter-mark::after {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    border-right: 1px solid var(--ink);
-    border-bottom: 1px solid var(--ink);
-    transform: translateX(-50%) rotate(45deg);
-  }
-
-  /* ===== Statement Screen ===== */
+  /* ===== Statement ===== */
   #statement h2 {
-    font-size: clamp(22px, 4vw, 40px);
-    font-weight: normal;
+    font-size: clamp(20px, 3.5vw, 36px);
+    font-weight: 300;
     letter-spacing: 0.08em;
     margin-bottom: 60px;
   }
@@ -95,8 +72,9 @@
   .doors {
     display: flex;
     gap: 80px;
-    font-size: clamp(16px, 2.2vw, 22px);
+    font-size: clamp(16px, 2vw, 22px);
     letter-spacing: 0.18em;
+    font-weight: 300;
   }
 
   .door {
@@ -108,18 +86,15 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -6px;
+    bottom: -4px;
     width: 0;
     height: 1px;
     background: var(--ink);
     transition: width 0.4s ease;
   }
 
-  .door:hover::after {
-    width: 100%;
-  }
+  .door:hover::after { width: 100%; }
 
-  /* ===== Works / Author Content ===== */
   .content {
     max-width: 820px;
     line-height: 1.7;
@@ -131,9 +106,9 @@
     font-size: 28px;
     letter-spacing: 0.2em;
     margin-bottom: 30px;
+    font-weight: 300;
   }
 
-  /* ===== Minimal Back Control ===== */
   .back {
     position: absolute;
     top: 24px;
@@ -160,7 +135,7 @@
 <section id="maso" class="chamber active">
   <div onclick="go('statement')">
     <h1>MASO</h1>
-    <div class="enter-mark"></div>
+    <div class="enter-mark">ENTER</div>
   </div>
 </section>
 
