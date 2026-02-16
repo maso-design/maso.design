@@ -6,14 +6,15 @@
   <title>MASO — Architectural Audio</title>
 
   <!--
-    FONT UPLOAD INSTRUCTIONS (drop files next to this HTML):
-    Create a /fonts folder and add:
-      - NeueHaasGroteskText-Regular.woff2
-      - NeueHaasGroteskText-Medium.woff2
-      - IBMPlexSans-Regular.woff2
-      - IBMPlexMono-Regular.woff2
+    FONTS (upload as local files)
+    Put these in /fonts next to this HTML:
 
-    If you don't have Neue Haas (paid), keep the fallback stack (it will still look good).
+      fonts/NeueHaasGroteskText-Regular.woff2
+      fonts/NeueHaasGroteskText-Medium.woff2
+      fonts/IBMPlexSans-Regular.woff2
+      fonts/IBMPlexMono-Regular.woff2
+
+    If you don't have Neue Haas (paid), it will fall back to Helvetica/Arial cleanly.
   -->
 
   <style>
@@ -50,204 +51,185 @@
     }
 
     /* ---------------------------
-       Design system (type + scale)
+       White-gallery design system
     ----------------------------*/
     :root{
-      --bg:#0b0b0b;
-      --fg:#f4f4f2;
-      --muted:rgba(244,244,242,.68);
-      --hair:rgba(244,244,242,.18);
+      --bg:#ffffff;
+      --fg:#0c0c0c;
+      --muted:rgba(12,12,12,.62);
+      --hair:rgba(12,12,12,.12);
 
-      /* Font stacks:
-         NHG is best if you upload it. Otherwise it falls back cleanly. */
       --font-display: "NHG", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
       --font-body: "PlexSans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
       --font-mono: "PlexMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-      /* Type sizes (no-scroll, fullscreen) */
-      --h1: clamp(34px, 4.6vw, 68px);    /* product name */
-      --h2: clamp(18px, 1.6vw, 22px);    /* tagline */
-      --body: clamp(14px, 1.2vw, 16px);  /* paragraphs */
-      --mono: 12px;                      /* spec line */
-      --tracking-wide: .22em;
-      --tracking-mid: .10em;
+      /* Calm architectural sizing */
+      --logo: 12px;
+      --h1: clamp(30px, 4vw, 60px);
+      --sub: clamp(15px, 1.4vw, 18px);
+      --body: clamp(14px, 1.15vw, 16px);
+      --mono: 12px;
 
-      --radius: 18px;
-      --pad: clamp(16px, 3vw, 40px);
+      --track-wide: .26em;
+      --track-mid: .14em;
+
+      --pad: clamp(18px, 3.2vw, 48px);
+      --radius: 16px;
     }
 
-    /* ---------------------------
-       Global reset / layout
-    ----------------------------*/
     *{ box-sizing:border-box; }
     html, body{
       height:100%;
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      overflow:hidden; /* key: no scrolling */
+      overflow:hidden; /* no scrolling */
     }
     a{ color:inherit; text-decoration:none; }
-    button{ font:inherit; color:inherit; background:none; border:none; padding:0; }
+    button{ font:inherit; background:none; border:none; padding:0; color:inherit; }
 
     /* ---------------------------
-       Frame / header / footer
+       Fixed minimal frame UI
     ----------------------------*/
     .frame{
       position:fixed;
       inset:0;
       pointer-events:none;
+      z-index:10;
     }
+
     .topbar, .bottombar{
       position:absolute;
       left:0; right:0;
       padding: var(--pad);
       display:flex;
-      align-items:flex-end;
       justify-content:space-between;
       gap:16px;
       pointer-events:none;
     }
     .topbar{ top:0; align-items:flex-start; }
-    .bottombar{ bottom:0; }
+    .bottombar{ bottom:0; align-items:flex-end; }
 
-    .brand{
-      pointer-events:auto;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      max-width: 36ch;
-    }
     .logo{
-      font-family:var(--font-display);
+      pointer-events:auto;
+      font-family: var(--font-display);
       font-weight:500;
-      letter-spacing: var(--tracking-wide);
+      font-size: var(--logo);
+      letter-spacing: var(--track-wide);
       text-transform:uppercase;
-      font-size: 13px;
       line-height:1;
-      opacity:.95;
-    }
-    .strap{
-      font-family:var(--font-body);
-      font-size: 13px;
-      color:var(--muted);
-      line-height:1.3;
     }
 
-    .navmeta{
+    .navhint{
       pointer-events:auto;
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-family:var(--font-mono);
+      font-family: var(--font-mono);
       font-size: var(--mono);
-      letter-spacing:.06em;
-      color:var(--muted);
+      letter-spacing: .06em;
+      color: var(--muted);
       user-select:none;
-      white-space:nowrap;
-    }
-    .pill{
-      border:1px solid var(--hair);
-      border-radius:999px;
-      padding:8px 10px;
       display:flex;
-      gap:10px;
       align-items:center;
-      background: rgba(255,255,255,.02);
-      backdrop-filter: blur(10px);
+      gap:10px;
+      white-space:nowrap;
     }
     .kbd{
       border:1px solid var(--hair);
-      border-bottom-color: rgba(244,244,242,.32);
       border-radius: 10px;
       padding: 6px 8px;
       line-height:1;
-      color: rgba(244,244,242,.78);
-      background: rgba(255,255,255,.03);
+      color: rgba(12,12,12,.72);
+      background: rgba(0,0,0,.02);
     }
 
     .contact{
       pointer-events:auto;
-      display:flex;
-      align-items:center;
-      gap:14px;
-      font-family:var(--font-mono);
+      font-family: var(--font-mono);
       font-size: var(--mono);
       letter-spacing:.06em;
       color: var(--muted);
+      white-space:nowrap;
     }
-    .contact a{
-      border-bottom:1px solid transparent;
-    }
-    .contact a:hover{
-      border-bottom-color: rgba(244,244,242,.35);
+    .contact a{ border-bottom:1px solid transparent; }
+    .contact a:hover{ border-bottom-color: rgba(12,12,12,.25); }
+
+    .counter{
+      pointer-events:auto;
+      font-family: var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing:.06em;
+      color: var(--muted);
+      user-select:none;
+      white-space:nowrap;
     }
 
     /* ---------------------------
-       Slider
+       Slider stage
     ----------------------------*/
-    .stage{
-      height:100%;
-      width:100%;
-      position:relative;
-    }
+    .stage{ height:100%; width:100%; }
     .track{
       height:100%;
-      width:100%;
       display:flex;
-      transition: transform 700ms cubic-bezier(.2,.9,.2,1);
+      transition: transform 650ms cubic-bezier(.2,.9,.2,1);
       will-change: transform;
     }
+
     .slide{
       flex:0 0 100%;
       height:100%;
       padding: var(--pad);
+      padding-top: calc(var(--pad) + 44px);
+      padding-bottom: calc(var(--pad) + 44px);
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: clamp(18px, 3vw, 44px);
-      align-items: center;
+      grid-template-columns: 1fr 1.05fr;
+      gap: clamp(16px, 3vw, 54px);
+      align-items:center;
     }
 
-    /* Left: product content */
+    /* Left column: text */
     .content{
-      max-width: 64ch;
+      max-width: 62ch;
       display:flex;
       flex-direction:column;
-      gap: 16px;
+      gap: 14px;
     }
+
     .eyebrow{
-      font-family:var(--font-mono);
+      font-family: var(--font-mono);
       font-size: var(--mono);
-      letter-spacing: var(--tracking-wide);
+      letter-spacing: var(--track-wide);
       text-transform:uppercase;
-      color:var(--muted);
+      color: var(--muted);
     }
+
     h1{
       margin:0;
       font-family: var(--font-display);
       font-weight:500;
       font-size: var(--h1);
-      line-height: .98;
+      line-height: 1.0;
       letter-spacing: -0.01em;
     }
-    .tagline{
+
+    .sub{
       font-family: var(--font-display);
       font-weight:400;
-      font-size: var(--h2);
-      line-height:1.25;
-      color: rgba(244,244,242,.86);
+      font-size: var(--sub);
+      line-height:1.35;
+      color: rgba(12,12,12,.82);
       max-width: 48ch;
+      margin-top: 2px;
     }
+
     .desc{
       font-family: var(--font-body);
       font-size: var(--body);
-      line-height: 1.6;
+      line-height:1.65;
       color: var(--muted);
-      margin-top: 6px;
+      margin-top: 8px;
     }
 
     .specs{
-      margin-top: 10px;
+      margin-top: 14px;
       padding-top: 14px;
       border-top: 1px solid var(--hair);
       display:grid;
@@ -255,111 +237,97 @@
       gap: 10px 18px;
       font-family: var(--font-mono);
       font-size: var(--mono);
-      letter-spacing: .04em;
-      color: rgba(244,244,242,.78);
+      letter-spacing:.04em;
+      color: rgba(12,12,12,.72);
     }
     .spec{
       display:flex;
       justify-content:space-between;
       gap: 14px;
-      border-bottom: 1px solid rgba(244,244,242,.08);
       padding-bottom: 8px;
+      border-bottom: 1px solid rgba(12,12,12,.06);
     }
-    .spec span:first-child{ color: rgba(244,244,242,.60); }
+    .spec span:first-child{ color: rgba(12,12,12,.52); }
 
     .cta{
       margin-top: 14px;
       display:flex;
       gap: 12px;
-      align-items:center;
       flex-wrap:wrap;
+      align-items:center;
     }
     .btn{
       pointer-events:auto;
       display:inline-flex;
       align-items:center;
-      gap:10px;
+      justify-content:center;
       border:1px solid var(--hair);
       border-radius: 999px;
       padding: 12px 14px;
-      background: rgba(255,255,255,.03);
-      backdrop-filter: blur(10px);
-      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
       font-family: var(--font-mono);
       font-size: var(--mono);
-      letter-spacing: .08em;
+      letter-spacing: .10em;
       text-transform:uppercase;
-      color: rgba(244,244,242,.84);
+      color: rgba(12,12,12,.72);
+      background: transparent;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
       user-select:none;
     }
     .btn:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,.05);
-      border-color: rgba(244,244,242,.28);
+      border-color: rgba(12,12,12,.22);
+      background: rgba(0,0,0,.02);
     }
 
-    /* Right: image panel */
+    /* Right column: image */
     .visual{
-      height: min(78vh, 760px);
+      height: min(74vh, 760px);
       border-radius: var(--radius);
-      border:1px solid var(--hair);
+      border: 1px solid var(--hair);
       overflow:hidden;
+      background: #fafafa;
       position:relative;
-      background: rgba(255,255,255,.02);
     }
     .visual img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
-      filter: contrast(1.02) saturate(.92);
-      transform: scale(1.02);
     }
+    /* very subtle “gallery glazing” */
     .visual::after{
       content:"";
       position:absolute;
       inset:0;
-      background: radial-gradient(120% 80% at 40% 30%, rgba(255,255,255,.06), transparent 60%),
-                  linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.55));
       pointer-events:none;
+      background:
+        radial-gradient(120% 80% at 30% 20%, rgba(255,255,255,.65), transparent 45%),
+        linear-gradient(to bottom, rgba(0,0,0,.00), rgba(0,0,0,.06));
+      mix-blend-mode: multiply;
+      opacity:.55;
     }
-    .caption{
-      position:absolute;
-      left: 18px;
-      bottom: 14px;
-      right: 18px;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing:.06em;
-      color: rgba(244,244,242,.78);
-      display:flex;
-      justify-content:space-between;
-      gap: 12px;
-    }
-    .caption .finish{ opacity:.85; }
 
-    /* Dots nav (center bottom) */
+    /* Dots - minimal */
     .dots{
       pointer-events:auto;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-      position:absolute;
+      position:fixed;
       left:50%;
       bottom: calc(var(--pad) + 10px);
       transform: translateX(-50%);
+      display:flex;
+      gap: 10px;
+      z-index:11;
     }
     .dot{
       width: 28px;
       height: 2px;
-      background: rgba(244,244,242,.20);
       border-radius: 999px;
+      background: rgba(12,12,12,.14);
       cursor:pointer;
-      transition: background 220ms ease, transform 220ms ease;
+      transition: background 200ms ease, transform 200ms ease;
     }
     .dot[aria-current="true"]{
-      background: rgba(244,244,242,.70);
+      background: rgba(12,12,12,.46);
       transform: scaleX(1.08);
     }
 
@@ -367,35 +335,29 @@
     @media (max-width: 900px){
       .slide{
         grid-template-columns: 1fr;
-        align-content: start;
+        align-content:start;
+        gap: 18px;
         padding-top: calc(var(--pad) + 52px);
-        padding-bottom: calc(var(--pad) + 84px);
+        padding-bottom: calc(var(--pad) + 80px);
       }
-      .visual{
-        height: min(42vh, 420px);
-        order:-1;
-      }
-      .specs{
-        grid-template-columns: 1fr;
-      }
-      .topbar, .bottombar{
-        padding: 14px 16px;
-      }
-      .strap{ display:none; }
+      .visual{ height: min(42vh, 420px); order:-1; }
+      .specs{ grid-template-columns: 1fr; }
+      .topbar, .bottombar{ padding: 14px 16px; }
+      .navhint{ display:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="stage" aria-label="Product slider, no scroll">
+  <div class="stage" aria-label="MASO product slider">
     <div class="track" id="track">
 
       <!-- SLIDE 1 -->
-      <section class="slide" data-title="INVISIBLE SERIES" aria-label="Product 1">
+      <section class="slide" data-title="Invisible Series" aria-label="Product 1">
         <div class="content">
           <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
           <h1>Invisible Series</h1>
-          <div class="tagline">Flush, silent presence. High intelligibility without visual footprint.</div>
+          <div class="sub">Flush presence. High intelligibility without visual footprint.</div>
           <div class="desc">
             A material-forward approach to architectural sound: controlled dispersion, consistent tonality,
             and a detail language that disappears into the surface.
@@ -403,9 +365,9 @@
 
           <div class="specs">
             <div class="spec"><span>Type</span><span>Invisible wall/ceiling</span></div>
-            <div class="spec"><span>Use</span><span>Residential / gallery</span></div>
+            <div class="spec"><span>Application</span><span>Residential / gallery</span></div>
             <div class="spec"><span>Finish</span><span>Plaster / skim</span></div>
-            <div class="spec"><span>Docs</span><span>PDF / DWG</span></div>
+            <div class="spec"><span>Documents</span><span>PDF / DWG</span></div>
           </div>
 
           <div class="cta">
@@ -415,28 +377,23 @@
         </div>
 
         <div class="visual" aria-label="Product image">
-          <!-- Replace with your image file (e.g. work.jpeg) -->
           <img src="work.jpeg" alt="Invisible Series in architectural context">
-          <div class="caption">
-            <span class="finish">Finish: skim / paint</span>
-            <span>01</span>
-          </div>
         </div>
       </section>
 
       <!-- SLIDE 2 -->
-      <section class="slide" data-title="BRICK MODULES" aria-label="Product 2">
+      <section class="slide" data-title="Brick Modules" aria-label="Product 2">
         <div class="content">
           <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
           <h1>Brick Modules</h1>
-          <div class="tagline">Stackable acoustic architecture. A system that reads as structure.</div>
+          <div class="sub">Stackable acoustic architecture. A system that reads as structure.</div>
           <div class="desc">
-            Modular volumes designed for placement freedom: front/rear firing variants,
-            integrated cable routing, and tactile finishes that belong in the room.
+            Modular volumes designed for placement freedom: front/rear variants, integrated cable routing,
+            and finishes that belong in the room.
           </div>
 
           <div class="specs">
-            <div class="spec"><span>Type</span><span>Modular speaker blocks</span></div>
+            <div class="spec"><span>Type</span><span>Modular blocks</span></div>
             <div class="spec"><span>Use</span><span>Loft / retail / studio</span></div>
             <div class="spec"><span>Material</span><span>Ceramic / composite</span></div>
             <div class="spec"><span>Options</span><span>Light / acoustic hybrid</span></div>
@@ -450,29 +407,25 @@
 
         <div class="visual" aria-label="Product image">
           <img src="work.jpeg" alt="Brick Modules product image placeholder">
-          <div class="caption">
-            <span class="finish">Finish: raw / matte</span>
-            <span>02</span>
-          </div>
         </div>
       </section>
 
       <!-- SLIDE 3 -->
-      <section class="slide" data-title="ART + SUB" aria-label="Product 3">
+      <section class="slide" data-title="Art + Sub" aria-label="Product 3">
         <div class="content">
           <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
           <h1>Art + Sub</h1>
-          <div class="tagline">Low frequency as furniture — deliberate mass, calm control.</div>
+          <div class="sub">Low frequency as furniture — deliberate mass, calm control.</div>
           <div class="desc">
-            A structural base that anchors the room and the artwork above it.
-            Hidden performance, visible intention: proportioned like architecture.
+            A structural base that anchors the room and the artwork above it. Hidden performance, visible
+            intention: proportioned like architecture.
           </div>
 
           <div class="specs">
             <div class="spec"><span>Type</span><span>Subwoofer plinth</span></div>
-            <div class="spec"><span>Use</span><span>Living / listening rooms</span></div>
+            <div class="spec"><span>Use</span><span>Listening rooms</span></div>
             <div class="spec"><span>Form</span><span>Single / dual channels</span></div>
-            <div class="spec"><span>Integration</span><span>Art mounting / cable</span></div>
+            <div class="spec"><span>Integration</span><span>Art / cable routing</span></div>
           </div>
 
           <div class="cta">
@@ -483,45 +436,29 @@
 
         <div class="visual" aria-label="Product image">
           <img src="work.jpeg" alt="Art + Sub product image placeholder">
-          <div class="caption">
-            <span class="finish">Finish: patina metal</span>
-            <span>03</span>
-          </div>
         </div>
       </section>
 
     </div>
-
-    <!-- Dots -->
-    <nav class="dots" id="dots" aria-label="Slide navigation"></nav>
   </div>
 
-  <!-- Fixed frame UI -->
+  <!-- Dots -->
+  <nav class="dots" id="dots" aria-label="Slide navigation"></nav>
+
+  <!-- Frame UI -->
   <div class="frame" aria-hidden="true">
     <div class="topbar">
-      <div class="brand">
-        <div class="logo">MASO</div>
-        <div class="strap">Architectural audio objects and systems.</div>
-      </div>
-
-      <div class="navmeta">
-        <div class="pill">
-          <span>Use</span>
-          <span class="kbd">←</span>
-          <span class="kbd">→</span>
-          <span>to navigate</span>
-        </div>
+      <div class="logo">MASO</div>
+      <div class="navhint">
+        <span>Navigate</span>
+        <span class="kbd">←</span>
+        <span class="kbd">→</span>
       </div>
     </div>
 
     <div class="bottombar">
-      <div class="contact">
-        <span style="opacity:.75;">London</span>
-        <span style="opacity:.35;">/</span>
-        <a href="mailto:info@maso.design">info@maso.design</a>
-      </div>
-
-      <div class="navmeta" id="counter">01 / 03</div>
+      <div class="contact"><a href="mailto:info@maso.design">info@maso.design</a></div>
+      <div class="counter" id="counter">01 / 03</div>
     </div>
   </div>
 
@@ -560,13 +497,13 @@
         render();
       }
 
-      // Keyboard nav
+      // Keyboard
       window.addEventListener("keydown", (e) => {
         if (e.key === "ArrowRight") go(index + 1);
         if (e.key === "ArrowLeft") go(index - 1);
       });
 
-      // Basic touch swipe
+      // Touch swipe
       let x0 = null;
       window.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
       window.addEventListener("touchend", (e) => {
@@ -577,11 +514,8 @@
         x0 = null;
       }, {passive:true});
 
-      // Prevent accidental scroll on trackpads
-      window.addEventListener("wheel", (e) => {
-        // Allow very subtle trackpad movement without doing anything.
-        e.preventDefault();
-      }, {passive:false});
+      // Prevent trackpad scroll (optional)
+      window.addEventListener("wheel", (e) => { e.preventDefault(); }, {passive:false});
 
       render();
     })();
