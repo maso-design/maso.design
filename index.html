@@ -1,271 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Split Screen Layout</title>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family:'Inter', sans-serif;
-  background:#fff;
-  color:#111;
-  height:100vh;
-  overflow:hidden; /* no scrolling */
-}
+  html, body {
+    height: 100%;
+    overflow: hidden; /* No scrolling */
+    font-family: Helvetica, Arial, sans-serif;
+    background: #fff;
+    color: #000;
+  }
 
-/* ---------- STAGE 1 ---------- */
+  .container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
 
-#stage1 {
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:opacity 0.8s ease;
-}
+  /* LEFT SIDE */
+  .left {
+    width: 50%;
+    padding: 6vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
 
-#logo-main {
-  font-size: clamp(32px,5vw,56px);
-  font-weight:700;
-  letter-spacing:0.18em;
-}
+  .menu {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 3rem;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
 
-/* ---------- CONTACT / IMPRINT ---------- */
+  .menu span {
+    cursor: pointer;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+  }
 
-#imprint {
-  position:fixed;
-  bottom:36px;
-  left:50%;
-  transform:translateX(-50%);
-  text-align:center;
-  font-size:12px;
-  color:#444;
-  transition:all 0.7s ease;
-}
+  .menu span:hover,
+  .menu span.active {
+    opacity: 1;
+  }
 
-.reading #imprint {
-  left:64px;
-  transform:none;
-  text-align:left;
-}
+  .text {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    max-width: 42ch;
+  }
 
-/* ---------- CHOICE ---------- */
+  /* CONTACT */
+  .contact {
+    position: absolute;
+    bottom: 2rem;
+    left: 6vw;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
 
-#stage2 {
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:32px;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.6s ease;
-}
+  /* RIGHT SIDE */
+  .right {
+    width: 50%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: #f2f2f2;
+  }
 
-.choice {
-  font-size:clamp(28px,4vw,36px);
-  font-weight:700;
-  letter-spacing:0.12em;
-  cursor:pointer;
-  transition:opacity 0.3s, transform 0.7s ease;
-}
+  .media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
 
-.choice:hover { opacity:0.45; }
-
-/* ---------- MASO ANCHOR ---------- */
-
-#logo-small {
-  position:fixed;
-  top:48px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:24px;
-  font-weight:700;
-  letter-spacing:0.18em;
-  opacity:0;
-  transition:opacity 0.6s ease;
-}
-
-/* ---------- SELECTED WORD ---------- */
-
-#section-title {
-  position:fixed;
-  top:120px;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:38px;
-  font-weight:700;
-  letter-spacing:0.08em;
-  opacity:0;
-  transition:all 0.7s ease;
-}
-
-.reading #section-title {
-  left:64px;
-  transform:none; /* horizontal only */
-  opacity:1;
-}
-
-/* Horizontal line under heading */
-
-#line {
-  width:80px;
-  height:2px;
-  background:#111;
-  margin-top:12px;
-  opacity:0;
-  transition:opacity 0.5s ease;
-}
-
-.reading #line {
-  opacity:1;
-}
-
-/* ---------- SPLIT SCREEN ---------- */
-
-/* Left content */
-#content-left {
-  position:fixed;
-  top:160px;
-  left:64px;
-  width:50%;
-  height: calc(100vh - 160px - 36px); /* fully contained */
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.7s ease;
-  overflow:hidden; /* no scroll */
-}
-
-#content-left p {
-  font-size:18px;
-  line-height:1.75;
-  font-weight:300;
-  margin-top:0;
-}
-
-/* Right media panel */
-#content-right {
-  position:fixed;
-  top:160px;
-  right:0;
-  width:50%;
-  height: calc(100vh - 160px);
-  background:#eee;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 0.7s ease;
-  overflow:hidden;
-}
-
-#content-right img, #content-right video {
-  max-width:90%;
-  max-height:90%;
-  object-fit:contain;
-}
-
-/* Navigation below left text */
-#content-nav {
-  margin-top:42px;
-  font-size:18px;
-  letter-spacing:0.12em;
-}
-
-#content-nav span {
-  margin-right:28px;
-  cursor:pointer;
-  transition:opacity 0.3s;
-}
-
-#content-nav span:hover { opacity:0.45; }
-
-/* ---------- STATES ---------- */
-
-.show-stage2 #stage1 { opacity:0; pointer-events:none; }
-.show-stage2 #stage2 { opacity:1; pointer-events:auto; }
-
-.show-content #stage2 { opacity:0; pointer-events:none; }
-.show-content #logo-small { opacity:1; }
-.show-content #content-left { opacity:1; pointer-events:auto; }
-.show-content #content-right { opacity:1; pointer-events:auto; }
-
+  .media.active {
+    opacity: 1;
+  }
 </style>
 </head>
+
 <body>
+<div class="container">
 
-<!-- STAGE 1 -->
-<div id="stage1">
-  <div id="logo-main">MASO</div>
-</div>
+  <!-- LEFT -->
+  <div class="left">
 
-<!-- CONTACT INFO -->
-<div id="imprint">
-  contact@maso.design<br>
-  www.maso-design.com
-</div>
+    <div class="menu">
+      <span data-target="author">AUTHOR</span>
+      <span data-target="works">WORKS</span>
+      <span data-target="contact">CONTACT</span>
+    </div>
 
-<!-- CHOICE -->
-<div id="stage2">
-  <div class="choice" onclick="selectSection('WORKS')">WORKS</div>
-  <div class="choice" onclick="selectSection('AUTHOR')">AUTHOR</div>
-</div>
+    <div class="text" id="text">
+      Select a section to view information.
+    </div>
 
-<!-- MASO -->
-<div id="logo-small">MASO</div>
+    <div class="contact" id="footer">
+      info@yourdomain.com<br>
+      www.yourdomain.com
+    </div>
 
-<!-- SELECTED WORD -->
-<div id="section-title"></div>
-<div id="line"></div>
-
-<!-- LEFT CONTENT -->
-<div id="content-left">
-  <p id="text"></p>
-  <div id="content-nav">
-    <span onclick="selectSection('WORKS')">WORKS</span>
-    <span onclick="selectSection('AUTHOR')">AUTHOR</span>
   </div>
-</div>
 
-<!-- RIGHT MEDIA PANEL -->
-<div id="content-right">
-  <img id="media" src="https://via.placeholder.com/400x400.png?text=Media+Placeholder" alt="Media">
+  <!-- RIGHT -->
+  <div class="right">
+
+    <!-- AUTHOR (no image yet — placeholder) -->
+    <img class="media" id="author" src="" alt="Author" />
+
+    <!-- WORKS (your uploaded image) -->
+    <img class="media" id="works" src="work.jpeg" alt="Work" />
+
+    <!-- CONTACT (optional image) -->
+    <img class="media" id="contact" src="" alt="Contact" />
+
+  </div>
+
 </div>
 
 <script>
-const stage1 = document.getElementById("stage1");
-const title = document.getElementById("section-title");
-const text = document.getElementById("text");
-const media = document.getElementById("media");
+  const menuItems = document.querySelectorAll('.menu span');
+  const text = document.getElementById('text');
+  const footer = document.getElementById('footer');
+  const media = document.querySelectorAll('.media');
 
-stage1.onclick = () => {
-  document.body.classList.add("show-stage2");
-};
+  const content = {
+    author: {
+      text: "Author information goes here. You can describe background, philosophy, or biography.",
+      footerLeft: true
+    },
+    works: {
+      text: "Selected works or projects description. This image on the right should now display your uploaded file.",
+      footerLeft: true
+    },
+    contact: {
+      text: "Contact details, representation, or inquiries.",
+      footerLeft: true
+    }
+  };
 
-function selectSection(section) {
-  document.body.classList.add("show-content");
-  document.body.classList.add("reading");
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
 
-  title.textContent = section;
+      // Active menu state
+      menuItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
 
-  if(section === "WORKS") {
-    text.textContent = "MASO develops architectural loudspeakers conceived as permanent objects. Each work is designed as both instrument and structure, integrating sound into space with clarity, restraint, and longevity.";
-    media.src = "https://via.placeholder.com/400x400.png?text=WORKS";
-  } else {
-    text.textContent = "Guy Traviss is a classical guitarist, designer, and researcher whose work explores the intersection of sound, architecture, and permanence, treating loudspeakers not as consumer devices but as enduring cultural objects.";
-    media.src = "https://via.placeholder.com/400x400.png?text=AUTHOR";
-  }
-}
+      const target = item.dataset.target;
+
+      // Update text
+      text.textContent = content[target].text;
+
+      // Move footer to bottom-left when active
+      footer.style.left = "6vw";
+
+      // Show corresponding media
+      media.forEach(m => m.classList.remove('active'));
+      const activeMedia = document.getElementById(target);
+      if (activeMedia) activeMedia.classList.add('active');
+    });
+  });
 </script>
-
 </body>
 </html>
