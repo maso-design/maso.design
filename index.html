@@ -6,7 +6,7 @@
   <title>MASO — Architectural Audio</title>
 
   <!--
-    FONTS (upload as local files)
+    OPTIONAL LOCAL FONTS (recommended)
     Put these in /fonts next to this HTML:
 
       fonts/NeueHaasGroteskText-Regular.woff2
@@ -14,12 +14,11 @@
       fonts/IBMPlexSans-Regular.woff2
       fonts/IBMPlexMono-Regular.woff2
 
-    If you don't have Neue Haas (paid), it will fall back to Helvetica/Arial cleanly.
+    If you don’t have Neue Haas, the fallback stack still reads very architectural.
   -->
-
   <style>
     /* ---------------------------
-       Font faces (local uploads)
+       Local font faces
     ----------------------------*/
     @font-face{
       font-family:"NHG";
@@ -51,60 +50,58 @@
     }
 
     /* ---------------------------
-       White-gallery design system
+       White-gallery system
     ----------------------------*/
     :root{
       --bg:#ffffff;
-      --fg:#0c0c0c;
-      --muted:rgba(12,12,12,.62);
-      --hair:rgba(12,12,12,.12);
+      --fg:#0b0b0b;
+      --muted:rgba(11,11,11,.58);
+      --hair:rgba(11,11,11,.12);
 
-      --font-display: "NHG", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
-      --font-body: "PlexSans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-      --font-mono: "PlexMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --display: "NHG","Helvetica Neue",Helvetica,Arial,system-ui,-apple-system,"Segoe UI",sans-serif;
+      --body: "PlexSans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+      --mono: "PlexMono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
 
-      /* Calm architectural sizing */
+      --pad: clamp(16px, 3.2vw, 52px);
+
       --logo: 12px;
-      --h1: clamp(30px, 4vw, 60px);
-      --sub: clamp(15px, 1.4vw, 18px);
-      --body: clamp(14px, 1.15vw, 16px);
-      --mono: 12px;
+      --title: clamp(18px, 2.1vw, 24px);
+      --text: clamp(14px, 1.12vw, 16px);
+      --monoSize: 12px;
 
-      --track-wide: .26em;
-      --track-mid: .14em;
+      --trackWide: .28em;
+      --trackMid: .12em;
 
-      --pad: clamp(18px, 3.2vw, 48px);
-      --radius: 16px;
+      --radius: 18px;
     }
 
     *{ box-sizing:border-box; }
-    html, body{
+    html,body{
       height:100%;
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      overflow:hidden; /* no scrolling */
+      overflow:hidden; /* no scroll */
     }
     a{ color:inherit; text-decoration:none; }
-    button{ font:inherit; background:none; border:none; padding:0; color:inherit; }
+    button{ font:inherit; color:inherit; background:none; border:none; padding:0; }
 
     /* ---------------------------
-       Fixed minimal frame UI
+       Frame UI (extremely quiet)
     ----------------------------*/
     .frame{
       position:fixed;
       inset:0;
       pointer-events:none;
-      z-index:10;
+      z-index:20;
     }
-
-    .topbar, .bottombar{
+    .topbar,.bottombar{
       position:absolute;
       left:0; right:0;
       padding: var(--pad);
       display:flex;
       justify-content:space-between;
-      gap:16px;
+      gap:18px;
       pointer-events:none;
     }
     .topbar{ top:0; align-items:flex-start; }
@@ -112,202 +109,258 @@
 
     .logo{
       pointer-events:auto;
-      font-family: var(--font-display);
+      font-family:var(--display);
       font-weight:500;
-      font-size: var(--logo);
-      letter-spacing: var(--track-wide);
+      font-size:var(--logo);
+      letter-spacing:var(--trackWide);
       text-transform:uppercase;
       line-height:1;
+      user-select:none;
     }
 
-    .navhint{
+    .menu{
       pointer-events:auto;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing: .06em;
-      color: var(--muted);
-      user-select:none;
       display:flex;
+      gap:16px;
       align-items:center;
-      gap:10px;
+      font-family:var(--mono);
+      font-size:var(--monoSize);
+      letter-spacing:.08em;
+      color:var(--muted);
+      user-select:none;
       white-space:nowrap;
+    }
+    .menu a{
+      border-bottom:1px solid transparent;
+      padding-bottom:2px;
+    }
+    .menu a:hover{ border-bottom-color: rgba(11,11,11,.22); }
+
+    .hint{
+      pointer-events:auto;
+      font-family:var(--mono);
+      font-size:var(--monoSize);
+      letter-spacing:.08em;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
+      display:flex;
+      gap:10px;
+      align-items:center;
     }
     .kbd{
       border:1px solid var(--hair);
-      border-radius: 10px;
-      padding: 6px 8px;
+      border-radius:10px;
+      padding:6px 8px;
       line-height:1;
-      color: rgba(12,12,12,.72);
       background: rgba(0,0,0,.02);
+      color: rgba(11,11,11,.66);
     }
 
     .contact{
       pointer-events:auto;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing:.06em;
-      color: var(--muted);
+      font-family:var(--mono);
+      font-size:var(--monoSize);
+      letter-spacing:.08em;
+      color:var(--muted);
       white-space:nowrap;
     }
-    .contact a{ border-bottom:1px solid transparent; }
-    .contact a:hover{ border-bottom-color: rgba(12,12,12,.25); }
+    .contact a{ border-bottom:1px solid transparent; padding-bottom:2px; }
+    .contact a:hover{ border-bottom-color: rgba(11,11,11,.22); }
 
     .counter{
       pointer-events:auto;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing:.06em;
-      color: var(--muted);
+      font-family:var(--mono);
+      font-size:var(--monoSize);
+      letter-spacing:.08em;
+      color:var(--muted);
       user-select:none;
       white-space:nowrap;
     }
 
     /* ---------------------------
-       Slider stage
+       Stage + track
     ----------------------------*/
     .stage{ height:100%; width:100%; }
     .track{
       height:100%;
       display:flex;
-      transition: transform 650ms cubic-bezier(.2,.9,.2,1);
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1);
       will-change: transform;
     }
-
-    .slide{
+    .panel{
       flex:0 0 100%;
       height:100%;
       padding: var(--pad);
       padding-top: calc(var(--pad) + 44px);
-      padding-bottom: calc(var(--pad) + 44px);
+      padding-bottom: calc(var(--pad) + 64px);
       display:grid;
-      grid-template-columns: 1fr 1.05fr;
-      gap: clamp(16px, 3vw, 54px);
-      align-items:center;
+      grid-template-rows: 1fr auto;
+      gap: 18px;
     }
 
-    /* Left column: text */
-    .content{
-      max-width: 62ch;
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
-
-    .eyebrow{
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing: var(--track-wide);
-      text-transform:uppercase;
-      color: var(--muted);
-    }
-
-    h1{
-      margin:0;
-      font-family: var(--font-display);
-      font-weight:500;
-      font-size: var(--h1);
-      line-height: 1.0;
-      letter-spacing: -0.01em;
-    }
-
-    .sub{
-      font-family: var(--font-display);
-      font-weight:400;
-      font-size: var(--sub);
-      line-height:1.35;
-      color: rgba(12,12,12,.82);
-      max-width: 48ch;
-      margin-top: 2px;
-    }
-
-    .desc{
-      font-family: var(--font-body);
-      font-size: var(--body);
-      line-height:1.65;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    .specs{
-      margin-top: 14px;
-      padding-top: 14px;
-      border-top: 1px solid var(--hair);
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 18px;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing:.04em;
-      color: rgba(12,12,12,.72);
-    }
-    .spec{
-      display:flex;
-      justify-content:space-between;
-      gap: 14px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(12,12,12,.06);
-    }
-    .spec span:first-child{ color: rgba(12,12,12,.52); }
-
-    .cta{
-      margin-top: 14px;
-      display:flex;
-      gap: 12px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .btn{
-      pointer-events:auto;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border:1px solid var(--hair);
-      border-radius: 999px;
-      padding: 12px 14px;
-      font-family: var(--font-mono);
-      font-size: var(--mono);
-      letter-spacing: .10em;
-      text-transform:uppercase;
-      color: rgba(12,12,12,.72);
-      background: transparent;
-      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
-      user-select:none;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(12,12,12,.22);
-      background: rgba(0,0,0,.02);
-    }
-
-    /* Right column: image */
-    .visual{
-      height: min(74vh, 760px);
-      border-radius: var(--radius);
-      border: 1px solid var(--hair);
-      overflow:hidden;
-      background: #fafafa;
+    /* Image area */
+    .imageShell{
       position:relative;
+      border-radius: var(--radius);
+      overflow:hidden;
+      background:#f6f6f6;
+      border:1px solid rgba(11,11,11,.08);
     }
-    .visual img{
+    .imageShell img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
     }
-    /* very subtle “gallery glazing” */
-    .visual::after{
+    /* very subtle glazing */
+    .imageShell::after{
       content:"";
       position:absolute;
       inset:0;
       pointer-events:none;
       background:
-        radial-gradient(120% 80% at 30% 20%, rgba(255,255,255,.65), transparent 45%),
-        linear-gradient(to bottom, rgba(0,0,0,.00), rgba(0,0,0,.06));
-      mix-blend-mode: multiply;
+        radial-gradient(120% 80% at 30% 18%, rgba(255,255,255,.65), transparent 48%),
+        linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.06));
       opacity:.55;
+      mix-blend-mode:multiply;
     }
 
-    /* Dots - minimal */
+    /* Caption block (reads like gallery label) */
+    .label{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items:end;
+      padding-top: 12px;
+      border-top: 1px solid rgba(11,11,11,.10);
+    }
+    .labelLeft{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-width: 70ch;
+    }
+    .project{
+      font-family: var(--display);
+      font-weight:500;
+      font-size: var(--title);
+      letter-spacing:-.01em;
+      line-height:1.1;
+    }
+    .meta{
+      font-family: var(--mono);
+      font-size: var(--monoSize);
+      letter-spacing:.08em;
+      color: var(--muted);
+      text-transform:uppercase;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .desc{
+      font-family: var(--body);
+      font-size: var(--text);
+      line-height:1.65;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .labelRight{
+      display:flex;
+      justify-content:flex-end;
+      align-items:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      pointer-events:auto;
+      border:1px solid rgba(11,11,11,.12);
+      border-radius:999px;
+      padding: 10px 12px;
+      font-family: var(--mono);
+      font-size: var(--monoSize);
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(11,11,11,.62);
+      background: rgba(0,0,0,.01);
+      user-select:none;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+    .chip:hover{
+      transform: translateY(-1px);
+      border-color: rgba(11,11,11,.20);
+      background: rgba(0,0,0,.02);
+    }
+
+    /* About / capabilities panels (text-only) */
+    .textPanel{
+      height:100%;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(18px, 4vw, 70px);
+      align-items:center;
+      padding: var(--pad);
+      padding-top: calc(var(--pad) + 44px);
+      padding-bottom: calc(var(--pad) + 64px);
+    }
+    .block{
+      max-width: 72ch;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
+    .eyebrow{
+      font-family: var(--mono);
+      font-size: var(--monoSize);
+      letter-spacing: var(--trackWide);
+      text-transform:uppercase;
+      color: var(--muted);
+    }
+    .h1{
+      font-family: var(--display);
+      font-weight:500;
+      font-size: clamp(28px, 4vw, 54px);
+      line-height:1.02;
+      letter-spacing:-.01em;
+      margin:0;
+    }
+    .p{
+      font-family: var(--body);
+      font-size: var(--text);
+      line-height:1.75;
+      color: var(--muted);
+      margin:0;
+    }
+    .list{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+      border-top: 1px solid rgba(11,11,11,.10);
+      padding-top: 14px;
+      font-family: var(--mono);
+      font-size: var(--monoSize);
+      letter-spacing:.06em;
+      color: rgba(11,11,11,.64);
+      text-transform:uppercase;
+    }
+    .list li{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(11,11,11,.06);
+    }
+    .rightCol{
+      border:1px solid rgba(11,11,11,.08);
+      border-radius: var(--radius);
+      padding: clamp(14px, 2.6vw, 24px);
+      background: rgba(0,0,0,.01);
+    }
+
+    /* Dots (almost invisible) */
     .dots{
       pointer-events:auto;
       position:fixed;
@@ -316,209 +369,98 @@
       transform: translateX(-50%);
       display:flex;
       gap: 10px;
-      z-index:11;
+      z-index:30;
+      opacity:.55;
+      transition: opacity 200ms ease;
     }
+    .dots:hover{ opacity:1; }
     .dot{
-      width: 28px;
+      width: 26px;
       height: 2px;
       border-radius: 999px;
-      background: rgba(12,12,12,.14);
+      background: rgba(11,11,11,.12);
       cursor:pointer;
       transition: background 200ms ease, transform 200ms ease;
     }
     .dot[aria-current="true"]{
-      background: rgba(12,12,12,.46);
+      background: rgba(11,11,11,.40);
       transform: scaleX(1.08);
     }
 
     /* Mobile */
     @media (max-width: 900px){
-      .slide{
+      .hint{ display:none; }
+      .panel{ gap: 14px; }
+      .label{ grid-template-columns: 1fr; }
+      .labelRight{ justify-content:flex-start; }
+      .textPanel{
         grid-template-columns: 1fr;
         align-content:start;
         gap: 18px;
-        padding-top: calc(var(--pad) + 52px);
-        padding-bottom: calc(var(--pad) + 80px);
       }
-      .visual{ height: min(42vh, 420px); order:-1; }
-      .specs{ grid-template-columns: 1fr; }
-      .topbar, .bottombar{ padding: 14px 16px; }
-      .navhint{ display:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="stage" aria-label="MASO product slider">
+  <div class="stage" aria-label="MASO — gallery">
     <div class="track" id="track">
 
-      <!-- SLIDE 1 -->
-      <section class="slide" data-title="Invisible Series" aria-label="Product 1">
-        <div class="content">
-          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
-          <h1>Invisible Series</h1>
-          <div class="sub">Flush presence. High intelligibility without visual footprint.</div>
-          <div class="desc">
-            A material-forward approach to architectural sound: controlled dispersion, consistent tonality,
-            and a detail language that disappears into the surface.
-          </div>
-
-          <div class="specs">
-            <div class="spec"><span>Type</span><span>Invisible wall/ceiling</span></div>
-            <div class="spec"><span>Application</span><span>Residential / gallery</span></div>
-            <div class="spec"><span>Finish</span><span>Plaster / skim</span></div>
-            <div class="spec"><span>Documents</span><span>PDF / DWG</span></div>
-          </div>
-
-          <div class="cta">
-            <a class="btn" href="#" onclick="return false;">Download spec</a>
-            <a class="btn" href="#" onclick="return false;">Request quote</a>
-          </div>
+      <!-- PROJECT 1 -->
+      <section class="panel" data-title="Private Residence — London" aria-label="Project 1">
+        <div class="imageShell" aria-label="Project image">
+          <!-- Replace these with real project photography -->
+          <img src="work.jpeg" alt="Private residence — integrated architectural audio">
         </div>
 
-        <div class="visual" aria-label="Product image">
-          <img src="work.jpeg" alt="Invisible Series in architectural context">
+        <div class="label" aria-label="Project label">
+          <div class="labelLeft">
+            <div class="project">Private Residence — London</div>
+            <div class="meta">
+              <span>INVISIBLE INTEGRATION</span><span>•</span>
+              <span>LIME PLASTER</span><span>•</span>
+              <span>2026</span>
+            </div>
+            <div class="desc">
+              Sound designed into surfaces. No visible hardware. A quiet, even field with high speech clarity,
+              tuned for the room’s materials and proportions.
+            </div>
+          </div>
+          <div class="labelRight">
+            <a class="chip" href="#" onclick="return false;">Enquire</a>
+            <a class="chip" href="#" onclick="return false;">Downloads</a>
+          </div>
         </div>
       </section>
 
-      <!-- SLIDE 2 -->
-      <section class="slide" data-title="Brick Modules" aria-label="Product 2">
-        <div class="content">
-          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
-          <h1>Brick Modules</h1>
-          <div class="sub">Stackable acoustic architecture. A system that reads as structure.</div>
-          <div class="desc">
-            Modular volumes designed for placement freedom: front/rear variants, integrated cable routing,
-            and finishes that belong in the room.
-          </div>
-
-          <div class="specs">
-            <div class="spec"><span>Type</span><span>Modular blocks</span></div>
-            <div class="spec"><span>Use</span><span>Loft / retail / studio</span></div>
-            <div class="spec"><span>Material</span><span>Ceramic / composite</span></div>
-            <div class="spec"><span>Options</span><span>Light / acoustic hybrid</span></div>
-          </div>
-
-          <div class="cta">
-            <a class="btn" href="#" onclick="return false;">View finishes</a>
-            <a class="btn" href="#" onclick="return false;">Book demo</a>
-          </div>
+      <!-- PROJECT 2 -->
+      <section class="panel" data-title="Gallery Space — Tokyo" aria-label="Project 2">
+        <div class="imageShell" aria-label="Project image">
+          <img src="work.jpeg" alt="Gallery space — discreet audio integration">
         </div>
 
-        <div class="visual" aria-label="Product image">
-          <img src="work.jpeg" alt="Brick Modules product image placeholder">
+        <div class="label" aria-label="Project label">
+          <div class="labelLeft">
+            <div class="project">Gallery Space — Tokyo</div>
+            <div class="meta">
+              <span>CONTROLLED DISPERSION</span><span>•</span>
+              <span>LOW VISUAL FOOTPRINT</span><span>•</span>
+              <span>2026</span>
+            </div>
+            <div class="desc">
+              Coverage shaped for circulation. Minimal intervention in the architecture, maximum intelligibility.
+              A system that disappears into the interior language.
+            </div>
+          </div>
+          <div class="labelRight">
+            <a class="chip" href="#" onclick="return false;">Enquire</a>
+            <a class="chip" href="#" onclick="return false;">Downloads</a>
+          </div>
         </div>
       </section>
 
-      <!-- SLIDE 3 -->
-      <section class="slide" data-title="Art + Sub" aria-label="Product 3">
-        <div class="content">
-          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
-          <h1>Art + Sub</h1>
-          <div class="sub">Low frequency as furniture — deliberate mass, calm control.</div>
-          <div class="desc">
-            A structural base that anchors the room and the artwork above it. Hidden performance, visible
-            intention: proportioned like architecture.
-          </div>
-
-          <div class="specs">
-            <div class="spec"><span>Type</span><span>Subwoofer plinth</span></div>
-            <div class="spec"><span>Use</span><span>Listening rooms</span></div>
-            <div class="spec"><span>Form</span><span>Single / dual channels</span></div>
-            <div class="spec"><span>Integration</span><span>Art / cable routing</span></div>
-          </div>
-
-          <div class="cta">
-            <a class="btn" href="#" onclick="return false;">Download spec</a>
-            <a class="btn" href="#" onclick="return false;">Contact</a>
-          </div>
-        </div>
-
-        <div class="visual" aria-label="Product image">
-          <img src="work.jpeg" alt="Art + Sub product image placeholder">
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- Dots -->
-  <nav class="dots" id="dots" aria-label="Slide navigation"></nav>
-
-  <!-- Frame UI -->
-  <div class="frame" aria-hidden="true">
-    <div class="topbar">
-      <div class="logo">MASO</div>
-      <div class="navhint">
-        <span>Navigate</span>
-        <span class="kbd">←</span>
-        <span class="kbd">→</span>
-      </div>
-    </div>
-
-    <div class="bottombar">
-      <div class="contact"><a href="mailto:info@maso.design">info@maso.design</a></div>
-      <div class="counter" id="counter">01 / 03</div>
-    </div>
-  </div>
-
-  <script>
-    (function(){
-      const track = document.getElementById("track");
-      const slides = Array.from(track.querySelectorAll(".slide"));
-      const dotsWrap = document.getElementById("dots");
-      const counter = document.getElementById("counter");
-
-      let index = 0;
-
-      // Build dots
-      slides.forEach((s, i) => {
-        const d = document.createElement("button");
-        d.className = "dot";
-        d.type = "button";
-        d.setAttribute("aria-label", "Go to slide " + (i+1));
-        d.addEventListener("click", () => go(i));
-        dotsWrap.appendChild(d);
-      });
-
-      function render(){
-        track.style.transform = `translateX(${-index * 100}%)`;
-        Array.from(dotsWrap.children).forEach((d, i) => {
-          d.setAttribute("aria-current", i === index ? "true" : "false");
-        });
-        const a = String(index + 1).padStart(2, "0");
-        const b = String(slides.length).padStart(2, "0");
-        counter.textContent = `${a} / ${b}`;
-        document.title = `MASO — ${slides[index].dataset.title || "Product"}`;
-      }
-
-      function go(i){
-        index = Math.max(0, Math.min(slides.length - 1, i));
-        render();
-      }
-
-      // Keyboard
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight") go(index + 1);
-        if (e.key === "ArrowLeft") go(index - 1);
-      });
-
-      // Touch swipe
-      let x0 = null;
-      window.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
-      window.addEventListener("touchend", (e) => {
-        if (x0 === null) return;
-        const x1 = e.changedTouches[0].clientX;
-        const dx = x1 - x0;
-        if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
-        x0 = null;
-      }, {passive:true});
-
-      // Prevent trackpad scroll (optional)
-      window.addEventListener("wheel", (e) => { e.preventDefault(); }, {passive:false});
-
-      render();
-    })();
-  </script>
-</body>
-</html>
+      <!-- APPROACH (TEXT PANEL) -->
+      <section class="textPanel" data-title="Approach" aria-label="Approach">
+        <div class="block">
+          <div class="eyebrow">MASO / APPROACH</div>
+          <h2 class="h1">Architectural sound,
