@@ -3,464 +3,402 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MASO — Architectural Audio</title>
+  <title>MASO</title>
 
-  <!--
-    OPTIONAL LOCAL FONTS (recommended)
-    Put these in /fonts next to this HTML:
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
-      fonts/NeueHaasGroteskText-Regular.woff2
-      fonts/NeueHaasGroteskText-Medium.woff2
-      fonts/IBMPlexSans-Regular.woff2
-      fonts/IBMPlexMono-Regular.woff2
-
-    If you don’t have Neue Haas, the fallback stack still reads very architectural.
-  -->
   <style>
-    /* ---------------------------
-       Local font faces
-    ----------------------------*/
-    @font-face{
-      font-family:"NHG";
-      src:url("fonts/NeueHaasGroteskText-Regular.woff2") format("woff2");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"NHG";
-      src:url("fonts/NeueHaasGroteskText-Medium.woff2") format("woff2");
-      font-weight:500;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"PlexSans";
-      src:url("fonts/IBMPlexSans-Regular.woff2") format("woff2");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"PlexMono";
-      src:url("fonts/IBMPlexMono-Regular.woff2") format("woff2");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-
-    /* ---------------------------
-       White-gallery system
-    ----------------------------*/
     :root{
       --bg:#ffffff;
-      --fg:#0b0b0b;
-      --muted:rgba(11,11,11,.58);
+      --ink:#0b0b0b;
+      --muted:rgba(11,11,11,.56);
       --hair:rgba(11,11,11,.12);
 
-      --display: "NHG","Helvetica Neue",Helvetica,Arial,system-ui,-apple-system,"Segoe UI",sans-serif;
-      --body: "PlexSans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-      --mono: "PlexMono",ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --font: Inter, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
 
-      --pad: clamp(16px, 3.2vw, 52px);
-
-      --logo: 12px;
-      --title: clamp(18px, 2.1vw, 24px);
-      --text: clamp(14px, 1.12vw, 16px);
-      --monoSize: 12px;
-
-      --trackWide: .28em;
-      --trackMid: .12em;
-
+      --pad: clamp(16px, 3vw, 44px);
       --radius: 18px;
+
+      --label: 12px;
+      --text: 16px;
+      --lead: clamp(18px, 2.0vw, 26px);
+
+      --t: 780ms;
+      --ease: cubic-bezier(.2,.9,.2,1);
     }
 
     *{ box-sizing:border-box; }
-    html,body{
+    html, body{
       height:100%;
       margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      overflow:hidden; /* no scroll */
+      overflow:hidden;
+      background:#f2f2f2;
+      color:var(--ink);
+      font-family:var(--font);
     }
     a{ color:inherit; text-decoration:none; }
-    button{ font:inherit; color:inherit; background:none; border:none; padding:0; }
+    button{ font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; }
 
-    /* ---------------------------
-       Frame UI (extremely quiet)
-    ----------------------------*/
-    .frame{
+    /* Outer “card” */
+    .shell{
       position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:20;
-    }
-    .topbar,.bottombar{
-      position:absolute;
-      left:0; right:0;
-      padding: var(--pad);
-      display:flex;
-      justify-content:space-between;
-      gap:18px;
-      pointer-events:none;
-    }
-    .topbar{ top:0; align-items:flex-start; }
-    .bottombar{ bottom:0; align-items:flex-end; }
-
-    .logo{
-      pointer-events:auto;
-      font-family:var(--display);
-      font-weight:500;
-      font-size:var(--logo);
-      letter-spacing:var(--trackWide);
-      text-transform:uppercase;
-      line-height:1;
-      user-select:none;
-    }
-
-    .menu{
-      pointer-events:auto;
-      display:flex;
-      gap:16px;
-      align-items:center;
-      font-family:var(--mono);
-      font-size:var(--monoSize);
-      letter-spacing:.08em;
-      color:var(--muted);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .menu a{
-      border-bottom:1px solid transparent;
-      padding-bottom:2px;
-    }
-    .menu a:hover{ border-bottom-color: rgba(11,11,11,.22); }
-
-    .hint{
-      pointer-events:auto;
-      font-family:var(--mono);
-      font-size:var(--monoSize);
-      letter-spacing:.08em;
-      color:var(--muted);
-      user-select:none;
-      white-space:nowrap;
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .kbd{
-      border:1px solid var(--hair);
-      border-radius:10px;
-      padding:6px 8px;
-      line-height:1;
-      background: rgba(0,0,0,.02);
-      color: rgba(11,11,11,.66);
-    }
-
-    .contact{
-      pointer-events:auto;
-      font-family:var(--mono);
-      font-size:var(--monoSize);
-      letter-spacing:.08em;
-      color:var(--muted);
-      white-space:nowrap;
-    }
-    .contact a{ border-bottom:1px solid transparent; padding-bottom:2px; }
-    .contact a:hover{ border-bottom-color: rgba(11,11,11,.22); }
-
-    .counter{
-      pointer-events:auto;
-      font-family:var(--mono);
-      font-size:var(--monoSize);
-      letter-spacing:.08em;
-      color:var(--muted);
-      user-select:none;
-      white-space:nowrap;
-    }
-
-    /* ---------------------------
-       Stage + track
-    ----------------------------*/
-    .stage{ height:100%; width:100%; }
-    .track{
-      height:100%;
-      display:flex;
-      transition: transform 700ms cubic-bezier(.2,.9,.2,1);
-      will-change: transform;
-    }
-    .panel{
-      flex:0 0 100%;
-      height:100%;
-      padding: var(--pad);
-      padding-top: calc(var(--pad) + 44px);
-      padding-bottom: calc(var(--pad) + 64px);
-      display:grid;
-      grid-template-rows: 1fr auto;
-      gap: 18px;
-    }
-
-    /* Image area */
-    .imageShell{
-      position:relative;
+      inset: clamp(10px, 2.2vw, 18px);
       border-radius: var(--radius);
       overflow:hidden;
-      background:#f6f6f6;
-      border:1px solid rgba(11,11,11,.08);
+      background: var(--bg);
+      box-shadow: 0 22px 60px rgba(0,0,0,.12);
     }
-    .imageShell img{
-      width:100%;
+
+    /* Main split */
+    .layout{
       height:100%;
-      object-fit:cover;
-      display:block;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
     }
-    /* very subtle glazing */
-    .imageShell::after{
+
+    /* LEFT — image field */
+    .field{
+      position:relative;
+      background:#e9e9e9;
+      overflow:hidden;
+    }
+
+    .imgStack{
+      position:absolute;
+      inset:0;
+    }
+
+    .img{
+      position:absolute;
+      inset:-2%;
+      background-size:cover;
+      background-position:center;
+      transform: translateX(0) scale(1.02);
+      opacity:0;
+      transition:
+        opacity var(--t) var(--ease),
+        transform var(--t) var(--ease);
+      will-change: transform, opacity;
+      filter: saturate(.96) contrast(1.02);
+    }
+    .img.is-active{
+      opacity:1;
+    }
+
+    /* Architectural “move between rooms” motion */
+    .shell.is-work .img--work{
+      transform: translateX(0) scale(1.03);
+    }
+    .shell.is-work .img--author{
+      transform: translateX(-3.5%) scale(1.06);
+    }
+    .shell.is-author .img--author{
+      transform: translateX(0) scale(1.03);
+    }
+    .shell.is-author .img--work{
+      transform: translateX(3.5%) scale(1.06);
+    }
+
+    /* subtle glazing */
+    .field::after{
       content:"";
       position:absolute;
       inset:0;
       pointer-events:none;
-      background:
-        radial-gradient(120% 80% at 30% 18%, rgba(255,255,255,.65), transparent 48%),
-        linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.06));
-      opacity:.55;
+      background: linear-gradient(to right, rgba(255,255,255,.02), rgba(255,255,255,0) 45%, rgba(0,0,0,.06));
       mix-blend-mode:multiply;
-    }
-
-    /* Caption block (reads like gallery label) */
-    .label{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      align-items:end;
-      padding-top: 12px;
-      border-top: 1px solid rgba(11,11,11,.10);
-    }
-    .labelLeft{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      max-width: 70ch;
-    }
-    .project{
-      font-family: var(--display);
-      font-weight:500;
-      font-size: var(--title);
-      letter-spacing:-.01em;
-      line-height:1.1;
-    }
-    .meta{
-      font-family: var(--mono);
-      font-size: var(--monoSize);
-      letter-spacing:.08em;
-      color: var(--muted);
-      text-transform:uppercase;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .desc{
-      font-family: var(--body);
-      font-size: var(--text);
-      line-height:1.65;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .labelRight{
-      display:flex;
-      justify-content:flex-end;
-      align-items:flex-end;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .chip{
-      pointer-events:auto;
-      border:1px solid rgba(11,11,11,.12);
-      border-radius:999px;
-      padding: 10px 12px;
-      font-family: var(--mono);
-      font-size: var(--monoSize);
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      color: rgba(11,11,11,.62);
-      background: rgba(0,0,0,.01);
-      user-select:none;
-      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
-    }
-    .chip:hover{
-      transform: translateY(-1px);
-      border-color: rgba(11,11,11,.20);
-      background: rgba(0,0,0,.02);
-    }
-
-    /* About / capabilities panels (text-only) */
-    .textPanel{
-      height:100%;
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: clamp(18px, 4vw, 70px);
-      align-items:center;
-      padding: var(--pad);
-      padding-top: calc(var(--pad) + 44px);
-      padding-bottom: calc(var(--pad) + 64px);
-    }
-    .block{
-      max-width: 72ch;
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
-    .eyebrow{
-      font-family: var(--mono);
-      font-size: var(--monoSize);
-      letter-spacing: var(--trackWide);
-      text-transform:uppercase;
-      color: var(--muted);
-    }
-    .h1{
-      font-family: var(--display);
-      font-weight:500;
-      font-size: clamp(28px, 4vw, 54px);
-      line-height:1.02;
-      letter-spacing:-.01em;
-      margin:0;
-    }
-    .p{
-      font-family: var(--body);
-      font-size: var(--text);
-      line-height:1.75;
-      color: var(--muted);
-      margin:0;
-    }
-    .list{
-      margin: 10px 0 0;
-      padding: 0;
-      list-style:none;
-      display:grid;
-      gap:10px;
-      border-top: 1px solid rgba(11,11,11,.10);
-      padding-top: 14px;
-      font-family: var(--mono);
-      font-size: var(--monoSize);
-      letter-spacing:.06em;
-      color: rgba(11,11,11,.64);
-      text-transform:uppercase;
-    }
-    .list li{
-      display:flex;
-      justify-content:space-between;
-      gap:16px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(11,11,11,.06);
-    }
-    .rightCol{
-      border:1px solid rgba(11,11,11,.08);
-      border-radius: var(--radius);
-      padding: clamp(14px, 2.6vw, 24px);
-      background: rgba(0,0,0,.01);
-    }
-
-    /* Dots (almost invisible) */
-    .dots{
-      pointer-events:auto;
-      position:fixed;
-      left:50%;
-      bottom: calc(var(--pad) + 10px);
-      transform: translateX(-50%);
-      display:flex;
-      gap: 10px;
-      z-index:30;
       opacity:.55;
-      transition: opacity 200ms ease;
     }
-    .dots:hover{ opacity:1; }
-    .dot{
-      width: 26px;
-      height: 2px;
-      border-radius: 999px;
-      background: rgba(11,11,11,.12);
-      cursor:pointer;
-      transition: background 200ms ease, transform 200ms ease;
+
+    /* RIGHT — reading panel */
+    .panel{
+      position:relative;
+      background: var(--bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: var(--pad);
     }
-    .dot[aria-current="true"]{
-      background: rgba(11,11,11,.40);
-      transform: scaleX(1.08);
+
+    .panelInner{
+      width: min(380px, 92%);
+      margin-left:auto;
+      margin-right: clamp(6px, 1.2vw, 18px);
+      display:grid;
+      gap: 22px;
+      transform: translateY(0);
+      transition: transform var(--t) var(--ease), opacity var(--t) var(--ease);
+      will-change: transform, opacity;
+    }
+
+    .shell.is-switching .panelInner{
+      opacity: .0;
+      transform: translateY(10px);
+    }
+
+    .kicker{
+      font-size: var(--label);
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+    .lead{
+      font-size: var(--lead);
+      line-height: 1.18;
+      letter-spacing: -0.01em;
+      color: rgba(11,11,11,.92);
+    }
+    .body{
+      font-size: var(--text);
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 34ch;
+    }
+
+    .links{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      font-size: var(--text);
+      line-height: 1.35;
+    }
+    .links a{
+      width:max-content;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+    }
+    .links a:hover{
+      border-bottom-color: rgba(11,11,11,.22);
+    }
+
+    /* Permanent footer */
+    .footer{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: calc(var(--pad) * .75) var(--pad);
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items:end;
+      gap: 14px;
+      pointer-events:none; /* only links/buttons opt-in */
+    }
+
+    .foot-left, .foot-center, .foot-right{
+      font-size: 12px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.62);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .foot-left{
+      justify-self:start;
+      pointer-events:auto;
+      color: rgba(11,11,11,.80);
+      letter-spacing:.22em;
+    }
+
+    .foot-center{
+      justify-self:center;
+      pointer-events:auto;
+      display:flex;
+      gap: 18px;
+      align-items:center;
+    }
+
+    .tab{
+      position:relative;
+      padding-bottom: 4px;
+      border-bottom: 1px solid transparent;
+      transition: opacity 140ms ease, border-color 140ms ease;
+      opacity:.8;
+    }
+    .tab:hover{ opacity:1; }
+    .tab[aria-current="true"]{
+      opacity:1;
+      border-bottom-color: rgba(11,11,11,.22);
+    }
+
+    .foot-right{
+      justify-self:end;
+      pointer-events:auto;
+    }
+    .foot-right a{
+      border-bottom: 1px solid transparent;
+      padding-bottom:2px;
+      color: rgba(11,11,11,.72);
+    }
+    .foot-right a:hover{
+      border-bottom-color: rgba(11,11,11,.22);
+      color: rgba(11,11,11,.88);
     }
 
     /* Mobile */
     @media (max-width: 900px){
-      .hint{ display:none; }
-      .panel{ gap: 14px; }
-      .label{ grid-template-columns: 1fr; }
-      .labelRight{ justify-content:flex-start; }
-      .textPanel{
+      .layout{
         grid-template-columns: 1fr;
-        align-content:start;
-        gap: 18px;
+        grid-template-rows: 1.08fr .92fr;
       }
+      .panelInner{
+        width: min(560px, 96%);
+        margin: 0 auto;
+      }
+      .footer{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "left right"
+          "center center";
+        align-items:center;
+        row-gap:10px;
+      }
+      .foot-left{ grid-area:left; }
+      .foot-right{ grid-area:right; justify-self:end; }
+      .foot-center{ grid-area:center; justify-self:center; }
     }
   </style>
 </head>
 
 <body>
-  <div class="stage" aria-label="MASO — gallery">
-    <div class="track" id="track">
+  <div class="shell is-work" id="shell" aria-label="MASO">
 
-      <!-- PROJECT 1 -->
-      <section class="panel" data-title="Private Residence — London" aria-label="Project 1">
-        <div class="imageShell" aria-label="Project image">
-          <!-- Replace these with real project photography -->
-          <img src="work.jpeg" alt="Private residence — integrated architectural audio">
-        </div>
-
-        <div class="label" aria-label="Project label">
-          <div class="labelLeft">
-            <div class="project">Private Residence — London</div>
-            <div class="meta">
-              <span>INVISIBLE INTEGRATION</span><span>•</span>
-              <span>LIME PLASTER</span><span>•</span>
-              <span>2026</span>
-            </div>
-            <div class="desc">
-              Sound designed into surfaces. No visible hardware. A quiet, even field with high speech clarity,
-              tuned for the room’s materials and proportions.
-            </div>
-          </div>
-          <div class="labelRight">
-            <a class="chip" href="#" onclick="return false;">Enquire</a>
-            <a class="chip" href="#" onclick="return false;">Downloads</a>
-          </div>
+    <div class="layout">
+      <!-- LEFT IMAGE FIELD -->
+      <section class="field" aria-label="Image field">
+        <div class="imgStack">
+          <div class="img img--work is-active" id="imgWork"
+               style="background-image:url('image-work.jpg');" aria-hidden="true"></div>
+          <div class="img img--author" id="imgAuthor"
+               style="background-image:url('image-author.jpg');" aria-hidden="true"></div>
         </div>
       </section>
 
-      <!-- PROJECT 2 -->
-      <section class="panel" data-title="Gallery Space — Tokyo" aria-label="Project 2">
-        <div class="imageShell" aria-label="Project image">
-          <img src="work.jpeg" alt="Gallery space — discreet audio integration">
-        </div>
+      <!-- RIGHT READING PANEL -->
+      <aside class="panel" aria-label="Reading panel">
+        <div class="panelInner" id="panelInner">
 
-        <div class="label" aria-label="Project label">
-          <div class="labelLeft">
-            <div class="project">Gallery Space — Tokyo</div>
-            <div class="meta">
-              <span>CONTROLLED DISPERSION</span><span>•</span>
-              <span>LOW VISUAL FOOTPRINT</span><span>•</span>
-              <span>2026</span>
+          <!-- WORK -->
+          <div class="view" id="viewWork">
+            <div class="kicker">Work</div>
+            <div class="lead">Bespoke architectural audio integration.</div>
+            <div class="body">
+              Sound treated as a material condition — integrated into surfaces, tuned to the space,
+              and drawn with the same restraint as the interior.
             </div>
-            <div class="desc">
-              Coverage shaped for circulation. Minimal intervention in the architecture, maximum intelligibility.
-              A system that disappears into the interior language.
+            <div class="links" aria-label="Work links">
+              <a href="#" onclick="return false;">Selected projects</a>
+              <a href="#" onclick="return false;">Approach</a>
+              <a href="#" onclick="return false;">Request spec pack</a>
             </div>
           </div>
-          <div class="labelRight">
-            <a class="chip" href="#" onclick="return false;">Enquire</a>
-            <a class="chip" href="#" onclick="return false;">Downloads</a>
-          </div>
-        </div>
-      </section>
 
-      <!-- APPROACH (TEXT PANEL) -->
-      <section class="textPanel" data-title="Approach" aria-label="Approach">
-        <div class="block">
-          <div class="eyebrow">MASO / APPROACH</div>
-          <h2 class="h1">Architectural sound,
+          <!-- AUTHOR -->
+          <div class="view" id="viewAuthor" style="display:none;">
+            <div class="kicker">Author</div>
+            <div class="lead">A studio practice at the intersection of sound and architecture.</div>
+            <div class="body">
+              MASO develops objects and systems for quiet, high-fidelity environments.
+              Research-led, finish-led, and designed for collaboration.
+            </div>
+            <div class="links" aria-label="Author links">
+              <a href="#" onclick="return false;">Biography</a>
+              <a href="#" onclick="return false;">Notes</a>
+              <a href="#" onclick="return false;">Press / enquiries</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PERMANENT FOOTER -->
+        <footer class="footer" aria-label="Permanent footer">
+          <div class="foot-left">MASO</div>
+
+          <nav class="foot-center" aria-label="Navigation">
+            <button class="tab" id="tabWork" aria-current="true" data-to="work">Work</button>
+            <button class="tab" id="tabAuthor" aria-current="false" data-to="author">Author</button>
+          </nav>
+
+          <div class="foot-right">
+            <a href="mailto:info@maso.design">info@maso.design</a>
+          </div>
+        </footer>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const shell = document.getElementById("shell");
+      const panelInner = document.getElementById("panelInner");
+
+      const imgWork = document.getElementById("imgWork");
+      const imgAuthor = document.getElementById("imgAuthor");
+
+      const viewWork = document.getElementById("viewWork");
+      const viewAuthor = document.getElementById("viewAuthor");
+
+      const tabWork = document.getElementById("tabWork");
+      const tabAuthor = document.getElementById("tabAuthor");
+
+      let current = "work";
+      let busy = false;
+
+      function setTabs(){
+        tabWork.setAttribute("aria-current", current === "work" ? "true" : "false");
+        tabAuthor.setAttribute("aria-current", current === "author" ? "true" : "false");
+      }
+
+      function setImages(){
+        imgWork.classList.toggle("is-active", current === "work");
+        imgAuthor.classList.toggle("is-active", current === "author");
+      }
+
+      function setViews(){
+        viewWork.style.display = current === "work" ? "block" : "none";
+        viewAuthor.style.display = current === "author" ? "block" : "none";
+      }
+
+      function go(next){
+        if (busy || next === current) return;
+        busy = true;
+
+        shell.classList.add("is-switching");
+
+        // Start transition
+        window.setTimeout(() => {
+          current = next;
+
+          shell.classList.toggle("is-work", current === "work");
+          shell.classList.toggle("is-author", current === "author");
+
+          setImages();
+          setViews();
+          setTabs();
+        }, 220);
+
+        // End transition
+        window.setTimeout(() => {
+          shell.classList.remove("is-switching");
+          busy = false;
+        }, 740);
+      }
+
+      // Init
+      setTabs();
+      setImages();
+      setViews();
+
+      // Click handlers
+      document.querySelectorAll("[data-to]").forEach(btn => {
+        btn.addEventListener("click", () => go(btn.dataset.to));
+      });
+
+      // Keyboard: 1=Work, 2=Author
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "1") go("work");
+        if (e.key === "2") go("author");
+      });
+    })();
+  </script>
+</body>
+</html>
