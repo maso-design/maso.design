@@ -1,263 +1,590 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MASO</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MASO — Architectural Audio</title>
 
-<style>
-:root{
-  --bg:#ffffff;
-  --text:#000000;
-  --pad:6vw;
-}
+  <!--
+    FONT UPLOAD INSTRUCTIONS (drop files next to this HTML):
+    Create a /fonts folder and add:
+      - NeueHaasGroteskText-Regular.woff2
+      - NeueHaasGroteskText-Medium.woff2
+      - IBMPlexSans-Regular.woff2
+      - IBMPlexMono-Regular.woff2
 
-*{box-sizing:border-box;margin:0;padding:0}
+    If you don't have Neue Haas (paid), keep the fallback stack (it will still look good).
+  -->
 
-html,body{
-  width:100%;
-  height:100%;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
-  overflow:hidden;
-}
+  <style>
+    /* ---------------------------
+       Font faces (local uploads)
+    ----------------------------*/
+    @font-face{
+      font-family:"NHG";
+      src:url("fonts/NeueHaasGroteskText-Regular.woff2") format("woff2");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"NHG";
+      src:url("fonts/NeueHaasGroteskText-Medium.woff2") format("woff2");
+      font-weight:500;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"PlexSans";
+      src:url("fonts/IBMPlexSans-Regular.woff2") format("woff2");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
+    @font-face{
+      font-family:"PlexMono";
+      src:url("fonts/IBMPlexMono-Regular.woff2") format("woff2");
+      font-weight:400;
+      font-style:normal;
+      font-display:swap;
+    }
 
-/* ---------- SHARED SCREENS ---------- */
+    /* ---------------------------
+       Design system (type + scale)
+    ----------------------------*/
+    :root{
+      --bg:#0b0b0b;
+      --fg:#f4f4f2;
+      --muted:rgba(244,244,242,.68);
+      --hair:rgba(244,244,242,.18);
 
-.screen{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--bg);
-  transition:opacity .7s ease;
-}
+      /* Font stacks:
+         NHG is best if you upload it. Otherwise it falls back cleanly. */
+      --font-display: "NHG", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-body: "PlexSans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --font-mono: "PlexMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-.hidden{
-  opacity:0;
-  pointer-events:none;
-}
+      /* Type sizes (no-scroll, fullscreen) */
+      --h1: clamp(34px, 4.6vw, 68px);    /* product name */
+      --h2: clamp(18px, 1.6vw, 22px);    /* tagline */
+      --body: clamp(14px, 1.2vw, 16px);  /* paragraphs */
+      --mono: 12px;                      /* spec line */
+      --tracking-wide: .22em;
+      --tracking-mid: .10em;
 
-/* ---------- ARRIVAL ---------- */
+      --radius: 18px;
+      --pad: clamp(16px, 3vw, 40px);
+    }
 
-.logo-main{
-  font-size:42px;
-  font-weight:700;
-  letter-spacing:.22em;
-  cursor:pointer;
-}
+    /* ---------------------------
+       Global reset / layout
+    ----------------------------*/
+    *{ box-sizing:border-box; }
+    html, body{
+      height:100%;
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      overflow:hidden; /* key: no scrolling */
+    }
+    a{ color:inherit; text-decoration:none; }
+    button{ font:inherit; color:inherit; background:none; border:none; padding:0; }
 
-/* ---------- CHOICE ---------- */
+    /* ---------------------------
+       Frame / header / footer
+    ----------------------------*/
+    .frame{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+    }
+    .topbar, .bottombar{
+      position:absolute;
+      left:0; right:0;
+      padding: var(--pad);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      pointer-events:none;
+    }
+    .topbar{ top:0; align-items:flex-start; }
+    .bottombar{ bottom:0; }
 
-.choice{
-  display:flex;
-  gap:80px;
-  font-size:18px;
-  letter-spacing:.18em;
-  font-weight:600;
-}
+    .brand{
+      pointer-events:auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      max-width: 36ch;
+    }
+    .logo{
+      font-family:var(--font-display);
+      font-weight:500;
+      letter-spacing: var(--tracking-wide);
+      text-transform:uppercase;
+      font-size: 13px;
+      line-height:1;
+      opacity:.95;
+    }
+    .strap{
+      font-family:var(--font-body);
+      font-size: 13px;
+      color:var(--muted);
+      line-height:1.3;
+    }
 
-.choice span{
-  cursor:pointer;
-  transition:opacity .2s;
-}
+    .navmeta{
+      pointer-events:auto;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-family:var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing:.06em;
+      color:var(--muted);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .pill{
+      border:1px solid var(--hair);
+      border-radius:999px;
+      padding:8px 10px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(255,255,255,.02);
+      backdrop-filter: blur(10px);
+    }
+    .kbd{
+      border:1px solid var(--hair);
+      border-bottom-color: rgba(244,244,242,.32);
+      border-radius: 10px;
+      padding: 6px 8px;
+      line-height:1;
+      color: rgba(244,244,242,.78);
+      background: rgba(255,255,255,.03);
+    }
 
-.choice span:hover{opacity:.5}
+    .contact{
+      pointer-events:auto;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-family:var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing:.06em;
+      color: var(--muted);
+    }
+    .contact a{
+      border-bottom:1px solid transparent;
+    }
+    .contact a:hover{
+      border-bottom-color: rgba(244,244,242,.35);
+    }
 
-/* ---------- CHAMBER ---------- */
+    /* ---------------------------
+       Slider
+    ----------------------------*/
+    .stage{
+      height:100%;
+      width:100%;
+      position:relative;
+    }
+    .track{
+      height:100%;
+      width:100%;
+      display:flex;
+      transition: transform 700ms cubic-bezier(.2,.9,.2,1);
+      will-change: transform;
+    }
+    .slide{
+      flex:0 0 100%;
+      height:100%;
+      padding: var(--pad);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: clamp(18px, 3vw, 44px);
+      align-items: center;
+    }
 
-.chamber{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  width:100%;
-  height:100%;
-}
+    /* Left: product content */
+    .content{
+      max-width: 64ch;
+      display:flex;
+      flex-direction:column;
+      gap: 16px;
+    }
+    .eyebrow{
+      font-family:var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing: var(--tracking-wide);
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    h1{
+      margin:0;
+      font-family: var(--font-display);
+      font-weight:500;
+      font-size: var(--h1);
+      line-height: .98;
+      letter-spacing: -0.01em;
+    }
+    .tagline{
+      font-family: var(--font-display);
+      font-weight:400;
+      font-size: var(--h2);
+      line-height:1.25;
+      color: rgba(244,244,242,.86);
+      max-width: 48ch;
+    }
+    .desc{
+      font-family: var(--font-body);
+      font-size: var(--body);
+      line-height: 1.6;
+      color: var(--muted);
+      margin-top: 6px;
+    }
 
-/* Left text panel */
+    .specs{
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--hair);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+      font-family: var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing: .04em;
+      color: rgba(244,244,242,.78);
+    }
+    .spec{
+      display:flex;
+      justify-content:space-between;
+      gap: 14px;
+      border-bottom: 1px solid rgba(244,244,242,.08);
+      padding-bottom: 8px;
+    }
+    .spec span:first-child{ color: rgba(244,244,242,.60); }
 
-.text-panel{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding-left:var(--pad);
-  padding-right:4vw;
-  max-width:600px;
-}
+    .cta{
+      margin-top: 14px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      pointer-events:auto;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid var(--hair);
+      border-radius: 999px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(10px);
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+      font-family: var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing: .08em;
+      text-transform:uppercase;
+      color: rgba(244,244,242,.84);
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.05);
+      border-color: rgba(244,244,242,.28);
+    }
 
-.title{
-  font-size:18px;
-  letter-spacing:.22em;
-  font-weight:700;
-  margin-bottom:28px;
-}
+    /* Right: image panel */
+    .visual{
+      height: min(78vh, 760px);
+      border-radius: var(--radius);
+      border:1px solid var(--hair);
+      overflow:hidden;
+      position:relative;
+      background: rgba(255,255,255,.02);
+    }
+    .visual img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter: contrast(1.02) saturate(.92);
+      transform: scale(1.02);
+    }
+    .visual::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(120% 80% at 40% 30%, rgba(255,255,255,.06), transparent 60%),
+                  linear-gradient(to bottom, rgba(0,0,0,.15), rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+    .caption{
+      position:absolute;
+      left: 18px;
+      bottom: 14px;
+      right: 18px;
+      font-family: var(--font-mono);
+      font-size: var(--mono);
+      letter-spacing:.06em;
+      color: rgba(244,244,242,.78);
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .caption .finish{ opacity:.85; }
 
-.body{
-  font-size:15px;
-  line-height:1.7;
-  max-width:520px;
-}
+    /* Dots nav (center bottom) */
+    .dots{
+      pointer-events:auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      position:absolute;
+      left:50%;
+      bottom: calc(var(--pad) + 10px);
+      transform: translateX(-50%);
+    }
+    .dot{
+      width: 28px;
+      height: 2px;
+      background: rgba(244,244,242,.20);
+      border-radius: 999px;
+      cursor:pointer;
+      transition: background 220ms ease, transform 220ms ease;
+    }
+    .dot[aria-current="true"]{
+      background: rgba(244,244,242,.70);
+      transform: scaleX(1.08);
+    }
 
-/* Right image panel */
-
-.image-panel{
-  position:relative;
-  overflow:hidden;
-}
-
-.image-panel img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-/* ---------- FIXED ELEMENTS ---------- */
-
-.logo-corner{
-  position:absolute;
-  top:40px;
-  left:var(--pad);
-  font-size:16px;
-  font-weight:700;
-  letter-spacing:.22em;
-  cursor:pointer;
-}
-
-.contact{
-  position:absolute;
-  bottom:36px;
-  left:var(--pad);
-  font-size:12px;
-  opacity:.65;
-  line-height:1.6;
-}
-
-/* ---------- RESPONSIVE ---------- */
-
-@media(max-width:900px){
-  .chamber{
-    grid-template-columns:1fr;
-  }
-
-  .image-panel{
-    display:none;
-  }
-
-  .text-panel{
-    padding-right:var(--pad);
-  }
-}
-</style>
+    /* Mobile */
+    @media (max-width: 900px){
+      .slide{
+        grid-template-columns: 1fr;
+        align-content: start;
+        padding-top: calc(var(--pad) + 52px);
+        padding-bottom: calc(var(--pad) + 84px);
+      }
+      .visual{
+        height: min(42vh, 420px);
+        order:-1;
+      }
+      .specs{
+        grid-template-columns: 1fr;
+      }
+      .topbar, .bottombar{
+        padding: 14px 16px;
+      }
+      .strap{ display:none; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="stage" aria-label="Product slider, no scroll">
+    <div class="track" id="track">
 
-<!-- ================= ARRIVAL ================= -->
+      <!-- SLIDE 1 -->
+      <section class="slide" data-title="INVISIBLE SERIES" aria-label="Product 1">
+        <div class="content">
+          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
+          <h1>Invisible Series</h1>
+          <div class="tagline">Flush, silent presence. High intelligibility without visual footprint.</div>
+          <div class="desc">
+            A material-forward approach to architectural sound: controlled dispersion, consistent tonality,
+            and a detail language that disappears into the surface.
+          </div>
 
-<div id="arrival" class="screen">
-  <div class="logo-main">MASO</div>
-</div>
+          <div class="specs">
+            <div class="spec"><span>Type</span><span>Invisible wall/ceiling</span></div>
+            <div class="spec"><span>Use</span><span>Residential / gallery</span></div>
+            <div class="spec"><span>Finish</span><span>Plaster / skim</span></div>
+            <div class="spec"><span>Docs</span><span>PDF / DWG</span></div>
+          </div>
 
-<!-- ================= CHOICE ================= -->
+          <div class="cta">
+            <a class="btn" href="#" onclick="return false;">Download spec</a>
+            <a class="btn" href="#" onclick="return false;">Request quote</a>
+          </div>
+        </div>
 
-<div id="choice" class="screen hidden">
-  <div class="choice">
-    <span id="authorBtn">AUTHOR</span>
-    <span id="worksBtn">WORKS</span>
+        <div class="visual" aria-label="Product image">
+          <!-- Replace with your image file (e.g. work.jpeg) -->
+          <img src="work.jpeg" alt="Invisible Series in architectural context">
+          <div class="caption">
+            <span class="finish">Finish: skim / paint</span>
+            <span>01</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2 -->
+      <section class="slide" data-title="BRICK MODULES" aria-label="Product 2">
+        <div class="content">
+          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
+          <h1>Brick Modules</h1>
+          <div class="tagline">Stackable acoustic architecture. A system that reads as structure.</div>
+          <div class="desc">
+            Modular volumes designed for placement freedom: front/rear firing variants,
+            integrated cable routing, and tactile finishes that belong in the room.
+          </div>
+
+          <div class="specs">
+            <div class="spec"><span>Type</span><span>Modular speaker blocks</span></div>
+            <div class="spec"><span>Use</span><span>Loft / retail / studio</span></div>
+            <div class="spec"><span>Material</span><span>Ceramic / composite</span></div>
+            <div class="spec"><span>Options</span><span>Light / acoustic hybrid</span></div>
+          </div>
+
+          <div class="cta">
+            <a class="btn" href="#" onclick="return false;">View finishes</a>
+            <a class="btn" href="#" onclick="return false;">Book demo</a>
+          </div>
+        </div>
+
+        <div class="visual" aria-label="Product image">
+          <img src="work.jpeg" alt="Brick Modules product image placeholder">
+          <div class="caption">
+            <span class="finish">Finish: raw / matte</span>
+            <span>02</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3 -->
+      <section class="slide" data-title="ART + SUB" aria-label="Product 3">
+        <div class="content">
+          <div class="eyebrow">MASO / ARCHITECTURAL AUDIO</div>
+          <h1>Art + Sub</h1>
+          <div class="tagline">Low frequency as furniture — deliberate mass, calm control.</div>
+          <div class="desc">
+            A structural base that anchors the room and the artwork above it.
+            Hidden performance, visible intention: proportioned like architecture.
+          </div>
+
+          <div class="specs">
+            <div class="spec"><span>Type</span><span>Subwoofer plinth</span></div>
+            <div class="spec"><span>Use</span><span>Living / listening rooms</span></div>
+            <div class="spec"><span>Form</span><span>Single / dual channels</span></div>
+            <div class="spec"><span>Integration</span><span>Art mounting / cable</span></div>
+          </div>
+
+          <div class="cta">
+            <a class="btn" href="#" onclick="return false;">Download spec</a>
+            <a class="btn" href="#" onclick="return false;">Contact</a>
+          </div>
+        </div>
+
+        <div class="visual" aria-label="Product image">
+          <img src="work.jpeg" alt="Art + Sub product image placeholder">
+          <div class="caption">
+            <span class="finish">Finish: patina metal</span>
+            <span>03</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Dots -->
+    <nav class="dots" id="dots" aria-label="Slide navigation"></nav>
   </div>
-</div>
 
-<!-- ================= AUTHOR CHAMBER ================= -->
+  <!-- Fixed frame UI -->
+  <div class="frame" aria-hidden="true">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">MASO</div>
+        <div class="strap">Architectural audio objects and systems.</div>
+      </div>
 
-<div id="author" class="screen hidden">
-
-  <div class="chamber">
-
-    <div class="text-panel">
-      <div class="title">GUY TRAVISS</div>
-
-      <div class="body">
-        Guy Traviss is the creator of MASO.  
-        A classical guitarist and researcher, his work explores sound,
-        permanence, and architectural presence.  
-        Each piece is conceived as both instrument and object —
-        a bridge between performance, space, and material.
+      <div class="navmeta">
+        <div class="pill">
+          <span>Use</span>
+          <span class="kbd">←</span>
+          <span class="kbd">→</span>
+          <span>to navigate</span>
+        </div>
       </div>
     </div>
 
-    <div class="image-panel">
-      <img src="work.jpeg" alt="Author image">
-    </div>
-
-  </div>
-
-  <div class="logo-corner" onclick="goChoice()">MASO</div>
-
-  <div class="contact">
-    contact@maso.design<br>
-    www.maso-design.com
-  </div>
-
-</div>
-
-<!-- ================= WORKS CHAMBER ================= -->
-
-<div id="works" class="screen hidden">
-
-  <div class="chamber">
-
-    <div class="text-panel">
-      <div class="title">SOUND GIVEN PERMANENCE</div>
-
-      <div class="body">
-        MASO works are architectural audio objects created in extremely
-        limited numbers.  
-        Each piece is designed to integrate with space as both artwork
-        and instrument — not a device but a presence.
+    <div class="bottombar">
+      <div class="contact">
+        <span style="opacity:.75;">London</span>
+        <span style="opacity:.35;">/</span>
+        <a href="mailto:info@maso.design">info@maso.design</a>
       </div>
-    </div>
 
-    <div class="image-panel">
-      <img src="work.jpeg" alt="Work image">
+      <div class="navmeta" id="counter">01 / 03</div>
     </div>
-
   </div>
 
-  <div class="logo-corner" onclick="goChoice()">MASO</div>
+  <script>
+    (function(){
+      const track = document.getElementById("track");
+      const slides = Array.from(track.querySelectorAll(".slide"));
+      const dotsWrap = document.getElementById("dots");
+      const counter = document.getElementById("counter");
 
-  <div class="contact">
-    contact@maso.design<br>
-    www.maso-design.com
-  </div>
+      let index = 0;
 
-</div>
+      // Build dots
+      slides.forEach((s, i) => {
+        const d = document.createElement("button");
+        d.className = "dot";
+        d.type = "button";
+        d.setAttribute("aria-label", "Go to slide " + (i+1));
+        d.addEventListener("click", () => go(i));
+        dotsWrap.appendChild(d);
+      });
 
-<!-- ================= SCRIPT ================= -->
+      function render(){
+        track.style.transform = `translateX(${-index * 100}%)`;
+        Array.from(dotsWrap.children).forEach((d, i) => {
+          d.setAttribute("aria-current", i === index ? "true" : "false");
+        });
+        const a = String(index + 1).padStart(2, "0");
+        const b = String(slides.length).padStart(2, "0");
+        counter.textContent = `${a} / ${b}`;
+        document.title = `MASO — ${slides[index].dataset.title || "Product"}`;
+      }
 
-<script>
-const arrival = document.getElementById("arrival");
-const choice  = document.getElementById("choice");
-const author  = document.getElementById("author");
-const works   = document.getElementById("works");
+      function go(i){
+        index = Math.max(0, Math.min(slides.length - 1, i));
+        render();
+      }
 
-function show(screen){
-  arrival.classList.add("hidden");
-  choice.classList.add("hidden");
-  author.classList.add("hidden");
-  works.classList.add("hidden");
-  screen.classList.remove("hidden");
-}
+      // Keyboard nav
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") go(index + 1);
+        if (e.key === "ArrowLeft") go(index - 1);
+      });
 
-arrival.onclick = () => show(choice);
+      // Basic touch swipe
+      let x0 = null;
+      window.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, {passive:true});
+      window.addEventListener("touchend", (e) => {
+        if (x0 === null) return;
+        const x1 = e.changedTouches[0].clientX;
+        const dx = x1 - x0;
+        if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
+        x0 = null;
+      }, {passive:true});
 
-document.getElementById("authorBtn").onclick = () => show(author);
-document.getElementById("worksBtn").onclick  = () => show(works);
+      // Prevent accidental scroll on trackpads
+      window.addEventListener("wheel", (e) => {
+        // Allow very subtle trackpad movement without doing anything.
+        e.preventDefault();
+      }, {passive:false});
 
-function goChoice(){
-  show(choice);
-}
-</script>
-
+      render();
+    })();
+  </script>
 </body>
 </html>
