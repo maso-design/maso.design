@@ -51,7 +51,115 @@
       box-shadow: 0 22px 60px rgba(0,0,0,.12);
     }
 
-    /* Main split */
+    /* -----------------------------
+       LANDING (vestibule)
+    ------------------------------*/
+    .landing{
+      position:absolute;
+      inset:0;
+      background: var(--bg);
+      display:grid;
+      place-items:center;
+      z-index:50;
+      transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+    }
+    .landing.is-hidden{
+      opacity:0;
+      transform: translateY(8px);
+      pointer-events:none;
+    }
+
+    .landingInner{
+      width: min(520px, 86%);
+      display:flex;
+      flex-direction:column;
+      gap: 18px;
+      align-items:flex-start;
+    }
+    .mark{
+      font-size: 12px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.84);
+      user-select:none;
+    }
+    .line{
+      font-size: clamp(16px, 1.5vw, 18px);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 44ch;
+    }
+
+    .enterRow{
+      margin-top: 10px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+    }
+    .enter{
+      border:1px solid var(--hair);
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.70);
+      background: rgba(0,0,0,.01);
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+      user-select:none;
+    }
+    .enter:hover{
+      transform: translateY(-1px);
+      border-color: rgba(11,11,11,.20);
+      background: rgba(0,0,0,.02);
+    }
+    .hint{
+      font-size: 12px;
+      color: rgba(11,11,11,.44);
+      letter-spacing:.04em;
+    }
+
+    /* Permanent contact even on landing (optional) */
+    .landingFoot{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: calc(var(--pad) * .75) var(--pad);
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.50);
+      user-select:none;
+    }
+    .landingFoot a{
+      color: rgba(11,11,11,.64);
+      border-bottom: 1px solid transparent;
+      padding-bottom:2px;
+      text-transform:none;
+      letter-spacing:.02em;
+    }
+    .landingFoot a:hover{
+      border-bottom-color: rgba(11,11,11,.20);
+      color: rgba(11,11,11,.82);
+    }
+
+    /* -----------------------------
+       MAIN EXPERIENCE (Work/Author)
+    ------------------------------*/
+    .main{
+      position:absolute;
+      inset:0;
+      transition: opacity 520ms var(--ease);
+      opacity:0;
+      pointer-events:none;
+    }
+    .main.is-active{
+      opacity:1;
+      pointer-events:auto;
+    }
+
     .layout{
       height:100%;
       display:grid;
@@ -64,11 +172,7 @@
       background:#e9e9e9;
       overflow:hidden;
     }
-
-    .imgStack{
-      position:absolute;
-      inset:0;
-    }
+    .imgStack{ position:absolute; inset:0; }
 
     .img{
       position:absolute;
@@ -77,31 +181,17 @@
       background-position:center;
       transform: translateX(0) scale(1.02);
       opacity:0;
-      transition:
-        opacity var(--t) var(--ease),
-        transform var(--t) var(--ease);
+      transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
       will-change: transform, opacity;
       filter: saturate(.96) contrast(1.02);
     }
-    .img.is-active{
-      opacity:1;
-    }
+    .img.is-active{ opacity:1; }
 
-    /* Architectural “move between rooms” motion */
-    .shell.is-work .img--work{
-      transform: translateX(0) scale(1.03);
-    }
-    .shell.is-work .img--author{
-      transform: translateX(-3.5%) scale(1.06);
-    }
-    .shell.is-author .img--author{
-      transform: translateX(0) scale(1.03);
-    }
-    .shell.is-author .img--work{
-      transform: translateX(3.5%) scale(1.06);
-    }
+    .shell.is-work .img--work{ transform: translateX(0) scale(1.03); }
+    .shell.is-work .img--author{ transform: translateX(-3.5%) scale(1.06); }
+    .shell.is-author .img--author{ transform: translateX(0) scale(1.03); }
+    .shell.is-author .img--work{ transform: translateX(3.5%) scale(1.06); }
 
-    /* subtle glazing */
     .field::after{
       content:"";
       position:absolute;
@@ -134,7 +224,7 @@
     }
 
     .shell.is-switching .panelInner{
-      opacity: .0;
+      opacity: 0;
       transform: translateY(10px);
     }
 
@@ -168,9 +258,7 @@
       border-bottom: 1px solid transparent;
       padding-bottom: 2px;
     }
-    .links a:hover{
-      border-bottom-color: rgba(11,11,11,.22);
-    }
+    .links a:hover{ border-bottom-color: rgba(11,11,11,.22); }
 
     /* Permanent footer */
     .footer{
@@ -181,7 +269,7 @@
       grid-template-columns: 1fr 1fr 1fr;
       align-items:end;
       gap: 14px;
-      pointer-events:none; /* only links/buttons opt-in */
+      pointer-events:none;
     }
 
     .foot-left, .foot-center, .foot-right{
@@ -208,7 +296,6 @@
     }
 
     .tab{
-      position:relative;
       padding-bottom: 4px;
       border-bottom: 1px solid transparent;
       transition: opacity 140ms ease, border-color 140ms ease;
@@ -228,6 +315,8 @@
       border-bottom: 1px solid transparent;
       padding-bottom:2px;
       color: rgba(11,11,11,.72);
+      text-transform:none;
+      letter-spacing:.02em;
     }
     .foot-right a:hover{
       border-bottom-color: rgba(11,11,11,.22);
@@ -262,74 +351,102 @@
 <body>
   <div class="shell is-work" id="shell" aria-label="MASO">
 
-    <div class="layout">
-      <!-- LEFT IMAGE FIELD -->
-      <section class="field" aria-label="Image field">
-        <div class="imgStack">
-          <div class="img img--work is-active" id="imgWork"
-               style="background-image:url('image-work.jpg');" aria-hidden="true"></div>
-          <div class="img img--author" id="imgAuthor"
-               style="background-image:url('image-author.jpg');" aria-hidden="true"></div>
+    <!-- LANDING -->
+    <section class="landing" id="landing" aria-label="Landing">
+      <div class="landingInner">
+        <div class="mark">MASO</div>
+        <div class="line">
+          Bespoke architectural audio integration — designed as a material condition,
+          tuned to the room, and drawn with restraint.
         </div>
-      </section>
-
-      <!-- RIGHT READING PANEL -->
-      <aside class="panel" aria-label="Reading panel">
-        <div class="panelInner" id="panelInner">
-
-          <!-- WORK -->
-          <div class="view" id="viewWork">
-            <div class="kicker">Work</div>
-            <div class="lead">Bespoke architectural audio integration.</div>
-            <div class="body">
-              Sound treated as a material condition — integrated into surfaces, tuned to the space,
-              and drawn with the same restraint as the interior.
-            </div>
-            <div class="links" aria-label="Work links">
-              <a href="#" onclick="return false;">Selected projects</a>
-              <a href="#" onclick="return false;">Approach</a>
-              <a href="#" onclick="return false;">Request spec pack</a>
-            </div>
-          </div>
-
-          <!-- AUTHOR -->
-          <div class="view" id="viewAuthor" style="display:none;">
-            <div class="kicker">Author</div>
-            <div class="lead">A studio practice at the intersection of sound and architecture.</div>
-            <div class="body">
-              MASO develops objects and systems for quiet, high-fidelity environments.
-              Research-led, finish-led, and designed for collaboration.
-            </div>
-            <div class="links" aria-label="Author links">
-              <a href="#" onclick="return false;">Biography</a>
-              <a href="#" onclick="return false;">Notes</a>
-              <a href="#" onclick="return false;">Press / enquiries</a>
-            </div>
-          </div>
-
+        <div class="enterRow">
+          <button class="enter" id="enterBtn">Enter</button>
+          <div class="hint">or press Enter</div>
         </div>
+      </div>
 
-        <!-- PERMANENT FOOTER -->
-        <footer class="footer" aria-label="Permanent footer">
-          <div class="foot-left">MASO</div>
+      <div class="landingFoot" aria-hidden="false">
+        <div>London / Tokyo</div>
+        <div><a href="mailto:info@maso.design">info@maso.design</a></div>
+      </div>
+    </section>
 
-          <nav class="foot-center" aria-label="Navigation">
-            <button class="tab" id="tabWork" aria-current="true" data-to="work">Work</button>
-            <button class="tab" id="tabAuthor" aria-current="false" data-to="author">Author</button>
-          </nav>
+    <!-- MAIN EXPERIENCE -->
+    <main class="main" id="main" aria-label="Main">
+      <div class="layout">
 
-          <div class="foot-right">
-            <a href="mailto:info@maso.design">info@maso.design</a>
+        <!-- LEFT IMAGE FIELD -->
+        <section class="field" aria-label="Image field">
+          <div class="imgStack">
+            <div class="img img--work is-active" id="imgWork"
+                 style="background-image:url('image-work.jpg');" aria-hidden="true"></div>
+            <div class="img img--author" id="imgAuthor"
+                 style="background-image:url('image-author.jpg');" aria-hidden="true"></div>
           </div>
-        </footer>
-      </aside>
-    </div>
+        </section>
+
+        <!-- RIGHT READING PANEL -->
+        <aside class="panel" aria-label="Reading panel">
+          <div class="panelInner" id="panelInner">
+
+            <!-- WORK -->
+            <div class="view" id="viewWork">
+              <div class="kicker">Work</div>
+              <div class="lead">Bespoke architectural audio integration.</div>
+              <div class="body">
+                Sound treated as a material condition — integrated into surfaces, tuned to the space,
+                and specified with architectural clarity.
+              </div>
+              <div class="links" aria-label="Work links">
+                <a href="#" onclick="return false;">Selected projects</a>
+                <a href="#" onclick="return false;">Approach</a>
+                <a href="#" onclick="return false;">Request spec pack</a>
+              </div>
+            </div>
+
+            <!-- AUTHOR -->
+            <div class="view" id="viewAuthor" style="display:none;">
+              <div class="kicker">Author</div>
+              <div class="lead">A studio practice between sound and architecture.</div>
+              <div class="body">
+                MASO develops objects and systems for quiet, high-fidelity environments.
+                Research-led, finish-led, and designed for collaboration.
+              </div>
+              <div class="links" aria-label="Author links">
+                <a href="#" onclick="return false;">Biography</a>
+                <a href="#" onclick="return false;">Notes</a>
+                <a href="#" onclick="return false;">Press / enquiries</a>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PERMANENT FOOTER -->
+          <footer class="footer" aria-label="Permanent footer">
+            <div class="foot-left">MASO</div>
+
+            <nav class="foot-center" aria-label="Navigation">
+              <button class="tab" id="tabWork" aria-current="true" data-to="work">Work</button>
+              <button class="tab" id="tabAuthor" aria-current="false" data-to="author">Author</button>
+            </nav>
+
+            <div class="foot-right">
+              <a href="mailto:info@maso.design">info@maso.design</a>
+            </div>
+          </footer>
+        </aside>
+
+      </div>
+    </main>
   </div>
 
   <script>
     (function(){
       const shell = document.getElementById("shell");
-      const panelInner = document.getElementById("panelInner");
+
+      const landing = document.getElementById("landing");
+      const main = document.getElementById("main");
+      const enterBtn = document.getElementById("enterBtn");
 
       const imgWork = document.getElementById("imgWork");
       const imgAuthor = document.getElementById("imgAuthor");
@@ -342,29 +459,27 @@
 
       let current = "work";
       let busy = false;
+      let entered = false;
 
       function setTabs(){
         tabWork.setAttribute("aria-current", current === "work" ? "true" : "false");
         tabAuthor.setAttribute("aria-current", current === "author" ? "true" : "false");
       }
-
       function setImages(){
         imgWork.classList.toggle("is-active", current === "work");
         imgAuthor.classList.toggle("is-active", current === "author");
       }
-
       function setViews(){
         viewWork.style.display = current === "work" ? "block" : "none";
         viewAuthor.style.display = current === "author" ? "block" : "none";
       }
 
       function go(next){
+        if (!entered) return;
         if (busy || next === current) return;
         busy = true;
 
         shell.classList.add("is-switching");
-
-        // Start transition
         window.setTimeout(() => {
           current = next;
 
@@ -376,27 +491,43 @@
           setTabs();
         }, 220);
 
-        // End transition
         window.setTimeout(() => {
           shell.classList.remove("is-switching");
           busy = false;
         }, 740);
       }
 
-      // Init
-      setTabs();
-      setImages();
-      setViews();
+      function enter(){
+        if (entered) return;
+        entered = true;
+        landing.classList.add("is-hidden");
+        main.classList.add("is-active");
+      }
 
-      // Click handlers
+      function backToLanding(){
+        // Optional: allow returning to the vestibule
+        entered = false;
+        main.classList.remove("is-active");
+        landing.classList.remove("is-hidden");
+      }
+
+      // Init state
+      setTabs(); setImages(); setViews();
+
+      // Click enter
+      enterBtn.addEventListener("click", enter);
+
+      // Tabs
       document.querySelectorAll("[data-to]").forEach(btn => {
         btn.addEventListener("click", () => go(btn.dataset.to));
       });
 
-      // Keyboard: 1=Work, 2=Author
+      // Keyboard
       window.addEventListener("keydown", (e) => {
-        if (e.key === "1") go("work");
-        if (e.key === "2") go("author");
+        if (!entered && e.key === "Enter") enter();
+        if (entered && e.key === "1") go("work");
+        if (entered && e.key === "2") go("author");
+        if (entered && e.key === "Escape") backToLanding(); // optional
       });
     })();
   </script>
