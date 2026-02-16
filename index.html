@@ -25,8 +25,12 @@
       --text: 16px;
       --lead: clamp(18px, 2.0vw, 26px);
 
-      --t: 780ms;
+      --t: 920ms;
       --ease: cubic-bezier(.2,.9,.2,1);
+
+      /* Landing logo impact */
+      --logoBig: clamp(44px, 7.4vw, 96px);
+      --logoTrack: .38em;
     }
 
     *{ box-sizing:border-box; }
@@ -61,33 +65,31 @@
       display:grid;
       place-items:center;
       z-index:50;
-      transition: opacity 520ms var(--ease), transform 520ms var(--ease);
-    }
-    .landing.is-hidden{
-      opacity:0;
-      transform: translateY(8px);
-      pointer-events:none;
     }
 
     .landingInner{
-      width: min(520px, 86%);
+      width: min(760px, 88%);
       display:flex;
       flex-direction:column;
       gap: 18px;
       align-items:flex-start;
     }
-    .mark{
-      font-size: 12px;
-      letter-spacing: .26em;
+
+    .markBig{
+      font-weight: 500;
+      font-size: var(--logoBig);
+      letter-spacing: var(--logoTrack);
       text-transform: uppercase;
-      color: rgba(11,11,11,.84);
+      color: rgba(11,11,11,.90);
       user-select:none;
+      line-height: .95;
     }
+
     .line{
       font-size: clamp(16px, 1.5vw, 18px);
       line-height: 1.55;
       color: var(--muted);
-      max-width: 44ch;
+      max-width: 48ch;
     }
 
     .enterRow{
@@ -119,7 +121,6 @@
       letter-spacing:.04em;
     }
 
-    /* Permanent contact even on landing (optional) */
     .landingFoot{
       position:absolute;
       left:0; right:0; bottom:0;
@@ -151,7 +152,6 @@
     .main{
       position:absolute;
       inset:0;
-      transition: opacity 520ms var(--ease);
       opacity:0;
       pointer-events:none;
     }
@@ -210,6 +210,7 @@
       align-items:center;
       justify-content:center;
       padding: var(--pad);
+      overflow:hidden;
     }
 
     .panelInner{
@@ -218,14 +219,7 @@
       margin-right: clamp(6px, 1.2vw, 18px);
       display:grid;
       gap: 22px;
-      transform: translateY(0);
-      transition: transform var(--t) var(--ease), opacity var(--t) var(--ease);
       will-change: transform, opacity;
-    }
-
-    .shell.is-switching .panelInner{
-      opacity: 0;
-      transform: translateY(10px);
     }
 
     .kicker{
@@ -245,7 +239,6 @@
       color: var(--muted);
       max-width: 34ch;
     }
-
     .links{
       display:flex;
       flex-direction:column;
@@ -271,7 +264,6 @@
       gap: 14px;
       pointer-events:none;
     }
-
     .foot-left, .foot-center, .foot-right{
       font-size: 12px;
       letter-spacing: .06em;
@@ -286,7 +278,6 @@
       color: rgba(11,11,11,.80);
       letter-spacing:.22em;
     }
-
     .foot-center{
       justify-self:center;
       pointer-events:auto;
@@ -294,7 +285,6 @@
       gap: 18px;
       align-items:center;
     }
-
     .tab{
       padding-bottom: 4px;
       border-bottom: 1px solid transparent;
@@ -306,7 +296,6 @@
       opacity:1;
       border-bottom-color: rgba(11,11,11,.22);
     }
-
     .foot-right{
       justify-self:end;
       pointer-events:auto;
@@ -321,6 +310,69 @@
     .foot-right a:hover{
       border-bottom-color: rgba(11,11,11,.22);
       color: rgba(11,11,11,.88);
+    }
+
+    /* -----------------------------
+       ENTER TRANSITION WIPE
+       - image wipe DOWN from top
+       - text wipe UP from bottom
+    ------------------------------*/
+    .wipe{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:60;
+      display:none;
+    }
+    .wipe.is-running{ display:block; }
+
+    .wipe .top{
+      position:absolute;
+      left:0; right:0; top:0;
+      height:100%;
+      background: var(--bg);
+      transform: translateY(-100%);
+      animation: wipeDown var(--t) var(--ease) forwards;
+    }
+    .wipe .bottom{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:100%;
+      background: var(--bg);
+      transform: translateY(100%);
+      animation: wipeUp var(--t) var(--ease) forwards;
+      opacity: .98;
+    }
+
+    @keyframes wipeDown{
+      0%   { transform: translateY(-100%); }
+      45%  { transform: translateY(0%); }
+      100% { transform: translateY(0%); }
+    }
+    @keyframes wipeUp{
+      0%   { transform: translateY(100%); }
+      45%  { transform: translateY(0%); }
+      100% { transform: translateY(0%); }
+    }
+
+    /* Then we clear wipes with JS once main is visible */
+
+    /* Landing fade out (subtle) */
+    .landing.is-hidden{
+      opacity:0;
+      transform: translateY(8px);
+      transition: opacity 520ms var(--ease), transform 520ms var(--ease);
+      pointer-events:none;
+    }
+
+    /* Panel recomposition fade when switching Work/Author */
+    .shell.is-switching .panelInner{
+      opacity: 0;
+      transform: translateY(10px);
+      transition: transform 740ms var(--ease), opacity 740ms var(--ease);
+    }
+    .panelInner{
+      transition: transform 740ms var(--ease), opacity 740ms var(--ease);
     }
 
     /* Mobile */
@@ -351,10 +403,16 @@
 <body>
   <div class="shell is-work" id="shell" aria-label="MASO">
 
+    <!-- ENTER WIPE OVERLAY -->
+    <div class="wipe" id="wipe" aria-hidden="true">
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
+
     <!-- LANDING -->
     <section class="landing" id="landing" aria-label="Landing">
       <div class="landingInner">
-        <div class="mark">MASO</div>
+        <div class="markBig">MASO</div>
         <div class="line">
           Bespoke architectural audio integration — designed as a material condition,
           tuned to the room, and drawn with restraint.
@@ -365,7 +423,7 @@
         </div>
       </div>
 
-      <div class="landingFoot" aria-hidden="false">
+      <div class="landingFoot">
         <div>London / Tokyo</div>
         <div><a href="mailto:info@maso.design">info@maso.design</a></div>
       </div>
@@ -447,6 +505,7 @@
       const landing = document.getElementById("landing");
       const main = document.getElementById("main");
       const enterBtn = document.getElementById("enterBtn");
+      const wipe = document.getElementById("wipe");
 
       const imgWork = document.getElementById("imgWork");
       const imgAuthor = document.getElementById("imgAuthor");
@@ -480,6 +539,7 @@
         busy = true;
 
         shell.classList.add("is-switching");
+
         window.setTimeout(() => {
           current = next;
 
@@ -497,21 +557,34 @@
         }, 740);
       }
 
+      function runEnterWipe(){
+        wipe.classList.add("is-running");
+        // After wipe has covered, reveal main. (timing synced to keyframes at ~45%)
+        window.setTimeout(() => {
+          main.classList.add("is-active");
+          landing.classList.add("is-hidden");
+        }, 420);
+
+        // After full duration, remove wipe to reveal the split layout
+        window.setTimeout(() => {
+          wipe.classList.remove("is-running");
+        }, 960);
+      }
+
       function enter(){
         if (entered) return;
         entered = true;
-        landing.classList.add("is-hidden");
-        main.classList.add("is-active");
+        runEnterWipe();
       }
 
+      // Optional return to landing
       function backToLanding(){
-        // Optional: allow returning to the vestibule
         entered = false;
         main.classList.remove("is-active");
         landing.classList.remove("is-hidden");
       }
 
-      // Init state
+      // Init
       setTabs(); setImages(); setViews();
 
       // Click enter
@@ -527,7 +600,7 @@
         if (!entered && e.key === "Enter") enter();
         if (entered && e.key === "1") go("work");
         if (entered && e.key === "2") go("author");
-        if (entered && e.key === "Escape") backToLanding(); // optional
+        if (entered && e.key === "Escape") backToLanding();
       });
     })();
   </script>
