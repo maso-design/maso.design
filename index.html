@@ -25,10 +25,15 @@
       --k: 12px;                      /* kicker */
       --b: 15px;                      /* body */
       --h: clamp(22px, 2.4vw, 34px);  /* headline */
-      --logo: clamp(26px, 4.5vw, 52px);
 
-      --t: 760ms;
+      /* Landing impact */
+      --logoBig: clamp(44px, 7.4vw, 96px);
+      --logoTrack: .42em;
+
+      /* Motion */
       --ease: cubic-bezier(.2,.9,.2,1);
+      --enterDur: 980ms;
+      --swapDur: 700ms;
     }
 
     *{ box-sizing:border-box; }
@@ -53,7 +58,9 @@
       box-shadow: 0 22px 60px rgba(0,0,0,.10);
     }
 
-    /* Three-zone layout: Image / Text slab / Colophon band */
+    /* -----------------------------------------
+       MAIN LAYOUT: Image / Text slab / Band
+    ------------------------------------------*/
     .layout{
       height:100%;
       display:grid;
@@ -61,7 +68,7 @@
       grid-template-rows: 1fr auto;
     }
 
-    /* IMAGE FIELD (spans both rows on the left) */
+    /* IMAGE FIELD */
     .imageField{
       grid-column: 1 / 2;
       grid-row: 1 / 3;
@@ -79,12 +86,12 @@
       transform: scale(1.02);
       filter: saturate(.96) contrast(1.02);
       opacity:0;
-      transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
+      transition: opacity var(--swapDur) var(--ease), transform var(--swapDur) var(--ease);
       will-change: opacity, transform;
     }
     .img.is-active{ opacity:1; }
 
-    /* very subtle glazing */
+    /* subtle glazing */
     .imageField::after{
       content:"";
       position:absolute;
@@ -95,7 +102,23 @@
       opacity:.55;
     }
 
-    /* TEXT SLAB (top-right) */
+    /* Optional: small mark on image */
+    .imageMark{
+      position:absolute;
+      left: var(--pad);
+      top: var(--pad);
+      font-size: 12px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.86);
+      mix-blend-mode: screen;
+      user-select:none;
+      text-shadow: 0 14px 30px rgba(0,0,0,.22);
+      z-index:3;
+      pointer-events:none;
+    }
+
+    /* TEXT SLAB */
     .slab{
       grid-column: 2 / 3;
       grid-row: 1 / 2;
@@ -103,6 +126,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      overflow:hidden;
     }
 
     .slabInner{
@@ -156,7 +180,7 @@
     }
     .links a:hover{ border-bottom-color: rgba(11,11,11,.18); }
 
-    /* COLOPHON BAND (bottom-right) */
+    /* COLOPHON BAND */
     .band{
       grid-column: 2 / 3;
       grid-row: 2 / 3;
@@ -166,6 +190,7 @@
       align-items:flex-end;
       justify-content:space-between;
       gap: 18px;
+      overflow:hidden;
     }
 
     .brand{
@@ -222,18 +247,178 @@
     }
     .contact a:hover{ border-bottom-color: rgba(11,11,11,.18); color: rgba(11,11,11,.88); }
 
-    /* Optional top-left “big” mark on the image (classy, not bloggy) */
-    .imageMark{
+    /* -----------------------------------------
+       LANDING (Vestibule)
+    ------------------------------------------*/
+    .landing{
       position:absolute;
-      left: var(--pad);
-      top: var(--pad);
-      font-size: 12px;
-      letter-spacing: .26em;
+      inset:0;
+      background: var(--paper);
+      z-index:50;
+      display:grid;
+      place-items:center;
+      pointer-events:auto;
+      transition: opacity 420ms var(--ease);
+    }
+    .landing.is-hidden{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .landingInner{
+      width: min(760px, 88%);
+      display:flex;
+      flex-direction:column;
+      gap: 18px;
+      align-items:flex-start;
+    }
+    .markBig{
+      font-weight: 500;
+      font-size: var(--logoBig);
+      letter-spacing: var(--logoTrack);
       text-transform: uppercase;
-      color: rgba(255,255,255,.86);
-      mix-blend-mode: screen;
+      color: rgba(11,11,11,.92);
       user-select:none;
-      text-shadow: 0 14px 30px rgba(0,0,0,.22);
+      line-height: .92;
+    }
+    .line{
+      font-size: clamp(16px, 1.5vw, 18px);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 52ch;
+    }
+    .enterRow{
+      margin-top: 10px;
+      display:flex;
+      gap: 12px;
+      align-items:center;
+    }
+    .enter{
+      border:1px solid var(--hair);
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-size: 12px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.70);
+      background: rgba(0,0,0,.01);
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+      user-select:none;
+    }
+    .enter:hover{
+      transform: translateY(-1px);
+      border-color: rgba(11,11,11,.20);
+      background: rgba(0,0,0,.02);
+    }
+    .hint{
+      font-size: 12px;
+      color: rgba(11,11,11,.44);
+      letter-spacing:.04em;
+    }
+
+    .landingFoot{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      padding: calc(var(--pad) * .75) var(--pad);
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.50);
+      user-select:none;
+    }
+    .landingFoot a{
+      color: rgba(11,11,11,.64);
+      border-bottom: 1px solid transparent;
+      padding-bottom:2px;
+      text-transform:none;
+      letter-spacing:.02em;
+    }
+    .landingFoot a:hover{
+      border-bottom-color: rgba(11,11,11,.20);
+      color: rgba(11,11,11,.82);
+    }
+
+    /* -----------------------------------------
+       ENTER TRANSITION: architectural wipe planes
+       - top plane wipes DOWN
+       - bottom plane wipes UP
+       No fade. Feels like shutters/slabs moving.
+    ------------------------------------------*/
+    .wipe{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:60;
+      display:none;
+    }
+    .wipe.is-running{ display:block; }
+
+    .wipeTop,
+    .wipeBottom{
+      position:absolute;
+      left:0; right:0;
+      height:100%;
+      background: var(--paper);
+    }
+    .wipeTop{
+      top:0;
+      transform: translateY(-100%);
+      animation: wipeDown var(--enterDur) var(--ease) forwards;
+    }
+    .wipeBottom{
+      bottom:0;
+      transform: translateY(100%);
+      animation: wipeUp var(--enterDur) var(--ease) forwards;
+      opacity: .985;
+    }
+
+    /* subtle seam line for “architectural plane” feeling */
+    .wipeTop::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:-1px;
+      height:1px;
+      background: rgba(11,11,11,.10);
+      opacity:.6;
+    }
+    .wipeBottom::before{
+      content:"";
+      position:absolute;
+      left:0; right:0; top:-1px;
+      height:1px;
+      background: rgba(11,11,11,.10);
+      opacity:.6;
+    }
+
+    @keyframes wipeDown{
+      0%   { transform: translateY(-100%); }
+      45%  { transform: translateY(0%); }   /* covers screen */
+      100% { transform: translateY(0%); }   /* holds briefly; JS clears */
+    }
+    @keyframes wipeUp{
+      0%   { transform: translateY(100%); }
+      45%  { transform: translateY(0%); }
+      100% { transform: translateY(0%); }
+    }
+
+    /* When main becomes active, we “settle” the slab/band up a touch */
+    .shell.is-entering .slabInner,
+    .shell.is-entering .band{
+      transform: translateY(10px);
+      opacity: 0.001; /* avoid visible fade; this is just to prevent pop during wipe */
+    }
+    .shell.is-entered .slabInner{
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 520ms var(--ease), opacity 520ms var(--ease);
+    }
+    .shell.is-entered .band{
+      transform: translateY(0);
+      opacity: 1;
+      transition: transform 520ms var(--ease), opacity 520ms var(--ease);
     }
 
     /* Mobile: allow scroll; stack */
@@ -268,14 +453,41 @@
 </head>
 
 <body>
-  <div class="shell is-work" id="shell" aria-label="MASO">
+  <div class="shell is-work is-entering" id="shell" aria-label="MASO">
 
-    <div class="layout">
+    <!-- WIPE OVERLAY -->
+    <div class="wipe" id="wipe" aria-hidden="true">
+      <div class="wipeTop"></div>
+      <div class="wipeBottom"></div>
+    </div>
+
+    <!-- LANDING -->
+    <section class="landing" id="landing" aria-label="Landing">
+      <div class="landingInner">
+        <div class="markBig">MASO</div>
+        <div class="line">
+          Bespoke architectural audio integration — designed as a material condition,
+          tuned to the room, and drawn with restraint.
+        </div>
+        <div class="enterRow">
+          <button class="enter" id="enterBtn">Enter</button>
+          <div class="hint">or press Enter</div>
+        </div>
+      </div>
+
+      <div class="landingFoot">
+        <div>London / Tokyo</div>
+        <div><a href="mailto:info@maso.design">info@maso.design</a></div>
+      </div>
+    </section>
+
+    <!-- MAIN -->
+    <div class="layout" id="layout" aria-label="Main layout">
       <!-- IMAGE FIELD -->
-      <section class="imageField" aria-label="Image">
+      <section class="imageField" aria-label="Media">
         <div class="imageMark">MASO</div>
 
-        <!-- Use one or two images. If you only have one, point both to work.jpeg -->
+        <!-- Use one or two assets. If you only have work.jpeg, set both to work.jpeg -->
         <div class="img img--work is-active" id="imgWork"
              style="background-image:url('work.jpeg');" aria-hidden="true"></div>
         <div class="img img--author" id="imgAuthor"
@@ -283,9 +495,8 @@
       </section>
 
       <!-- TEXT SLAB -->
-      <aside class="slab" aria-label="Text">
+      <aside class="slab" aria-label="Text slab">
         <div class="slabInner" id="slabInner">
-
           <!-- WORK -->
           <div class="view" id="viewWork">
             <div class="kicker">Work</div>
@@ -315,11 +526,10 @@
               <a href="mailto:info@maso.design">Press / enquiries</a>
             </div>
           </div>
-
         </div>
       </aside>
 
-      <!-- COLOPHON BAND -->
+      <!-- BAND -->
       <footer class="band" aria-label="Colophon">
         <div class="brand">
           <div class="logo">MASO</div>
@@ -341,7 +551,9 @@
   <script>
     (function(){
       const shell = document.getElementById("shell");
-      const slabInner = document.getElementById("slabInner");
+      const landing = document.getElementById("landing");
+      const enterBtn = document.getElementById("enterBtn");
+      const wipe = document.getElementById("wipe");
 
       const imgWork = document.getElementById("imgWork");
       const imgAuthor = document.getElementById("imgAuthor");
@@ -352,6 +564,7 @@
       const tabWork = document.getElementById("tabWork");
       const tabAuthor = document.getElementById("tabAuthor");
 
+      let entered = false;
       let current = "work";
       let busy = false;
 
@@ -362,16 +575,18 @@
       function setImages(){
         imgWork.classList.toggle("is-active", current === "work");
         imgAuthor.classList.toggle("is-active", current === "author");
-        // subtle opposing drift for “architectural” motion
-        imgWork.style.transform = current === "work" ? "scale(1.03)" : "translateX(2.8%) scale(1.06)";
-        imgAuthor.style.transform = current === "author" ? "scale(1.03)" : "translateX(-2.8%) scale(1.06)";
+
+        // subtle opposing drift for architectural motion
+        imgWork.style.transform = (current === "work") ? "scale(1.03)" : "translateX(2.6%) scale(1.06)";
+        imgAuthor.style.transform = (current === "author") ? "scale(1.03)" : "translateX(-2.6%) scale(1.06)";
       }
       function setViews(){
-        viewWork.style.display = current === "work" ? "block" : "none";
-        viewAuthor.style.display = current === "author" ? "block" : "none";
+        viewWork.style.display = (current === "work") ? "block" : "none";
+        viewAuthor.style.display = (current === "author") ? "block" : "none";
       }
 
       function go(next){
+        if (!entered) return;
         if (busy || next === current) return;
         busy = true;
 
@@ -379,8 +594,6 @@
 
         window.setTimeout(() => {
           current = next;
-          shell.classList.toggle("is-work", current === "work");
-          shell.classList.toggle("is-author", current === "author");
           setTabs();
           setImages();
           setViews();
@@ -392,17 +605,50 @@
         }, 540);
       }
 
+      function runEnterSequence(){
+        // Start wipe planes
+        wipe.classList.add("is-running");
+        shell.classList.add("is-entering");
+
+        // Halfway through wipe (when screen is “covered”), hide landing (no fade needed)
+        window.setTimeout(() => {
+          landing.classList.add("is-hidden");
+        }, 420);
+
+        // When wipe is done, clear overlay and “settle” slab + band
+        window.setTimeout(() => {
+          wipe.classList.remove("is-running");
+          shell.classList.remove("is-entering");
+          shell.classList.add("is-entered");
+        }, 1020);
+      }
+
+      function enter(){
+        if (entered) return;
+        entered = true;
+        runEnterSequence();
+      }
+
+      function backToLanding(){
+        // Optional: return to vestibule
+        entered = false;
+        shell.classList.remove("is-entered");
+        landing.classList.remove("is-hidden");
+      }
+
       // Init
       setTabs(); setImages(); setViews();
 
+      enterBtn.addEventListener("click", enter);
       document.querySelectorAll("[data-to]").forEach(btn => {
         btn.addEventListener("click", () => go(btn.dataset.to));
       });
 
-      // Keyboard: 1/2
       window.addEventListener("keydown", (e) => {
-        if (e.key === "1") go("work");
-        if (e.key === "2") go("author");
+        if (!entered && e.key === "Enter") enter();
+        if (entered && e.key === "1") go("work");
+        if (entered && e.key === "2") go("author");
+        if (entered && e.key === "Escape") backToLanding();
       });
     })();
   </script>
