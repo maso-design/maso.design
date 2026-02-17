@@ -5,602 +5,458 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MASO</title>
 
+  <!-- Minimal, architectural UI font (fast). Swap to your paid fonts later if desired. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#ffffff;
+      --paper:#ffffff;
+      --wash:#ece8e2;           /* warm perimeter like option 2 */
       --ink:#0b0b0b;
       --muted:rgba(11,11,11,.56);
       --hair:rgba(11,11,11,.12);
 
       --font: Inter, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
 
-      --pad: clamp(16px, 3vw, 44px);
+      --pad: clamp(14px, 2.6vw, 38px);
       --radius: 18px;
 
       --label: 12px;
-      --text: 16px;
-      --lead: clamp(18px, 2.0vw, 26px);
+      --body: 15px;
+      --title: clamp(22px, 2.1vw, 28px);
+      --hero: clamp(26px, 3.2vw, 44px);
 
-      --t: 920ms;
+      --t: 720ms;
       --ease: cubic-bezier(.2,.9,.2,1);
-
-      /* Landing logo impact */
-      --logoBig: clamp(44px, 7.4vw, 96px);
-      --logoTrack: .38em;
     }
 
     *{ box-sizing:border-box; }
-    html, body{
+    html,body{
       height:100%;
       margin:0;
-      overflow:hidden;
-      background:#f2f2f2;
-      color:var(--ink);
-      font-family:var(--font);
+      overflow:hidden; /* no scroll (like the reference composition) */
+      background: var(--wash);
+      color: var(--ink);
+      font-family: var(--font);
     }
     a{ color:inherit; text-decoration:none; }
     button{ font:inherit; color:inherit; background:none; border:none; padding:0; cursor:pointer; }
 
-    /* Outer “card” */
+    /* Outer card */
     .shell{
       position:fixed;
       inset: clamp(10px, 2.2vw, 18px);
       border-radius: var(--radius);
       overflow:hidden;
-      background: var(--bg);
-      box-shadow: 0 22px 60px rgba(0,0,0,.12);
+      background: var(--paper);
+      box-shadow: 0 22px 60px rgba(0,0,0,.10);
     }
 
-    /* -----------------------------
-       LANDING (vestibule)
-    ------------------------------*/
-    .landing{
-      position:absolute;
-      inset:0;
-      background: var(--bg);
+    /* Grid scaffold (Option 2 energy) */
+    .grid{
+      height:100%;
       display:grid;
-      place-items:center;
-      z-index:50;
+      grid-template-columns: 1.05fr 1.2fr 1.1fr;
+      grid-template-rows: 1fr 1.2fr .9fr;
+      gap: 0;
     }
 
-    .landingInner{
-      width: min(760px, 88%);
+    /* Cell styling */
+    .cell{
+      border-right: 1px solid rgba(11,11,11,.08);
+      border-bottom: 1px solid rgba(11,11,11,.08);
+      padding: var(--pad);
+      position:relative;
+      background: var(--paper);
+    }
+    .cell.noPad{ padding:0; }
+    .cell:last-child{ border-right:none; }
+    .grid > .cell:nth-child(3),
+    .grid > .cell:nth-child(6),
+    .grid > .cell:nth-child(9){ border-right:none; }
+    .grid > .cell:nth-child(7),
+    .grid > .cell:nth-child(8),
+    .grid > .cell:nth-child(9){ border-bottom:none; }
+
+    /* Top bar cells */
+    .brand{
       display:flex;
-      flex-direction:column;
-      gap: 18px;
       align-items:flex-start;
+      gap: 10px;
     }
-
-    .markBig{
-      font-weight: 500;
-      font-size: var(--logoBig);
-      letter-spacing: var(--logoTrack);
+    .mark{
+      font-size: 12px;
+      letter-spacing: .26em;
       text-transform: uppercase;
-      color: rgba(11,11,11,.90);
+      color: rgba(11,11,11,.84);
       user-select:none;
-      line-height: .95;
+      line-height:1;
+      padding-top: 2px;
+    }
+    .brandSub{
+      font-size: 12px;
+      color: rgba(11,11,11,.48);
+      letter-spacing:.02em;
+      line-height:1.35;
+      max-width: 22ch;
     }
 
-    .line{
-      font-size: clamp(16px, 1.5vw, 18px);
-      line-height: 1.55;
-      color: var(--muted);
-      max-width: 48ch;
-    }
-
-    .enterRow{
-      margin-top: 10px;
+    .topNav{
       display:flex;
-      gap: 12px;
-      align-items:center;
-    }
-    .enter{
-      border:1px solid var(--hair);
-      border-radius: 999px;
-      padding: 12px 14px;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 14px;
       font-size: 12px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      color: rgba(11,11,11,.70);
-      background: rgba(0,0,0,.01);
-      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
-      user-select:none;
-    }
-    .enter:hover{
-      transform: translateY(-1px);
-      border-color: rgba(11,11,11,.20);
-      background: rgba(0,0,0,.02);
-    }
-    .hint{
-      font-size: 12px;
-      color: rgba(11,11,11,.44);
+      color: rgba(11,11,11,.60);
       letter-spacing:.04em;
     }
+    .topNav a{
+      border-bottom:1px solid transparent;
+      padding-bottom:2px;
+      white-space:nowrap;
+    }
+    .topNav a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
 
-    .landingFoot{
+    .menuBtn{
+      width: 38px; height: 38px;
+      border-radius: 999px;
+      border:1px solid rgba(11,11,11,.10);
+      display:grid;
+      place-items:center;
+      background: rgba(0,0,0,.01);
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+    .menuBtn:hover{ transform: translateY(-1px); border-color: rgba(11,11,11,.18); background: rgba(0,0,0,.02); }
+    .burger{
+      width: 14px; height: 10px; position:relative;
+    }
+    .burger::before,.burger::after{
+      content:"";
+      position:absolute; left:0; right:0;
+      height:1px; border-radius:1px;
+      background: rgba(11,11,11,.66);
+    }
+    .burger::before{ top:0; }
+    .burger::after{ bottom:0; }
+
+    /* Big left title like the reference */
+    .sectionTitle{
+      font-size: var(--hero);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      font-weight: 500;
+      margin: 0;
+    }
+    .sectionKicker{
+      margin-top: 10px;
+      font-size: var(--label);
+      color: var(--muted);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    /* Image cells */
+    .image{
       position:absolute;
-      left:0; right:0; bottom:0;
-      padding: calc(var(--pad) * .75) var(--pad);
+      inset:0;
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.02);
+      filter: saturate(.96) contrast(1.02);
+    }
+    .image::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.06));
+      mix-blend-mode:multiply;
+      opacity:.65;
+      pointer-events:none;
+    }
+
+    /* Right-middle text block (project detail) */
+    .metaKicker{
+      font-size: var(--label);
+      color: var(--muted);
+      letter-spacing:.02em;
+    }
+    .projectTitle{
+      margin-top: 10px;
+      font-size: var(--title);
+      font-weight: 500;
+      line-height:1.12;
+      letter-spacing:-0.01em;
+    }
+    .projectSub{
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(11,11,11,.48);
+      letter-spacing:.04em;
+    }
+    .projectBody{
+      margin-top: 14px;
+      font-size: var(--body);
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 54ch;
+    }
+
+    /* Bottom nav (Prev/Next) */
+    .bottomNav{
+      height:100%;
       display:flex;
+      align-items:center;
       justify-content:space-between;
-      gap:16px;
+      gap: 18px;
       font-size: 12px;
       letter-spacing:.08em;
       text-transform: uppercase;
-      color: rgba(11,11,11,.50);
-      user-select:none;
+      color: rgba(11,11,11,.56);
     }
-    .landingFoot a{
-      color: rgba(11,11,11,.64);
-      border-bottom: 1px solid transparent;
+    .bottomNav a{
+      border-bottom:1px solid transparent;
       padding-bottom:2px;
-      text-transform:none;
-      letter-spacing:.02em;
+      white-space:nowrap;
     }
-    .landingFoot a:hover{
-      border-bottom-color: rgba(11,11,11,.20);
-      color: rgba(11,11,11,.82);
-    }
+    .bottomNav a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
 
-    /* -----------------------------
-       MAIN EXPERIENCE (Work/Author)
-    ------------------------------*/
-    .main{
+    /* Permanent contact */
+    .contact{
+      position:absolute;
+      left: var(--pad);
+      bottom: var(--pad);
+      font-size: 12px;
+      color: rgba(11,11,11,.58);
+      letter-spacing:.02em;
+      pointer-events:auto;
+    }
+    .contact a{
+      border-bottom:1px solid transparent;
+      padding-bottom:2px;
+    }
+    .contact a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
+
+    /* Optional: simple modal menu */
+    .overlay{
       position:absolute;
       inset:0;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(10px);
       opacity:0;
       pointer-events:none;
+      transition: opacity 260ms ease;
+      z-index:20;
     }
-    .main.is-active{
+    .overlay.is-open{
       opacity:1;
       pointer-events:auto;
     }
-
-    .layout{
-      height:100%;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-    }
-
-    /* LEFT — image field */
-    .field{
-      position:relative;
-      background:#e9e9e9;
-      overflow:hidden;
-    }
-    .imgStack{ position:absolute; inset:0; }
-
-    .img{
+    .overlayInner{
       position:absolute;
-      inset:-2%;
-      background-size:cover;
-      background-position:center;
-      transform: translateX(0) scale(1.02);
-      opacity:0;
-      transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
-      will-change: transform, opacity;
-      filter: saturate(.96) contrast(1.02);
+      right: var(--pad);
+      top: var(--pad);
+      width: min(420px, 90%);
+      border:1px solid rgba(11,11,11,.10);
+      border-radius: 16px;
+      background: rgba(255,255,255,.90);
+      padding: 18px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.08);
     }
-    .img.is-active{ opacity:1; }
-
-    .shell.is-work .img--work{ transform: translateX(0) scale(1.03); }
-    .shell.is-work .img--author{ transform: translateX(-3.5%) scale(1.06); }
-    .shell.is-author .img--author{ transform: translateX(0) scale(1.03); }
-    .shell.is-author .img--work{ transform: translateX(3.5%) scale(1.06); }
-
-    .field::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background: linear-gradient(to right, rgba(255,255,255,.02), rgba(255,255,255,0) 45%, rgba(0,0,0,.06));
-      mix-blend-mode:multiply;
-      opacity:.55;
+    .overlayTitle{
+      font-size: 12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color: rgba(11,11,11,.52);
     }
-
-    /* RIGHT — reading panel */
-    .panel{
-      position:relative;
-      background: var(--bg);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: var(--pad);
-      overflow:hidden;
-    }
-
-    .panelInner{
-      width: min(380px, 92%);
-      margin-left:auto;
-      margin-right: clamp(6px, 1.2vw, 18px);
-      display:grid;
-      gap: 22px;
-      will-change: transform, opacity;
-    }
-
-    .kicker{
-      font-size: var(--label);
-      color: var(--muted);
-      letter-spacing: .02em;
-    }
-    .lead{
-      font-size: var(--lead);
-      line-height: 1.18;
-      letter-spacing: -0.01em;
-      color: rgba(11,11,11,.92);
-    }
-    .body{
-      font-size: var(--text);
-      line-height: 1.65;
-      color: var(--muted);
-      max-width: 34ch;
-    }
-    .links{
+    .overlayLinks{
+      margin-top: 12px;
       display:flex;
       flex-direction:column;
       gap: 10px;
-      font-size: var(--text);
-      line-height: 1.35;
+      font-size: 16px;
+      color: rgba(11,11,11,.86);
     }
-    .links a{
+    .overlayLinks a{
       width:max-content;
-      border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
-    }
-    .links a:hover{ border-bottom-color: rgba(11,11,11,.22); }
-
-    /* Permanent footer */
-    .footer{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      padding: calc(var(--pad) * .75) var(--pad);
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      align-items:end;
-      gap: 14px;
-      pointer-events:none;
-    }
-    .foot-left, .foot-center, .foot-right{
-      font-size: 12px;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      color: rgba(11,11,11,.62);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .foot-left{
-      justify-self:start;
-      pointer-events:auto;
-      color: rgba(11,11,11,.80);
-      letter-spacing:.22em;
-    }
-    .foot-center{
-      justify-self:center;
-      pointer-events:auto;
-      display:flex;
-      gap: 18px;
-      align-items:center;
-    }
-    .tab{
-      padding-bottom: 4px;
-      border-bottom: 1px solid transparent;
-      transition: opacity 140ms ease, border-color 140ms ease;
-      opacity:.8;
-    }
-    .tab:hover{ opacity:1; }
-    .tab[aria-current="true"]{
-      opacity:1;
-      border-bottom-color: rgba(11,11,11,.22);
-    }
-    .foot-right{
-      justify-self:end;
-      pointer-events:auto;
-    }
-    .foot-right a{
-      border-bottom: 1px solid transparent;
+      border-bottom:1px solid transparent;
       padding-bottom:2px;
-      color: rgba(11,11,11,.72);
-      text-transform:none;
-      letter-spacing:.02em;
     }
-    .foot-right a:hover{
-      border-bottom-color: rgba(11,11,11,.22);
-      color: rgba(11,11,11,.88);
-    }
-
-    /* -----------------------------
-       ENTER TRANSITION WIPE
-       - image wipe DOWN from top
-       - text wipe UP from bottom
-    ------------------------------*/
-    .wipe{
+    .overlayLinks a:hover{ border-bottom-color: rgba(11,11,11,.20); }
+    .overlayClose{
       position:absolute;
-      inset:0;
-      pointer-events:none;
-      z-index:60;
-      display:none;
+      top: 10px; right: 10px;
+      width: 40px; height: 40px;
+      border-radius: 999px;
+      border:1px solid rgba(11,11,11,.10);
+      background: rgba(0,0,0,.01);
     }
-    .wipe.is-running{ display:block; }
-
-    .wipe .top{
+    .overlayClose::before,.overlayClose::after{
+      content:"";
       position:absolute;
-      left:0; right:0; top:0;
-      height:100%;
-      background: var(--bg);
-      transform: translateY(-100%);
-      animation: wipeDown var(--t) var(--ease) forwards;
+      left:50%; top:50%;
+      width: 16px; height: 1px;
+      background: rgba(11,11,11,.66);
+      border-radius:1px;
+      transform-origin:center;
     }
-    .wipe .bottom{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      height:100%;
-      background: var(--bg);
-      transform: translateY(100%);
-      animation: wipeUp var(--t) var(--ease) forwards;
-      opacity: .98;
-    }
+    .overlayClose::before{ transform: translate(-50%,-50%) rotate(45deg); }
+    .overlayClose::after{ transform: translate(-50%,-50%) rotate(-45deg); }
 
-    @keyframes wipeDown{
-      0%   { transform: translateY(-100%); }
-      45%  { transform: translateY(0%); }
-      100% { transform: translateY(0%); }
-    }
-    @keyframes wipeUp{
-      0%   { transform: translateY(100%); }
-      45%  { transform: translateY(0%); }
-      100% { transform: translateY(0%); }
-    }
-
-    /* Then we clear wipes with JS once main is visible */
-
-    /* Landing fade out (subtle) */
-    .landing.is-hidden{
-      opacity:0;
-      transform: translateY(8px);
-      transition: opacity 520ms var(--ease), transform 520ms var(--ease);
-      pointer-events:none;
-    }
-
-    /* Panel recomposition fade when switching Work/Author */
-    .shell.is-switching .panelInner{
-      opacity: 0;
-      transform: translateY(10px);
-      transition: transform 740ms var(--ease), opacity 740ms var(--ease);
-    }
-    .panelInner{
-      transition: transform 740ms var(--ease), opacity 740ms var(--ease);
-    }
-
-    /* Mobile */
-    @media (max-width: 900px){
-      .layout{
+    /* Mobile: stack into 2x3, keep vibe */
+    @media (max-width: 980px){
+      html,body{ overflow:auto; } /* allow scroll on small screens; composition becomes too tight otherwise */
+      .shell{ position:relative; inset:auto; margin: 12px; height:auto; }
+      .grid{
         grid-template-columns: 1fr;
-        grid-template-rows: 1.08fr .92fr;
+        grid-template-rows: auto;
       }
-      .panelInner{
-        width: min(560px, 96%);
-        margin: 0 auto;
+      .cell{
+        border-right:none;
       }
-      .footer{
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas:
-          "left right"
-          "center center";
-        align-items:center;
-        row-gap:10px;
+      .cell.noPad{
+        height: 42vh;
       }
-      .foot-left{ grid-area:left; }
-      .foot-right{ grid-area:right; justify-self:end; }
-      .foot-center{ grid-area:center; justify-self:center; }
     }
   </style>
 </head>
 
 <body>
-  <div class="shell is-work" id="shell" aria-label="MASO">
+  <div class="shell" aria-label="MASO layout">
 
-    <!-- ENTER WIPE OVERLAY -->
-    <div class="wipe" id="wipe" aria-hidden="true">
-      <div class="top"></div>
-      <div class="bottom"></div>
+    <!-- Optional overlay menu -->
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <div class="overlayInner" role="dialog" aria-label="Menu">
+        <button class="overlayClose" id="overlayClose" aria-label="Close menu"></button>
+        <div class="overlayTitle">Navigation</div>
+        <div class="overlayLinks">
+          <a href="#" onclick="return false;">Work</a>
+          <a href="#" onclick="return false;">Approach</a>
+          <a href="#" onclick="return false;">Author</a>
+          <a href="#" onclick="return false;">Contact</a>
+          <a href="#" onclick="return false;">Request spec pack</a>
+        </div>
+      </div>
     </div>
 
-    <!-- LANDING -->
-    <section class="landing" id="landing" aria-label="Landing">
-      <div class="landingInner">
-        <div class="markBig">MASO</div>
-        <div class="line">
-          Bespoke architectural audio integration — designed as a material condition,
-          tuned to the room, and drawn with restraint.
-        </div>
-        <div class="enterRow">
-          <button class="enter" id="enterBtn">Enter</button>
-          <div class="hint">or press Enter</div>
+    <div class="grid">
+
+      <!-- Row 1 / Col 1: Brand -->
+      <div class="cell">
+        <div class="brand">
+          <div class="mark">MASO</div>
+          <div class="brandSub">Architectural sound, designed as material.</div>
         </div>
       </div>
 
-      <div class="landingFoot">
-        <div>London / Tokyo</div>
-        <div><a href="mailto:info@maso.design">info@maso.design</a></div>
-      </div>
-    </section>
-
-    <!-- MAIN EXPERIENCE -->
-    <main class="main" id="main" aria-label="Main">
-      <div class="layout">
-
-        <!-- LEFT IMAGE FIELD -->
-        <section class="field" aria-label="Image field">
-          <div class="imgStack">
-            <div class="img img--work is-active" id="imgWork"
-                 style="background-image:url('image-work.jpg');" aria-hidden="true"></div>
-            <div class="img img--author" id="imgAuthor"
-                 style="background-image:url('image-author.jpg');" aria-hidden="true"></div>
+      <!-- Row 1 / Col 2: Top nav -->
+      <div class="cell">
+        <div class="topNav">
+          <div style="display:flex; gap:18px;">
+            <a href="#" onclick="return false;">Search</a>
+            <a href="#" onclick="return false;">Contact</a>
+            <a href="#" onclick="return false;">Projects</a>
           </div>
-        </section>
-
-        <!-- RIGHT READING PANEL -->
-        <aside class="panel" aria-label="Reading panel">
-          <div class="panelInner" id="panelInner">
-
-            <!-- WORK -->
-            <div class="view" id="viewWork">
-              <div class="kicker">Work</div>
-              <div class="lead">Bespoke architectural audio integration.</div>
-              <div class="body">
-                Sound treated as a material condition — integrated into surfaces, tuned to the space,
-                and specified with architectural clarity.
-              </div>
-              <div class="links" aria-label="Work links">
-                <a href="#" onclick="return false;">Selected projects</a>
-                <a href="#" onclick="return false;">Approach</a>
-                <a href="#" onclick="return false;">Request spec pack</a>
-              </div>
-            </div>
-
-            <!-- AUTHOR -->
-            <div class="view" id="viewAuthor" style="display:none;">
-              <div class="kicker">Author</div>
-              <div class="lead">A studio practice between sound and architecture.</div>
-              <div class="body">
-                MASO develops objects and systems for quiet, high-fidelity environments.
-                Research-led, finish-led, and designed for collaboration.
-              </div>
-              <div class="links" aria-label="Author links">
-                <a href="#" onclick="return false;">Biography</a>
-                <a href="#" onclick="return false;">Notes</a>
-                <a href="#" onclick="return false;">Press / enquiries</a>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- PERMANENT FOOTER -->
-          <footer class="footer" aria-label="Permanent footer">
-            <div class="foot-left">MASO</div>
-
-            <nav class="foot-center" aria-label="Navigation">
-              <button class="tab" id="tabWork" aria-current="true" data-to="work">Work</button>
-              <button class="tab" id="tabAuthor" aria-current="false" data-to="author">Author</button>
-            </nav>
-
-            <div class="foot-right">
-              <a href="mailto:info@maso.design">info@maso.design</a>
-            </div>
-          </footer>
-        </aside>
-
+          <button class="menuBtn" id="menuBtn" aria-label="Menu">
+            <span class="burger" aria-hidden="true"></span>
+          </button>
+        </div>
       </div>
-    </main>
+
+      <!-- Row 1 / Col 3: Quiet meta (could be role / location) -->
+      <div class="cell">
+        <div class="metaKicker">Lead designer</div>
+        <div style="margin-top:10px; font-size:14px; color:rgba(11,11,11,.82);">
+          Guy Traviss
+        </div>
+        <div style="margin-top:6px; font-size:12px; color:rgba(11,11,11,.48); letter-spacing:.04em;">
+          London / Tokyo
+        </div>
+      </div>
+
+      <!-- Row 2 / Col 1: Image -->
+      <div class="cell noPad">
+        <!-- Replace with your own image file -->
+        <div class="image" style="background-image:url('work.jpeg');"></div>
+      </div>
+
+      <!-- Row 2 / Col 2: Image (detail/crop) -->
+      <div class="cell noPad">
+        <div class="image" style="background-image:url('work.jpeg'); background-position: 65% 50%;"></div>
+      </div>
+
+      <!-- Row 2 / Col 3: Project text -->
+      <div class="cell">
+        <div class="metaKicker">Project</div>
+        <div class="projectTitle">Dining Room — Invisible Integration</div>
+        <div class="projectSub">Skim coat / plaster finish · 2026</div>
+        <div class="projectBody">
+          Sound designed into surfaces. No visible hardware. Coverage and tonality tuned to
+          the room’s proportions and materials. Documentation available for architects and integrators
+          on request.
+        </div>
+
+        <div style="margin-top:18px; display:flex; gap:14px; flex-wrap:wrap; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(11,11,11,.56);">
+          <a href="#" onclick="return false;" style="border-bottom:1px solid rgba(11,11,11,.16); padding-bottom:2px;">More details →</a>
+          <a href="#" onclick="return false;" style="border-bottom:1px solid transparent; padding-bottom:2px;">Request spec pack</a>
+        </div>
+      </div>
+
+      <!-- Row 3 / Col 1: Section title -->
+      <div class="cell">
+        <h1 class="sectionTitle">Architectural<br/>Audio</h1>
+        <div class="sectionKicker">Bespoke · Integrated · Material-led</div>
+
+        <div class="contact">
+          <a href="mailto:info@maso.design">info@maso.design</a>
+        </div>
+      </div>
+
+      <!-- Row 3 / Col 2: Quiet statement -->
+      <div class="cell">
+        <div class="metaKicker">Thought</div>
+        <div style="margin-top:12px; font-size: clamp(16px, 1.7vw, 20px); line-height:1.28; color:rgba(11,11,11,.90); max-width: 30ch; letter-spacing:-.01em;">
+          Form follows quiet. Sound belongs in the room, not on the wall.
+        </div>
+        <div style="margin-top:14px; font-size: 12px; color: rgba(11,11,11,.48); letter-spacing:.04em;">
+          Documentation available on request.
+        </div>
+      </div>
+
+      <!-- Row 3 / Col 3: Prev/Next -->
+      <div class="cell">
+        <div class="bottomNav">
+          <a href="#" onclick="return false;">← Previous project</a>
+          <a href="#" onclick="return false;">Next project →</a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <script>
     (function(){
-      const shell = document.getElementById("shell");
+      const overlay = document.getElementById("overlay");
+      const menuBtn = document.getElementById("menuBtn");
+      const overlayClose = document.getElementById("overlayClose");
 
-      const landing = document.getElementById("landing");
-      const main = document.getElementById("main");
-      const enterBtn = document.getElementById("enterBtn");
-      const wipe = document.getElementById("wipe");
-
-      const imgWork = document.getElementById("imgWork");
-      const imgAuthor = document.getElementById("imgAuthor");
-
-      const viewWork = document.getElementById("viewWork");
-      const viewAuthor = document.getElementById("viewAuthor");
-
-      const tabWork = document.getElementById("tabWork");
-      const tabAuthor = document.getElementById("tabAuthor");
-
-      let current = "work";
-      let busy = false;
-      let entered = false;
-
-      function setTabs(){
-        tabWork.setAttribute("aria-current", current === "work" ? "true" : "false");
-        tabAuthor.setAttribute("aria-current", current === "author" ? "true" : "false");
+      function openMenu(){
+        overlay.classList.add("is-open");
+        overlay.setAttribute("aria-hidden", "false");
       }
-      function setImages(){
-        imgWork.classList.toggle("is-active", current === "work");
-        imgAuthor.classList.toggle("is-active", current === "author");
-      }
-      function setViews(){
-        viewWork.style.display = current === "work" ? "block" : "none";
-        viewAuthor.style.display = current === "author" ? "block" : "none";
+      function closeMenu(){
+        overlay.classList.remove("is-open");
+        overlay.setAttribute("aria-hidden", "true");
       }
 
-      function go(next){
-        if (!entered) return;
-        if (busy || next === current) return;
-        busy = true;
-
-        shell.classList.add("is-switching");
-
-        window.setTimeout(() => {
-          current = next;
-
-          shell.classList.toggle("is-work", current === "work");
-          shell.classList.toggle("is-author", current === "author");
-
-          setImages();
-          setViews();
-          setTabs();
-        }, 220);
-
-        window.setTimeout(() => {
-          shell.classList.remove("is-switching");
-          busy = false;
-        }, 740);
-      }
-
-      function runEnterWipe(){
-        wipe.classList.add("is-running");
-        // After wipe has covered, reveal main. (timing synced to keyframes at ~45%)
-        window.setTimeout(() => {
-          main.classList.add("is-active");
-          landing.classList.add("is-hidden");
-        }, 420);
-
-        // After full duration, remove wipe to reveal the split layout
-        window.setTimeout(() => {
-          wipe.classList.remove("is-running");
-        }, 960);
-      }
-
-      function enter(){
-        if (entered) return;
-        entered = true;
-        runEnterWipe();
-      }
-
-      // Optional return to landing
-      function backToLanding(){
-        entered = false;
-        main.classList.remove("is-active");
-        landing.classList.remove("is-hidden");
-      }
-
-      // Init
-      setTabs(); setImages(); setViews();
-
-      // Click enter
-      enterBtn.addEventListener("click", enter);
-
-      // Tabs
-      document.querySelectorAll("[data-to]").forEach(btn => {
-        btn.addEventListener("click", () => go(btn.dataset.to));
+      menuBtn.addEventListener("click", openMenu);
+      overlayClose.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closeMenu();
       });
 
-      // Keyboard
       window.addEventListener("keydown", (e) => {
-        if (!entered && e.key === "Enter") enter();
-        if (entered && e.key === "1") go("work");
-        if (entered && e.key === "2") go("author");
-        if (entered && e.key === "Escape") backToLanding();
+        if (e.key === "Escape") closeMenu();
       });
     })();
   </script>
