@@ -5,30 +5,29 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MASO</title>
 
-  <!-- Minimal, architectural UI font (fast). Swap to your paid fonts later if desired. -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --paper:#ffffff;
-      --wash:#ece8e2;           /* warm perimeter like option 2 */
+      --wash:#ece8e2;                 /* warm perimeter */
+      --paper:#ffffff;                /* card */
       --ink:#0b0b0b;
       --muted:rgba(11,11,11,.56);
       --hair:rgba(11,11,11,.12);
 
       --font: Inter, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
 
-      --pad: clamp(14px, 2.6vw, 38px);
+      --pad: clamp(16px, 3vw, 44px);
       --radius: 18px;
 
-      --label: 12px;
-      --body: 15px;
-      --title: clamp(22px, 2.1vw, 28px);
-      --hero: clamp(26px, 3.2vw, 44px);
+      --k: 12px;                      /* kicker */
+      --b: 15px;                      /* body */
+      --h: clamp(22px, 2.4vw, 34px);  /* headline */
+      --logo: clamp(26px, 4.5vw, 52px);
 
-      --t: 720ms;
+      --t: 760ms;
       --ease: cubic-bezier(.2,.9,.2,1);
     }
 
@@ -36,7 +35,7 @@
     html,body{
       height:100%;
       margin:0;
-      overflow:hidden; /* no scroll (like the reference composition) */
+      overflow:hidden; /* no scroll desktop */
       background: var(--wash);
       color: var(--ink);
       font-family: var(--font);
@@ -54,409 +53,356 @@
       box-shadow: 0 22px 60px rgba(0,0,0,.10);
     }
 
-    /* Grid scaffold (Option 2 energy) */
-    .grid{
+    /* Three-zone layout: Image / Text slab / Colophon band */
+    .layout{
       height:100%;
       display:grid;
-      grid-template-columns: 1.05fr 1.2fr 1.1fr;
-      grid-template-rows: 1fr 1.2fr .9fr;
-      gap: 0;
+      grid-template-columns: 1.35fr .65fr;
+      grid-template-rows: 1fr auto;
     }
 
-    /* Cell styling */
-    .cell{
-      border-right: 1px solid rgba(11,11,11,.08);
-      border-bottom: 1px solid rgba(11,11,11,.08);
-      padding: var(--pad);
+    /* IMAGE FIELD (spans both rows on the left) */
+    .imageField{
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
       position:relative;
-      background: var(--paper);
-    }
-    .cell.noPad{ padding:0; }
-    .cell:last-child{ border-right:none; }
-    .grid > .cell:nth-child(3),
-    .grid > .cell:nth-child(6),
-    .grid > .cell:nth-child(9){ border-right:none; }
-    .grid > .cell:nth-child(7),
-    .grid > .cell:nth-child(8),
-    .grid > .cell:nth-child(9){ border-bottom:none; }
-
-    /* Top bar cells */
-    .brand{
-      display:flex;
-      align-items:flex-start;
-      gap: 10px;
-    }
-    .mark{
-      font-size: 12px;
-      letter-spacing: .26em;
-      text-transform: uppercase;
-      color: rgba(11,11,11,.84);
-      user-select:none;
-      line-height:1;
-      padding-top: 2px;
-    }
-    .brandSub{
-      font-size: 12px;
-      color: rgba(11,11,11,.48);
-      letter-spacing:.02em;
-      line-height:1.35;
-      max-width: 22ch;
+      background:#e9e9e9;
+      overflow:hidden;
+      border-right: 1px solid rgba(11,11,11,.08);
     }
 
-    .topNav{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 14px;
-      font-size: 12px;
-      color: rgba(11,11,11,.60);
-      letter-spacing:.04em;
-    }
-    .topNav a{
-      border-bottom:1px solid transparent;
-      padding-bottom:2px;
-      white-space:nowrap;
-    }
-    .topNav a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
-
-    .menuBtn{
-      width: 38px; height: 38px;
-      border-radius: 999px;
-      border:1px solid rgba(11,11,11,.10);
-      display:grid;
-      place-items:center;
-      background: rgba(0,0,0,.01);
-      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
-    }
-    .menuBtn:hover{ transform: translateY(-1px); border-color: rgba(11,11,11,.18); background: rgba(0,0,0,.02); }
-    .burger{
-      width: 14px; height: 10px; position:relative;
-    }
-    .burger::before,.burger::after{
-      content:"";
-      position:absolute; left:0; right:0;
-      height:1px; border-radius:1px;
-      background: rgba(11,11,11,.66);
-    }
-    .burger::before{ top:0; }
-    .burger::after{ bottom:0; }
-
-    /* Big left title like the reference */
-    .sectionTitle{
-      font-size: var(--hero);
-      line-height: 1.02;
-      letter-spacing: -0.02em;
-      font-weight: 500;
-      margin: 0;
-    }
-    .sectionKicker{
-      margin-top: 10px;
-      font-size: var(--label);
-      color: var(--muted);
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    /* Image cells */
-    .image{
+    .img{
       position:absolute;
-      inset:0;
-      background-size: cover;
-      background-position: center;
+      inset:-2%;
+      background-size:cover;
+      background-position:center;
       transform: scale(1.02);
       filter: saturate(.96) contrast(1.02);
+      opacity:0;
+      transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
+      will-change: opacity, transform;
     }
-    .image::after{
+    .img.is-active{ opacity:1; }
+
+    /* very subtle glazing */
+    .imageField::after{
       content:"";
-      position:absolute; inset:0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.06));
-      mix-blend-mode:multiply;
-      opacity:.65;
-      pointer-events:none;
-    }
-
-    /* Right-middle text block (project detail) */
-    .metaKicker{
-      font-size: var(--label);
-      color: var(--muted);
-      letter-spacing:.02em;
-    }
-    .projectTitle{
-      margin-top: 10px;
-      font-size: var(--title);
-      font-weight: 500;
-      line-height:1.12;
-      letter-spacing:-0.01em;
-    }
-    .projectSub{
-      margin-top: 6px;
-      font-size: 12px;
-      color: rgba(11,11,11,.48);
-      letter-spacing:.04em;
-    }
-    .projectBody{
-      margin-top: 14px;
-      font-size: var(--body);
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 54ch;
-    }
-
-    /* Bottom nav (Prev/Next) */
-    .bottomNav{
-      height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 18px;
-      font-size: 12px;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      color: rgba(11,11,11,.56);
-    }
-    .bottomNav a{
-      border-bottom:1px solid transparent;
-      padding-bottom:2px;
-      white-space:nowrap;
-    }
-    .bottomNav a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
-
-    /* Permanent contact */
-    .contact{
-      position:absolute;
-      left: var(--pad);
-      bottom: var(--pad);
-      font-size: 12px;
-      color: rgba(11,11,11,.58);
-      letter-spacing:.02em;
-      pointer-events:auto;
-    }
-    .contact a{
-      border-bottom:1px solid transparent;
-      padding-bottom:2px;
-    }
-    .contact a:hover{ border-bottom-color: rgba(11,11,11,.20); color: rgba(11,11,11,.82); }
-
-    /* Optional: simple modal menu */
-    .overlay{
       position:absolute;
       inset:0;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(10px);
-      opacity:0;
       pointer-events:none;
-      transition: opacity 260ms ease;
-      z-index:20;
+      background: linear-gradient(to right, rgba(255,255,255,.02), rgba(255,255,255,0) 55%, rgba(0,0,0,.06));
+      mix-blend-mode:multiply;
+      opacity:.55;
     }
-    .overlay.is-open{
-      opacity:1;
-      pointer-events:auto;
+
+    /* TEXT SLAB (top-right) */
+    .slab{
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+      padding: var(--pad);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
-    .overlayInner{
-      position:absolute;
-      right: var(--pad);
-      top: var(--pad);
-      width: min(420px, 90%);
-      border:1px solid rgba(11,11,11,.10);
-      border-radius: 16px;
-      background: rgba(255,255,255,.90);
-      padding: 18px;
-      box-shadow: 0 16px 40px rgba(0,0,0,.08);
+
+    .slabInner{
+      width: min(360px, 92%);
+      margin-left:auto;
+      margin-right: clamp(6px, 1.1vw, 18px);
+      display:grid;
+      gap: 18px;
+      transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+      will-change: opacity, transform;
     }
-    .overlayTitle{
-      font-size: 12px;
+
+    .shell.is-switching .slabInner{
+      opacity:0;
+      transform: translateY(10px);
+    }
+
+    .kicker{
+      font-size: var(--k);
+      color: var(--muted);
       letter-spacing:.08em;
       text-transform:uppercase;
-      color: rgba(11,11,11,.52);
     }
-    .overlayLinks{
-      margin-top: 12px;
+
+    .headline{
+      font-size: var(--h);
+      line-height:1.12;
+      letter-spacing:-.01em;
+      font-weight:500;
+      color: rgba(11,11,11,.92);
+    }
+
+    .body{
+      font-size: var(--b);
+      line-height:1.75;
+      color: var(--muted);
+      max-width: 34ch;
+    }
+
+    .links{
       display:flex;
       flex-direction:column;
       gap: 10px;
-      font-size: 16px;
-      color: rgba(11,11,11,.86);
+      font-size: 14px;
+      color: rgba(11,11,11,.76);
     }
-    .overlayLinks a{
+    .links a{
       width:max-content;
-      border-bottom:1px solid transparent;
+      border-bottom: 1px solid transparent;
       padding-bottom:2px;
     }
-    .overlayLinks a:hover{ border-bottom-color: rgba(11,11,11,.20); }
-    .overlayClose{
-      position:absolute;
-      top: 10px; right: 10px;
-      width: 40px; height: 40px;
-      border-radius: 999px;
-      border:1px solid rgba(11,11,11,.10);
-      background: rgba(0,0,0,.01);
-    }
-    .overlayClose::before,.overlayClose::after{
-      content:"";
-      position:absolute;
-      left:50%; top:50%;
-      width: 16px; height: 1px;
-      background: rgba(11,11,11,.66);
-      border-radius:1px;
-      transform-origin:center;
-    }
-    .overlayClose::before{ transform: translate(-50%,-50%) rotate(45deg); }
-    .overlayClose::after{ transform: translate(-50%,-50%) rotate(-45deg); }
+    .links a:hover{ border-bottom-color: rgba(11,11,11,.18); }
 
-    /* Mobile: stack into 2x3, keep vibe */
+    /* COLOPHON BAND (bottom-right) */
+    .band{
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+      border-top: 1px solid rgba(11,11,11,.08);
+      padding: calc(var(--pad) * .7) var(--pad);
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 18px;
+    }
+
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      user-select:none;
+    }
+    .brand .logo{
+      font-size: 12px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.86);
+    }
+    .brand .sub{
+      font-size: 12px;
+      color: rgba(11,11,11,.50);
+      letter-spacing:.02em;
+    }
+
+    .tabs{
+      display:flex;
+      gap: 16px;
+      align-items:flex-end;
+      font-size: 12px;
+      letter-spacing:.10em;
+      text-transform: uppercase;
+      color: rgba(11,11,11,.58);
+      user-select:none;
+    }
+    .tab{
+      border-bottom: 1px solid transparent;
+      padding-bottom: 3px;
+      opacity:.85;
+      transition: opacity 140ms ease, border-color 140ms ease;
+    }
+    .tab:hover{ opacity:1; }
+    .tab[aria-current="true"]{
+      opacity:1;
+      border-bottom-color: rgba(11,11,11,.18);
+      color: rgba(11,11,11,.78);
+    }
+
+    .contact{
+      font-size: 12px;
+      color: rgba(11,11,11,.58);
+      letter-spacing:.02em;
+      white-space:nowrap;
+    }
+    .contact a{
+      border-bottom: 1px solid transparent;
+      padding-bottom:2px;
+      color: rgba(11,11,11,.74);
+    }
+    .contact a:hover{ border-bottom-color: rgba(11,11,11,.18); color: rgba(11,11,11,.88); }
+
+    /* Optional top-left “big” mark on the image (classy, not bloggy) */
+    .imageMark{
+      position:absolute;
+      left: var(--pad);
+      top: var(--pad);
+      font-size: 12px;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.86);
+      mix-blend-mode: screen;
+      user-select:none;
+      text-shadow: 0 14px 30px rgba(0,0,0,.22);
+    }
+
+    /* Mobile: allow scroll; stack */
     @media (max-width: 980px){
-      html,body{ overflow:auto; } /* allow scroll on small screens; composition becomes too tight otherwise */
+      html,body{ overflow:auto; }
       .shell{ position:relative; inset:auto; margin: 12px; height:auto; }
-      .grid{
+      .layout{
         grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        grid-template-rows: 52vh auto auto;
       }
-      .cell{
+      .imageField{
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
         border-right:none;
+        border-bottom: 1px solid rgba(11,11,11,.08);
       }
-      .cell.noPad{
-        height: 42vh;
+      .slab{
+        grid-column: 1 / 2;
+        grid-row: 2 / 3;
+        justify-content:flex-start;
+      }
+      .slabInner{
+        width: min(560px, 96%);
+        margin: 0 auto;
+      }
+      .band{
+        grid-column: 1 / 2;
+        grid-row: 3 / 4;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="shell" aria-label="MASO layout">
+  <div class="shell is-work" id="shell" aria-label="MASO">
 
-    <!-- Optional overlay menu -->
-    <div class="overlay" id="overlay" aria-hidden="true">
-      <div class="overlayInner" role="dialog" aria-label="Menu">
-        <button class="overlayClose" id="overlayClose" aria-label="Close menu"></button>
-        <div class="overlayTitle">Navigation</div>
-        <div class="overlayLinks">
-          <a href="#" onclick="return false;">Work</a>
-          <a href="#" onclick="return false;">Approach</a>
-          <a href="#" onclick="return false;">Author</a>
-          <a href="#" onclick="return false;">Contact</a>
-          <a href="#" onclick="return false;">Request spec pack</a>
-        </div>
-      </div>
-    </div>
+    <div class="layout">
+      <!-- IMAGE FIELD -->
+      <section class="imageField" aria-label="Image">
+        <div class="imageMark">MASO</div>
 
-    <div class="grid">
+        <!-- Use one or two images. If you only have one, point both to work.jpeg -->
+        <div class="img img--work is-active" id="imgWork"
+             style="background-image:url('work.jpeg');" aria-hidden="true"></div>
+        <div class="img img--author" id="imgAuthor"
+             style="background-image:url('author.jpeg');" aria-hidden="true"></div>
+      </section>
 
-      <!-- Row 1 / Col 1: Brand -->
-      <div class="cell">
-        <div class="brand">
-          <div class="mark">MASO</div>
-          <div class="brandSub">Architectural sound, designed as material.</div>
-        </div>
-      </div>
+      <!-- TEXT SLAB -->
+      <aside class="slab" aria-label="Text">
+        <div class="slabInner" id="slabInner">
 
-      <!-- Row 1 / Col 2: Top nav -->
-      <div class="cell">
-        <div class="topNav">
-          <div style="display:flex; gap:18px;">
-            <a href="#" onclick="return false;">Search</a>
-            <a href="#" onclick="return false;">Contact</a>
-            <a href="#" onclick="return false;">Projects</a>
+          <!-- WORK -->
+          <div class="view" id="viewWork">
+            <div class="kicker">Work</div>
+            <div class="headline">Architectural audio integration, bespoke to the space.</div>
+            <div class="body">
+              Sound treated as a material condition — integrated into surfaces, tuned to the room,
+              and specified with architectural clarity.
+            </div>
+            <div class="links">
+              <a href="#" onclick="return false;">Selected projects</a>
+              <a href="#" onclick="return false;">Request spec pack</a>
+              <a href="mailto:info@maso.design">Enquire</a>
+            </div>
           </div>
-          <button class="menuBtn" id="menuBtn" aria-label="Menu">
-            <span class="burger" aria-hidden="true"></span>
-          </button>
+
+          <!-- AUTHOR -->
+          <div class="view" id="viewAuthor" style="display:none;">
+            <div class="kicker">Author</div>
+            <div class="headline">A studio practice between sound and architecture.</div>
+            <div class="body">
+              MASO develops systems for quiet, high-fidelity environments — research-led,
+              finish-led, and designed for collaboration.
+            </div>
+            <div class="links">
+              <a href="#" onclick="return false;">Biography</a>
+              <a href="#" onclick="return false;">Notes</a>
+              <a href="mailto:info@maso.design">Press / enquiries</a>
+            </div>
+          </div>
+
         </div>
-      </div>
+      </aside>
 
-      <!-- Row 1 / Col 3: Quiet meta (could be role / location) -->
-      <div class="cell">
-        <div class="metaKicker">Lead designer</div>
-        <div style="margin-top:10px; font-size:14px; color:rgba(11,11,11,.82);">
-          Guy Traviss
-        </div>
-        <div style="margin-top:6px; font-size:12px; color:rgba(11,11,11,.48); letter-spacing:.04em;">
-          London / Tokyo
-        </div>
-      </div>
-
-      <!-- Row 2 / Col 1: Image -->
-      <div class="cell noPad">
-        <!-- Replace with your own image file -->
-        <div class="image" style="background-image:url('work.jpeg');"></div>
-      </div>
-
-      <!-- Row 2 / Col 2: Image (detail/crop) -->
-      <div class="cell noPad">
-        <div class="image" style="background-image:url('work.jpeg'); background-position: 65% 50%;"></div>
-      </div>
-
-      <!-- Row 2 / Col 3: Project text -->
-      <div class="cell">
-        <div class="metaKicker">Project</div>
-        <div class="projectTitle">Dining Room — Invisible Integration</div>
-        <div class="projectSub">Skim coat / plaster finish · 2026</div>
-        <div class="projectBody">
-          Sound designed into surfaces. No visible hardware. Coverage and tonality tuned to
-          the room’s proportions and materials. Documentation available for architects and integrators
-          on request.
+      <!-- COLOPHON BAND -->
+      <footer class="band" aria-label="Colophon">
+        <div class="brand">
+          <div class="logo">MASO</div>
+          <div class="sub">London / Tokyo</div>
         </div>
 
-        <div style="margin-top:18px; display:flex; gap:14px; flex-wrap:wrap; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(11,11,11,.56);">
-          <a href="#" onclick="return false;" style="border-bottom:1px solid rgba(11,11,11,.16); padding-bottom:2px;">More details →</a>
-          <a href="#" onclick="return false;" style="border-bottom:1px solid transparent; padding-bottom:2px;">Request spec pack</a>
-        </div>
-      </div>
-
-      <!-- Row 3 / Col 1: Section title -->
-      <div class="cell">
-        <h1 class="sectionTitle">Architectural<br/>Audio</h1>
-        <div class="sectionKicker">Bespoke · Integrated · Material-led</div>
+        <nav class="tabs" aria-label="Navigation">
+          <button class="tab" id="tabWork" aria-current="true" data-to="work">Work</button>
+          <button class="tab" id="tabAuthor" aria-current="false" data-to="author">Author</button>
+        </nav>
 
         <div class="contact">
           <a href="mailto:info@maso.design">info@maso.design</a>
         </div>
-      </div>
-
-      <!-- Row 3 / Col 2: Quiet statement -->
-      <div class="cell">
-        <div class="metaKicker">Thought</div>
-        <div style="margin-top:12px; font-size: clamp(16px, 1.7vw, 20px); line-height:1.28; color:rgba(11,11,11,.90); max-width: 30ch; letter-spacing:-.01em;">
-          Form follows quiet. Sound belongs in the room, not on the wall.
-        </div>
-        <div style="margin-top:14px; font-size: 12px; color: rgba(11,11,11,.48); letter-spacing:.04em;">
-          Documentation available on request.
-        </div>
-      </div>
-
-      <!-- Row 3 / Col 3: Prev/Next -->
-      <div class="cell">
-        <div class="bottomNav">
-          <a href="#" onclick="return false;">← Previous project</a>
-          <a href="#" onclick="return false;">Next project →</a>
-        </div>
-      </div>
-
+      </footer>
     </div>
   </div>
 
   <script>
     (function(){
-      const overlay = document.getElementById("overlay");
-      const menuBtn = document.getElementById("menuBtn");
-      const overlayClose = document.getElementById("overlayClose");
+      const shell = document.getElementById("shell");
+      const slabInner = document.getElementById("slabInner");
 
-      function openMenu(){
-        overlay.classList.add("is-open");
-        overlay.setAttribute("aria-hidden", "false");
+      const imgWork = document.getElementById("imgWork");
+      const imgAuthor = document.getElementById("imgAuthor");
+
+      const viewWork = document.getElementById("viewWork");
+      const viewAuthor = document.getElementById("viewAuthor");
+
+      const tabWork = document.getElementById("tabWork");
+      const tabAuthor = document.getElementById("tabAuthor");
+
+      let current = "work";
+      let busy = false;
+
+      function setTabs(){
+        tabWork.setAttribute("aria-current", current === "work" ? "true" : "false");
+        tabAuthor.setAttribute("aria-current", current === "author" ? "true" : "false");
       }
-      function closeMenu(){
-        overlay.classList.remove("is-open");
-        overlay.setAttribute("aria-hidden", "true");
+      function setImages(){
+        imgWork.classList.toggle("is-active", current === "work");
+        imgAuthor.classList.toggle("is-active", current === "author");
+        // subtle opposing drift for “architectural” motion
+        imgWork.style.transform = current === "work" ? "scale(1.03)" : "translateX(2.8%) scale(1.06)";
+        imgAuthor.style.transform = current === "author" ? "scale(1.03)" : "translateX(-2.8%) scale(1.06)";
+      }
+      function setViews(){
+        viewWork.style.display = current === "work" ? "block" : "none";
+        viewAuthor.style.display = current === "author" ? "block" : "none";
       }
 
-      menuBtn.addEventListener("click", openMenu);
-      overlayClose.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) closeMenu();
+      function go(next){
+        if (busy || next === current) return;
+        busy = true;
+
+        shell.classList.add("is-switching");
+
+        window.setTimeout(() => {
+          current = next;
+          shell.classList.toggle("is-work", current === "work");
+          shell.classList.toggle("is-author", current === "author");
+          setTabs();
+          setImages();
+          setViews();
+        }, 220);
+
+        window.setTimeout(() => {
+          shell.classList.remove("is-switching");
+          busy = false;
+        }, 540);
+      }
+
+      // Init
+      setTabs(); setImages(); setViews();
+
+      document.querySelectorAll("[data-to]").forEach(btn => {
+        btn.addEventListener("click", () => go(btn.dataset.to));
       });
 
+      // Keyboard: 1/2
       window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeMenu();
+        if (e.key === "1") go("work");
+        if (e.key === "2") go("author");
       });
     })();
   </script>
